@@ -1,0 +1,8 @@
+{
+  "vision_isolated_accuracy": 0.6666666666666666,
+  "vision_isolated_f1_macro": 0.7103758169934641,
+  "nlp_isolated_cv_accuracy": 0.95,
+  "nlp_isolated_cv_f1_macro": 0.9499582289055973,
+  "multiagent_integrated_accuracy": 0.95,
+  "multiagent_integrated_f1_macro": 0.948849104859335
+}

@@ -1,0 +1,73 @@
+{
+  "experiment_id": "exp5_multiagent_integrated",
+  "model_name": "Exp 5C — Sistema Multiagente Integrado (Visão + PLN + Regras)",
+  "dataset_name": "Conjunto Multimodal (N=60)",
+  "num_samples": 60,
+  "training_time_sec": 0.0,
+  "accuracy": 0.95,
+  "precision_macro": 0.9615,
+  "recall_macro": 0.95,
+  "f1_macro": 0.9488,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      10,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      10,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      7,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      10,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10
+    ]
+  ],
+  "top_errors": [
+    "3x 'Tomato___Healthy' classificada como 'Tomato___Early_blight'"
+  ],
+  "extra_metadata": {}
+}
