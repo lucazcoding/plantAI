@@ -1,0 +1,76 @@
+{
+  "experiment_id": "exp4_nlp_svm",
+  "model_name": "Exp 4B — PLN Comparativo (TF-IDF + Calibrated LinearSVC)",
+  "dataset_name": "Symptoms Sample Dataset (5-Fold CV, N=60)",
+  "num_samples": 60,
+  "training_time_sec": 0.06,
+  "accuracy": 0.95,
+  "precision_macro": 0.9515,
+  "recall_macro": 0.95,
+  "f1_macro": 0.95,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      10,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      10,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      9,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      9,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      10,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      9
+    ]
+  ],
+  "top_errors": [
+    "Nenhum erro de classificação observado na amostra avaliada."
+  ],
+  "extra_metadata": {
+    "cv_accuracy": 0.95,
+    "cv_f1_macro": 0.9499582289055973
+  }
+}
