@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Datasets & Heavy Weights (stored on Google Drive / external storage)
+data/raw/
+data/processed/
+data/plantvillage/
+data/plantdoc/
+models/*.h5
+models/*.keras
+models/*.pt
+models/*.pth
+models/*.pkl
+models/*.joblib
+!data/symptoms_sample.csv
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Pacotes ZIP de distribuição por branch
+entregas_branches/
+
+

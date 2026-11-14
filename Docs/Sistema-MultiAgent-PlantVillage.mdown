@@ -1,0 +1,956 @@
+# PROJETO INTEGRADOR FINAL — INTELIGÊNCIA ARTIFICIAL APLICADA
+
+# PlantAI — Sistema Multiagente para Identificação e Análise de Doenças em Plantas
+
+**Instituição:** AFYA | UNIMA Maceió  
+**Disciplina:** Inteligência Artificial  
+**Professor:** Ícaro Ferreira  
+**Equipe:** 3 a 5 integrantes  
+**Ambiente de desenvolvimento:** Google Colab + Python  
+**Repositório:** GitHub  
+**Documentação científica:** Overleaf (LaTeX)
+
+---
+
+# 1. VISÃO GERAL DO PROJETO
+
+## 1.1. Nome
+
+PlantAI — Sistema Inteligente Multiagente para Identificação e Análise de Doenças em Plantas.
+
+## 1.2. Problema que pretendemos resolver
+
+Doenças em plantas podem comprometer a produtividade agrícola, provocar perdas econômicas e dificultar a identificação precoce de problemas nas plantações.
+
+A identificação visual de doenças exige conhecimento técnico e, em determinadas situações, pode demandar avaliação especializada.
+
+O PlantAI pretende desenvolver uma aplicação que utilize técnicas de Inteligência Artificial para analisar fotografias de folhas, classificar possíveis doenças, interpretar descrições textuais dos sintomas e produzir um relatório com os resultados da análise.
+
+A proposta é integrar três áreas obrigatórias da disciplina:
+
+- Machine Learning.
+- Visão Computacional.
+- Processamento de Linguagem Natural (PLN).
+
+Além disso, será implementada uma arquitetura multiagente, na qual diferentes módulos especializados trabalham de maneira coordenada.
+
+## 1.3. Objetivo geral
+
+Desenvolver uma aplicação inteligente capaz de identificar e classificar possíveis doenças em plantas por meio de imagens, interpretar informações textuais relacionadas aos sintomas e integrar os resultados utilizando agentes inteligentes, algoritmos de classificação, regras e heurísticas.
+
+## 1.4. Objetivos específicos
+
+1. Obter e preparar um conjunto público de imagens de folhas saudáveis e doentes.
+2. Implementar um módulo de Visão Computacional.
+3. Desenvolver e treinar um modelo de Machine Learning para classificação das imagens.
+4. Implementar um módulo de Processamento de Linguagem Natural.
+5. Desenvolver agentes especializados para processamento das informações.
+6. Implementar um agente coordenador responsável pela integração dos resultados.
+7. Aplicar regras, heurísticas e mecanismos de tomada de decisão.
+8. Avaliar os resultados utilizando métricas científicas.
+9. Disponibilizar o projeto de forma reproduzível no GitHub.
+10. Documentar arquitetura, metodologia, experimentos e limitações em artigo científico.
+
+---
+
+# 2. ESCOPO FUNCIONAL
+
+O sistema deverá permitir que um usuário envie uma fotografia de uma folha de planta e, opcionalmente, descreva os sintomas observados.
+
+A aplicação processará as informações utilizando diferentes módulos de IA.
+
+## 2.1. Funcionalidades principais
+
+**F01 — Envio de imagem**
+
+O usuário poderá fornecer uma fotografia de uma folha para análise.
+
+**F02 — Análise visual**
+
+O sistema deverá processar a imagem e extrair características relevantes para identificar possíveis doenças.
+
+**F03 — Classificação**
+
+O modelo de Machine Learning deverá classificar a imagem entre as categorias aprendidas durante o treinamento.
+
+**F04 — Interpretação textual**
+
+O usuário poderá descrever os sintomas observados. O módulo de PLN deverá processar e interpretar essa descrição.
+
+**F05 — Integração de resultados**
+
+O agente coordenador deverá combinar os resultados da análise visual e textual.
+
+**F06 — Tomada de decisão**
+
+O sistema deverá utilizar regras e heurísticas para determinar como apresentar os resultados, inclusive quando houver divergência entre os módulos.
+
+**F07 — Relatório**
+
+A aplicação deverá apresentar:
+- Classe identificada.
+- Nome da possível doença.
+- Confiança da classificação.
+- Informações extraídas da descrição textual.
+- Evidências utilizadas.
+- Recomendações gerais.
+- Avisos sobre incertezas.
+
+**F08 — Histórico experimental**
+
+Deverá ser possível registrar os resultados dos testes para avaliação e comparação dos modelos.
+
+---
+
+# 3. DATASET — BASE DE DADOS
+
+## 3.1. Dataset principal: PlantVillage
+
+O conjunto PlantVillage será utilizado como principal fonte de dados para treinamento e avaliação inicial.
+
+Características conhecidas da versão amplamente utilizada:
+
+- Aproximadamente 54.305 imagens.
+- 38 categorias de classificação.
+- 14 espécies de plantas.
+- Imagens de folhas saudáveis e folhas com doenças.
+
+As categorias incluem diferentes doenças que afetam culturas como tomate, batata, milho, uva e outras.
+
+Fonte de referência:
+
+https://github.com/tensorflow/datasets/blob/master/docs/catalog/plant_village.md
+
+Outra fonte:
+
+https://data.mendeley.com/datasets/tywbtsjrjv/1
+
+A equipe deverá verificar a versão efetivamente utilizada, sua licença e a quantidade de arquivos após o download.
+
+## 3.2. Por que utilizar esse dataset?
+
+O PlantVillage apresenta vantagens importantes:
+
+- Já possui imagens classificadas.
+- Não exige coleta própria de fotografias para iniciar o projeto.
+- Permite treinamento supervisionado.
+- Possui diversidade de culturas e doenças.
+- Permite desenvolver experimentos reproduzíveis.
+- Facilita a avaliação quantitativa dos resultados.
+
+## 3.3. Preparação dos dados
+
+Antes do treinamento, deverá ser realizada uma etapa de preparação.
+
+Atividades:
+
+1. Download do dataset.
+2. Organização das imagens por categoria.
+3. Verificação de imagens corrompidas.
+4. Identificação de arquivos duplicados ou quase duplicados.
+5. Padronização das dimensões.
+6. Normalização dos valores dos pixels.
+7. Codificação das categorias.
+8. Separação dos conjuntos de treinamento, validação e teste.
+
+## 3.4. Divisão dos dados
+
+Proposta inicial:
+
+| Conjunto | Proporção |
+|---|---:|
+| Treinamento | 70% |
+| Validação | 15% |
+| Teste | 15% |
+
+A divisão deverá ser estratificada, preservando a distribuição das classes.
+
+A equipe também deverá verificar possíveis imagens duplicadas entre os conjuntos, evitando que imagens praticamente iguais apareçam no treinamento e no teste.
+
+O conjunto de teste deverá permanecer separado durante o desenvolvimento e os ajustes dos modelos.
+
+## 3.5. Validação em condições reais
+
+O PlantVillage possui imagens relativamente controladas.
+
+Por isso, existe uma limitação: um modelo que funciona muito bem nesse dataset pode apresentar desempenho inferior em fotografias feitas em plantações reais.
+
+Como experimento complementar, recomenda-se utilizar o PlantDoc:
+
+https://github.com/pratikkayal/PlantDoc-Dataset
+
+Ele poderá ser utilizado para avaliar a capacidade de generalização do modelo em imagens obtidas em condições mais próximas do campo.
+
+Essa avaliação será complementar, pois as categorias e os rótulos dos dois datasets precisam ser compatibilizados antes da comparação.
+
+---
+
+# 4. ARQUITETURA DO SISTEMA
+
+## 4.1. Visão geral
+
+A arquitetura será baseada em módulos especializados e um agente coordenador.
+
+Fluxo principal:
+
+ENTRADA DO USUÁRIO  
+↓  
+PROCESSAMENTO DOS ARQUIVOS  
+↓  
+AGENTE DE VISÃO COMPUTACIONAL  
+↓  
+AGENTE DE PROCESSAMENTO DE LINGUAGEM NATURAL  
+↓  
+AGENTE DE MACHINE LEARNING  
+↓  
+AGENTE COORDENADOR  
+↓  
+REGRAS E HEURÍSTICAS  
+↓  
+RELATÓRIO FINAL
+
+Os módulos poderão executar de maneira independente e seus resultados serão encaminhados ao coordenador.
+
+## 4.2. Agente 1 — Visão Computacional
+
+**Responsabilidade:** analisar as imagens enviadas pelo usuário.
+
+Tecnologias sugeridas:
+- Python.
+- OpenCV.
+- TensorFlow/Keras ou PyTorch.
+- Pillow.
+
+Responsabilidades:
+
+1. Receber a imagem.
+2. Verificar o formato.
+3. Redimensionar a imagem.
+4. Normalizar os pixels.
+5. Preparar os dados para o modelo.
+6. Extrair características visuais.
+7. Identificar padrões relevantes.
+8. Encaminhar os resultados ao classificador.
+
+Importante: a classificação será realizada pelo modelo treinado, não por regras manuais de comparação de pixels.
+
+## 4.3. Agente 2 — Machine Learning
+
+**Responsabilidade:** classificar as imagens e identificar a categoria mais provável.
+
+Modelo inicial recomendado:
+
+**MobileNetV2 com Transfer Learning.**
+
+Justificativa:
+
+- Arquitetura relativamente leve.
+- Adequada para classificação de imagens.
+- Permite aproveitar pesos pré-treinados.
+- Menor exigência computacional em comparação com arquiteturas maiores.
+- Compatível com execução em GPU no Google Colab.
+
+Alternativas para comparação:
+
+- EfficientNetB0.
+- ResNet50.
+- CNN desenvolvida pela própria equipe.
+
+Estratégia:
+
+1. Carregar o modelo pré-treinado.
+2. Substituir a camada final de classificação.
+3. Configurar a quantidade de classes do PlantVillage.
+4. Treinar inicialmente as camadas de classificação.
+5. Avaliar o desempenho.
+6. Aplicar fine-tuning, caso necessário.
+7. Salvar os pesos treinados.
+
+O objetivo é especializar um modelo existente para as categorias do dataset, em vez de treinar uma rede neural inteira do zero.
+
+Saída esperada:
+
+- Classe prevista.
+- Probabilidades por classe.
+- Confiança associada à previsão.
+
+A confiança não deverá ser tratada automaticamente como probabilidade de acerto garantida.
+
+## 4.4. Agente 3 — Processamento de Linguagem Natural
+
+**Responsabilidade:** interpretar as informações textuais fornecidas pelo usuário.
+
+Exemplo de entrada:
+
+"Minha planta de tomate está apresentando manchas escuras nas folhas e algumas partes parecem ressecadas."
+
+O módulo deverá:
+
+1. Receber o texto.
+2. Realizar limpeza e normalização.
+3. Identificar termos relevantes.
+4. Extrair características textuais.
+5. Identificar possíveis sintomas mencionados.
+6. Produzir uma representação estruturada das informações.
+
+Tecnologias sugeridas:
+
+- Python.
+- Hugging Face Transformers.
+- Scikit-learn.
+- Modelos de classificação textual pré-treinados.
+
+Uma abordagem viável é utilizar TF-IDF com um classificador textual como baseline e comparar com um modelo Transformer pré-treinado.
+
+O modelo textual deverá ser avaliado com exemplos rotulados. Não se deve afirmar que um modelo entende sintomas agronômicos apenas porque consegue gerar respostas em linguagem natural.
+
+Importante: o PLN não deve inventar sintomas que não foram informados pelo usuário.
+
+## 4.5. Agente 4 — Coordenador
+
+**Responsabilidade:** integrar os módulos e administrar o fluxo de execução.
+
+Esse será o componente central da arquitetura multiagente.
+
+Responsabilidades:
+
+1. Receber a solicitação.
+2. Verificar quais entradas foram fornecidas.
+3. Acionar os módulos necessários.
+4. Receber os resultados.
+5. Comparar as informações.
+6. Aplicar regras e heurísticas.
+7. Identificar divergências.
+8. Determinar se existem informações suficientes.
+9. Produzir a resposta final.
+
+Exemplo:
+
+O módulo visual identifica uma possível doença com confiança de 92%.
+
+O módulo textual encontra sintomas compatíveis com a descrição fornecida.
+
+O coordenador verifica a compatibilidade dos resultados e gera uma resposta fundamentada.
+
+Se houver divergência, deverá informar a incerteza em vez de apresentar uma conclusão definitiva.
+
+## 4.6. Regras e heurísticas
+
+A equipe deverá implementar um conjunto explícito de regras de decisão.
+
+Exemplo:
+
+- Se a imagem não apresentar qualidade suficiente, solicitar outra fotografia.
+- Se a confiança visual estiver abaixo do limite definido experimentalmente, sinalizar baixa confiança.
+- Se imagem e texto forem compatíveis, apresentar uma análise conjunta.
+- Se houver divergência entre os módulos, informar a inconsistência.
+- Se a classe prevista não pertencer às categorias conhecidas, informar que não foi possível classificar com segurança.
+
+Os limites de confiança deverão ser determinados por experimentos e validação, não escolhidos arbitrariamente para favorecer os resultados.
+
+A arquitetura também deverá possuir uma opção de análise somente visual, caso o usuário não forneça descrição textual.
+
+---
+
+# 5. IMPLEMENTAÇÃO DOS MODELOS
+
+## 5.1. Treinamento do modelo visual
+
+Etapas:
+
+1. Carregar o dataset.
+2. Criar os conjuntos de treinamento, validação e teste.
+3. Aplicar pré-processamento.
+4. Realizar aumento de dados no conjunto de treinamento.
+5. Carregar MobileNetV2 com pesos pré-treinados.
+6. Substituir a camada de classificação.
+7. Configurar o otimizador.
+8. Definir a função de perda.
+9. Treinar o modelo.
+10. Monitorar o desempenho na validação.
+11. Ajustar hiperparâmetros.
+12. Executar a avaliação final no conjunto de teste.
+
+Hiperparâmetros iniciais sugeridos:
+
+| Parâmetro | Valor inicial |
+|---|---|
+| Tamanho da imagem | 224 × 224 |
+| Batch size | 32 |
+| Épocas | 10 a 20 |
+| Otimizador | Adam |
+| Learning rate inicial | 0,001 |
+| Função de perda | Categorical Crossentropy |
+| Arquitetura | MobileNetV2 |
+
+Esses valores são pontos de partida e deverão ser ajustados conforme o desempenho e os recursos disponíveis.
+
+## 5.2. Treinamento do módulo textual
+
+A equipe deverá preparar exemplos de descrições textuais associadas às classes de sintomas.
+
+Esses exemplos poderão ser construídos a partir de informações técnicas e descrições documentadas, com revisão e rotulagem cuidadosas.
+
+Experimento inicial:
+
+- Pré-processamento textual.
+- Vetorização TF-IDF.
+- Classificador Logistic Regression ou SVM.
+- Avaliação de desempenho.
+
+Experimento complementar:
+
+- Modelo Transformer pré-treinado.
+- Ajuste supervisionado, caso existam dados textuais suficientes.
+- Comparação com o baseline.
+
+Não utilizar a classe prevista pelo modelo visual como rótulo verdadeiro para treinar o modelo textual e depois apresentar essa concordância como validação independente.
+
+## 5.3. Machine Learning e visão computacional
+
+A equipe deverá demonstrar claramente que o treinamento foi realizado e que o modelo foi especializado para o problema.
+
+O uso de pesos pré-treinados é permitido como estratégia de Transfer Learning.
+
+A documentação deverá explicar:
+
+- O que é Transfer Learning.
+- Qual modelo foi utilizado.
+- Qual foi a arquitetura original.
+- Quais camadas foram ajustadas.
+- Qual dataset foi utilizado.
+- Como ocorreu o treinamento.
+- Quais métricas foram obtidas.
+
+---
+
+# 6. AVALIAÇÃO CIENTÍFICA
+
+Esta etapa é fundamental para atender aos requisitos acadêmicos.
+
+Não basta mostrar uma imagem e apresentar uma previsão. Precisamos demonstrar quantitativamente o comportamento do sistema.
+
+## 6.1. Métricas obrigatórias recomendadas
+
+**Acurácia (Accuracy)**
+
+Mede a proporção de classificações corretas em relação ao total de exemplos.
+
+**Precisão (Precision)**
+
+Mede quantas previsões positivas de uma classe realmente pertencem àquela classe.
+
+**Recall**
+
+Mede quantos exemplos reais de determinada classe foram identificados corretamente.
+
+**F1-score**
+
+Combina precisão e recall por meio da média harmônica.
+
+**Matriz de confusão**
+
+Permite observar quais classes são confundidas pelo modelo.
+
+## 6.2. Experimentos planejados
+
+A equipe deverá realizar pelo menos os seguintes experimentos:
+
+**Experimento 1 — Modelo baseline**
+
+Treinar um classificador simples, como uma CNN pequena ou um modelo tradicional baseado em características extraídas das imagens.
+
+Objetivo: estabelecer uma referência de desempenho.
+
+**Experimento 2 — Transfer Learning**
+
+Treinar MobileNetV2 utilizando os pesos pré-treinados.
+
+Objetivo: verificar o ganho de desempenho com Transfer Learning.
+
+**Experimento 3 — Ajuste de hiperparâmetros**
+
+Comparar diferentes configurações de treinamento.
+
+Objetivo: identificar configurações mais adequadas.
+
+**Experimento 4 — PLN**
+
+Avaliar a capacidade do módulo textual de classificar ou identificar sintomas descritos pelo usuário.
+
+Objetivo: medir a contribuição da interpretação textual.
+
+**Experimento 5 — Integração multiagente**
+
+Comparar os resultados da análise exclusivamente visual com os resultados da análise integrada.
+
+Objetivo: investigar se a combinação das informações visuais e textuais melhora a qualidade da resposta.
+
+**Experimento 6 — Generalização**
+
+Avaliar, se possível, o desempenho em imagens externas do PlantDoc, após compatibilização das classes.
+
+Objetivo: investigar a capacidade de generalização para imagens obtidas em condições diferentes.
+
+## 6.3. Resultados
+
+Todos os experimentos deverão registrar:
+
+- Configuração do modelo.
+- Quantidade de imagens utilizadas.
+- Tempo de treinamento.
+- Recursos computacionais utilizados.
+- Métricas obtidas.
+- Principais erros observados.
+
+Nenhuma métrica deverá ser inventada ou preenchida antes da execução dos experimentos.
+
+---
+
+# 7. AMBIENTE DE DESENVOLVIMENTO
+
+## 7.1. Google Colab
+
+O treinamento e os experimentos serão executados no Google Colab.
+
+Motivos:
+
+- Execução de Python na nuvem.
+- Possibilidade de utilização de GPU.
+- Facilidade para instalar bibliotecas.
+- Integração com Google Drive.
+- Compartilhamento de notebooks.
+- Reprodutibilidade dos experimentos.
+
+A equipe deverá utilizar inicialmente o ambiente gratuito.
+
+A disponibilidade de GPU, RAM e tempo de execução poderá variar conforme as condições do serviço.
+
+## 7.2. Tecnologias
+
+| Tecnologia | Finalidade |
+|---|---|
+| Python | Linguagem principal |
+| Google Colab | Ambiente de execução |
+| TensorFlow/Keras | Treinamento de redes neurais |
+| PyTorch | Alternativa para modelos de IA |
+| OpenCV | Processamento de imagens |
+| Pillow | Manipulação de imagens |
+| Scikit-learn | Machine Learning e métricas |
+| Hugging Face | Modelos de PLN |
+| Pandas | Manipulação de dados |
+| NumPy | Operações matemáticas |
+| Matplotlib | Gráficos e visualizações |
+| Seaborn | Visualizações estatísticas |
+| Git/GitHub | Versionamento |
+| LaTeX/Overleaf | Artigo científico |
+
+A equipe deverá evitar utilizar TensorFlow e PyTorch simultaneamente sem necessidade. A escolha de um framework principal simplifica a implementação.
+
+## 7.3. Uso de ferramentas de desenvolvimento assistido por IA
+
+A equipe poderá utilizar Claude Code, ou outra ferramenta de assistência à programação, para:
+
+- Criar estruturas de diretórios.
+- Desenvolver funções.
+- Refatorar código.
+- Gerar testes.
+- Explicar bibliotecas.
+- Auxiliar na documentação.
+- Investigar erros.
+
+O Google Colab será o ambiente de execução dos notebooks.
+
+A extensão ou ferramenta PyNB/Jupyter deverá ser utilizada para facilitar a edição e organização dos notebooks, conforme a compatibilidade do ambiente escolhido.
+
+A assistência de IA não substitui a compreensão e a validação do código pela equipe.
+
+---
+
+# 8. ESTRUTURA DO REPOSITÓRIO GITHUB
+
+Proposta de organização:
+
+```text
+PlantAI/
+│
+├── README.md
+├── requirements.txt
+├── LICENSE
+├── .gitignore
+│
+├── notebooks/
+│   ├── 01_exploracao_dataset.ipynb
+│   ├── 02_preprocessamento.ipynb
+│   ├── 03_treinamento_cnn.ipynb
+│   ├── 04_transfer_learning.ipynb
+│   ├── 05_experimentos_pln.ipynb
+│   ├── 06_avaliacao_modelos.ipynb
+│   └── 07_integracao_multiagente.ipynb
+│
+├── src/
+│   ├── vision/
+│   │   ├── image_processor.py
+│   │   └── classifier.py
+│   │
+│   ├── nlp/
+│   │   ├── text_processor.py
+│   │   └── symptom_classifier.py
+│   │
+│   ├── ml/
+│   │   ├── training.py
+│   │   └── evaluation.py
+│   │
+│   ├── agents/
+│   │   ├── vision_agent.py
+│   │   ├── nlp_agent.py
+│   │   ├── ml_agent.py
+│   │   └── coordinator_agent.py
+│   │
+│   ├── decision/
+│   │   └── decision_rules.py
+│   │
+│   └── reports/
+│       └── report_generator.py
+│
+├── tests/
+│   ├── test_vision.py
+│   ├── test_nlp.py
+│   ├── test_classifier.py
+│   └── test_coordinator.py
+│
+├── results/
+│   ├── metrics/
+│   ├── confusion_matrices/
+│   └── plots/
+│
+├── docs/
+│   ├── architecture.md
+│   ├── methodology.md
+│   └── experiments.md
+│
+└── models/
+    └── README.md
+```
+
+Observação: os arquivos grandes do dataset e os pesos dos modelos não deverão ser enviados diretamente ao GitHub sem necessidade.
+
+Os modelos poderão ser armazenados no Google Drive ou em um repositório de arquivos apropriado, mantendo no GitHub as instruções de obtenção e utilização.
+
+---
+
+# 9. DOCUMENTAÇÃO CIENTÍFICA — OVERLEAF
+
+O artigo deverá respeitar o limite de seis páginas, incluindo referências, conforme orientação do professor.
+
+Estrutura sugerida:
+
+## 9.1. Título
+
+PlantAI: Sistema Multiagente para Identificação de Doenças em Plantas utilizando Visão Computacional, Machine Learning e Processamento de Linguagem Natural.
+
+## 9.2. Resumo
+
+Apresentar:
+
+- Problema investigado.
+- Objetivo do trabalho.
+- Técnicas utilizadas.
+- Dataset.
+- Arquitetura.
+- Principais resultados obtidos.
+
+O resumo será escrito depois dos experimentos, para apresentar resultados reais.
+
+## 9.3. Introdução
+
+Apresentar:
+
+- Importância da agricultura.
+- Problemas relacionados às doenças vegetais.
+- Possibilidades da IA na agricultura.
+- Justificativa do projeto.
+- Objetivo geral.
+
+## 9.4. Fundamentação teórica
+
+Abordar brevemente:
+
+- Inteligência Artificial.
+- Machine Learning.
+- Redes Neurais Convolucionais.
+- Transfer Learning.
+- Visão Computacional.
+- Processamento de Linguagem Natural.
+- Agentes inteligentes.
+- Sistemas multiagentes.
+- Heurísticas e tomada de decisão.
+
+## 9.5. Metodologia
+
+Descrever:
+
+- Dataset PlantVillage.
+- Preparação dos dados.
+- Divisão entre treino, validação e teste.
+- Arquitetura dos modelos.
+- Treinamento.
+- Implementação dos agentes.
+- Estratégia de integração.
+- Métricas de avaliação.
+
+## 9.6. Arquitetura e implementação
+
+Apresentar um diagrama da arquitetura e explicar as responsabilidades dos módulos.
+
+## 9.7. Resultados e discussão
+
+Incluir:
+
+- Métricas de classificação.
+- Matriz de confusão.
+- Comparação dos modelos.
+- Resultado da integração multiagente.
+- Exemplos de acertos e erros.
+- Limitações identificadas.
+
+## 9.8. Conclusão
+
+Apresentar:
+
+- O que foi desenvolvido.
+- Quais objetivos foram alcançados.
+- Resultados relevantes.
+- Limitações.
+- Possibilidades de trabalhos futuros.
+
+## 9.9. Referências
+
+Utilizar referências científicas e técnicas confiáveis.
+
+Sugestões de fontes para a fundamentação:
+
+- Artigos originais do PlantVillage.
+- Literatura sobre MobileNetV2.
+- Publicações sobre Transfer Learning.
+- Estudos de visão computacional aplicada à agricultura.
+- Documentação técnica das bibliotecas utilizadas.
+
+---
+
+# 10. DIVISÃO DE RESPONSABILIDADES DA EQUIPE
+
+A divisão poderá ser adaptada conforme a quantidade de integrantes.
+
+## Equipe de 3 pessoas
+
+**Integrante 1 — Visão Computacional e Machine Learning**
+
+- Dataset.
+- Pré-processamento.
+- Treinamento.
+- Avaliação do classificador.
+
+**Integrante 2 — PLN e agentes**
+
+- Preparação dos dados textuais.
+- Classificação textual.
+- Implementação dos agentes.
+- Regras e heurísticas.
+
+**Integrante 3 — Integração e documentação**
+
+- Coordenador.
+- Integração dos módulos.
+- Testes.
+- GitHub.
+- Artigo científico.
+- Demonstração.
+
+Todos deverão participar da revisão e validação final.
+
+## Equipe de 4 pessoas
+
+1. Dataset, pré-processamento e visão computacional.
+2. Machine Learning e treinamento.
+3. PLN e agentes especializados.
+4. Coordenador, integração, testes e documentação.
+
+## Equipe de 5 pessoas
+
+1. Pesquisa, dataset e preparação dos dados.
+2. Visão computacional.
+3. Machine Learning e experimentos.
+4. PLN e arquitetura multiagente.
+5. Integração, testes, documentação e apresentação.
+
+A divisão de tarefas não elimina a responsabilidade coletiva pela compreensão da arquitetura.
+
+---
+
+# 11. CRONOGRAMA DE DESENVOLVIMENTO
+
+Proposta de execução em seis semanas, ajustável ao prazo real da disciplina.
+
+| Semana | Atividades | Entrega |
+|---|---|---|
+| 1 | Pesquisa, definição do escopo e dataset | Dataset organizado |
+| 2 | Pré-processamento e exploração | Notebook de preparação |
+| 3 | Treinamento e avaliação visual | Primeiro modelo treinado |
+| 4 | Implementação do PLN e agentes | Módulos especializados |
+| 5 | Integração e experimentos | Sistema multiagente funcional |
+| 6 | Testes, artigo e apresentação | Entrega final |
+
+A equipe deverá trabalhar com Git desde o primeiro dia.
+
+---
+
+# 12. DEMONSTRAÇÃO FINAL
+
+A apresentação deverá demonstrar o funcionamento completo da aplicação.
+
+Fluxo sugerido:
+
+1. Abrir a aplicação.
+2. Enviar uma fotografia de uma folha.
+3. Informar sintomas textualmente.
+4. Executar o agente de visão.
+5. Executar o módulo de PLN.
+6. Apresentar a classificação do modelo de Machine Learning.
+7. Executar a integração pelo coordenador.
+8. Mostrar as regras de decisão aplicadas.
+9. Apresentar o relatório final.
+10. Demonstrar resultados dos experimentos e métricas.
+
+Também deverão ser apresentados exemplos de situações em que o sistema não consegue chegar a uma conclusão confiável.
+
+---
+
+# 13. REQUISITOS DE QUALIDADE E LIMITAÇÕES
+
+O projeto deverá considerar:
+
+**Reprodutibilidade:** os experimentos devem possuir instruções claras para execução.
+
+**Modularidade:** cada agente deverá ter responsabilidade definida.
+
+**Manutenibilidade:** o código deverá ser organizado em módulos.
+
+**Rastreabilidade:** os resultados deverão estar relacionados às versões dos modelos e aos experimentos.
+
+**Confiabilidade:** o sistema deverá informar quando não possui confiança suficiente.
+
+**Segurança:** arquivos enviados deverão ser tratados como entradas não confiáveis.
+
+**Limitação agronômica:** a classificação representa uma previsão computacional e não substitui o diagnóstico de um profissional.
+
+**Generalização:** resultados obtidos no PlantVillage não devem ser apresentados como garantia de desempenho em qualquer plantação ou condição ambiental.
+
+---
+
+# 14. MATRIZ DE ATENDIMENTO AOS REQUISITOS DO PROFESSOR
+
+Esta seção é especialmente importante. Ela demonstra onde cada exigência do projeto integrador será atendida.
+
+| Exigência do professor | Implementação no PlantAI |
+|---|---|
+| Identificar problema real ou simulado | Identificação de doenças vegetais |
+| Definir arquitetura | Arquitetura multiagente modular |
+| Machine Learning | MobileNetV2 e classificação supervisionada |
+| Visão Computacional | Processamento e classificação de imagens |
+| PLN | Interpretação e classificação textual de sintomas |
+| Agentes inteligentes | Agentes especializados e coordenador |
+| Busca, heurísticas ou regras | Mecanismos de decisão e integração |
+| Preparação de dados | Tratamento e divisão do PlantVillage |
+| Avaliação por métricas | Accuracy, Precision, Recall, F1 e matriz de confusão |
+| Código reproduzível | Repositório GitHub |
+| Artigo científico | Overleaf, até seis páginas |
+| Demonstração funcional | Aplicação executada com imagens e descrições |
+
+## 14.1. Evidências que deverão ser entregues
+
+Para comprovar o atendimento dos requisitos:
+
+- Notebook de exploração do dataset.
+- Notebook de pré-processamento.
+- Notebook de treinamento.
+- Registro dos experimentos.
+- Modelo treinado.
+- Implementação dos agentes.
+- Código do coordenador.
+- Testes dos módulos.
+- Gráficos e métricas.
+- Diagrama da arquitetura.
+- Artigo científico.
+- Vídeo ou demonstração ao vivo, conforme orientação do professor.
+
+---
+
+# 15. CRITÉRIOS DE CONCLUSÃO DO PROJETO
+
+O projeto será considerado tecnicamente concluído quando:
+
+- [ ] O dataset estiver documentado e preparado.
+- [ ] O classificador visual estiver treinado.
+- [ ] Os resultados do modelo estiverem avaliados.
+- [ ] O módulo de PLN estiver implementado e avaliado.
+- [ ] Os agentes especializados estiverem funcionando.
+- [ ] O coordenador estiver integrando os resultados.
+- [ ] As regras de decisão estiverem implementadas.
+- [ ] Os experimentos estiverem registrados.
+- [ ] A aplicação permitir uma demonstração funcional.
+- [ ] O GitHub estiver organizado.
+- [ ] O artigo estiver finalizado dentro do limite de páginas.
+- [ ] A equipe conseguir explicar as decisões técnicas e científicas.
+
+---
+
+# 16. DECISÕES TÉCNICAS IMPORTANTES
+
+Para evitar que o projeto fique excessivamente complexo, as seguintes decisões devem orientar a implementação:
+
+**1. Não treinar uma IA do zero.**
+
+Utilizar modelos pré-treinados e Transfer Learning sempre que apropriado.
+
+**2. Não utilizar APIs pagas como dependência obrigatória.**
+
+Priorizar bibliotecas e modelos que possam ser executados gratuitamente no Colab.
+
+**3. Não depender de um LLM para fazer toda a inteligência do sistema.**
+
+A classificação visual e textual deverá ter experimentos próprios e resultados mensuráveis.
+
+**4. Não utilizar YOLO obrigatoriamente.**
+
+A classificação de doenças será inicialmente realizada com MobileNetV2. YOLO poderá ser avaliado futuramente caso exista a necessidade de localizar regiões específicas da folha.
+
+**5. Não confundir agente com modelo de IA.**
+
+Um agente é um componente que recebe informações, executa ações e participa do processo de decisão. Ele pode utilizar um modelo de IA, algoritmos tradicionais ou ambos.
+
+**6. Não apresentar métricas sem experimentos.**
+
+Todos os resultados deverão ser obtidos por execução real.
+
+**7. Priorizar a validação científica.**
+
+A aplicação precisa demonstrar que suas previsões possuem desempenho mensurável e que a integração dos módulos possui uma justificativa técnica.
+
+---
+
+# 17. RESULTADO ESPERADO
+
+Ao final do projeto, a equipe deverá apresentar uma aplicação funcional de Inteligência Artificial que integre Machine Learning, Visão Computacional e Processamento de Linguagem Natural em uma arquitetura multiagente.
+
+O sistema deverá ser capaz de receber imagens e descrições textuais, realizar análises independentes, combinar os resultados por meio de um agente coordenador e apresentar uma resposta fundamentada.
+
+Além da aplicação, o projeto deverá entregar experimentos reproduzíveis, resultados quantitativos, documentação técnica, artigo científico e demonstração funcional.
+
+**Objetivo final: demonstrar não apenas a utilização de modelos de Inteligência Artificial existentes, mas a capacidade de integrar, especializar, avaliar e coordenar diferentes técnicas de IA para resolver um problema real.**
+
+---
+
+**FIM DO PLANEJAMENTO TÉCNICO E CIENTÍFICO**
+
+**AFYA | UNIMA Maceió — Inteligência Artificial Aplicada**
