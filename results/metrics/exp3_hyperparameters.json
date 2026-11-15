@@ -1,0 +1,46 @@
+[
+  {
+    "config_name": "Config A (LR=0.01, Head=(32,), alpha=0.01)",
+    "learning_rate": 0.01,
+    "hidden_layers": "(32,)",
+    "alpha": 0.01,
+    "val_accuracy": 1.0,
+    "val_f1_macro": 1.0,
+    "test_accuracy": 1.0,
+    "test_f1_macro": 1.0,
+    "training_time_sec": 0.3086
+  },
+  {
+    "config_name": "Config B (LR=0.001, Head=(64, 32), alpha=0.001) [Padrão]",
+    "learning_rate": 0.001,
+    "hidden_layers": "(64, 32)",
+    "alpha": 0.001,
+    "val_accuracy": 1.0,
+    "val_f1_macro": 1.0,
+    "test_accuracy": 1.0,
+    "test_f1_macro": 1.0,
+    "training_time_sec": 0.3595
+  },
+  {
+    "config_name": "Config C (LR=0.0005, Head=(128, 64), alpha=0.0005)",
+    "learning_rate": 0.0005,
+    "hidden_layers": "(128, 64)",
+    "alpha": 0.0005,
+    "val_accuracy": 1.0,
+    "val_f1_macro": 1.0,
+    "test_accuracy": 1.0,
+    "test_f1_macro": 1.0,
+    "training_time_sec": 0.5326
+  },
+  {
+    "config_name": "Config D (LR=0.05, Alta Taxa / Instável)",
+    "learning_rate": 0.05,
+    "hidden_layers": "(32,)",
+    "alpha": 0.1,
+    "val_accuracy": 0.9778,
+    "val_f1_macro": 0.9777,
+    "test_accuracy": 0.9778,
+    "test_f1_macro": 0.9777,
+    "training_time_sec": 0.2242
+  }
+]

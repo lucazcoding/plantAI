@@ -1,0 +1,80 @@
+{
+  "experiment_id": "exp6_generalization_plantdoc",
+  "model_name": "Exp 6 — Avaliação de Generalização em Campo (Estilo PlantDoc)",
+  "dataset_name": "External Field-Condition Dataset (Ruído de Fundo e Iluminação)",
+  "num_samples": 27,
+  "training_time_sec": 0.0,
+  "accuracy": 0.4444,
+  "precision_macro": 0.4129,
+  "recall_macro": 0.4583,
+  "f1_macro": 0.3528,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      1,
+      0,
+      0,
+      3,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      2,
+      2,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      4,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      3
+    ]
+  ],
+  "top_errors": [
+    "3x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+    "3x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
+    "2x 'Tomato___Healthy' classificada como 'Potato___Late_blight'",
+    "2x 'Tomato___Healthy' classificada como 'Potato___Early_blight'",
+    "1x 'Tomato___Late_blight' classificada como 'Potato___Early_blight'"
+  ],
+  "extra_metadata": {
+    "controlled_plantvillage_acc": 1.0,
+    "field_plantdoc_acc": 0.4444444444444444
+  }
+}
