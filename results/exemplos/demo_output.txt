@@ -1,0 +1,211 @@
+==============================================================================
+  PLANTAI — DEMONSTRAÇÃO COM MODELOS TREINADOS EM DADOS REAIS
+==============================================================================
+Visão : StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)
+PLN   : TF-IDF + logistic_regression | CV 5-fold em 180 textos: acc=80.56%, F1=80.58%
+
+##############################################################################
+# 1. Concordância (imagem real + relato correto + pergunta de tratamento)
+# Imagem  : plantvillage_Tomato_Late_blight.jpg
+# Mensagem: As folhas do tomateiro estão com manchas grandes encharcadas e mofo branco embaixo. Como tratar?
+# Intenção da pergunta: treatment (conf=98%) | sintomas: 'As folhas do tomateiro estão com manchas grandes encharcadas e mofo branco embaixo.'
+##############################################################################
+==============================================================================
+  PLANTAI - RELATÓRIO DE DIAGNÓSTICO MULTIAGENTE
+==============================================================================
+Status da Decisão    : CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS
+Regra Acionada       : R03_EXACT_CONCORDANCE_BOOST
+Modo de Operação     : integrated
+Classe Identificada  : Tomato___Late_blight
+Cultura / Doença     : Tomate (Solanum lycopersicum) — Requeima (Mela)
+Agente Etiológico    : Phytophthora infestans
+Confiança Consolidada: 98.73%
+------------------------------------------------------------------------------
+[1] SAÍDAS DOS AGENTES ESPECIALISTAS (CONTRATO PADRONIZADO):
+  • VisionAgent (MobileNetV2): Top-1='Tomato___Late_blight' (conf=100.00%) | Top-K=[Tomato___Late_blight (100.0%), Tomato___Early_blight (0.0%), Potato___Late_blight (0.0%)]
+    Qualidade Visual: válida=True | brilho=105.7 | nitidez=1116.77
+  • NLPAgent (TF-IDF + ML)   : Top-1='Tomato___Late_blight' (conf=95.12%) | Top-K=[Tomato___Late_blight (95.1%), Tomato___Early_blight (2.1%), Potato___Late_blight (1.6%)]
+    Sintomas Extraídos: ['lesoes_encharcadas', 'mofo_esbranquicado'] | Cultura citada: ['Tomato']
+------------------------------------------------------------------------------
+[2] HIPÓTESES CONSIDERADAS PELO COORDENADOR:
+  - Tomato___Late_blight (confiança=98.73%, origem=vision+nlp)
+------------------------------------------------------------------------------
+[3] EVIDÊNCIAS UTILIZADAS NA TOMADA DE DECISÃO:
+  ✓ Concordância exata entre agentes: Visão ('Tomato___Late_blight', 100.00%) e PLN ('Tomato___Late_blight', 95.12%) convergiram para o mesmo diagnóstico.
+  ✓ Confiança consolidada elevada para 98.73% por fusão de múltiplas evidências.
+  ✓ Sintomas textuais identificados: ['lesoes_encharcadas', 'mofo_esbranquicado'].
+------------------------------------------------------------------------------
+[5] RECOMENDAÇÕES TÉCNICAS GERAIS:
+  -> Doença de rápida progressão em condições frias e úmidas. Isolar focos iniciais, reduzir molhamento foliar prolongado e buscar assistência agronômica imediata.
+------------------------------------------------------------------------------
+  AVISO CIENTÍFICO E AGRONÔMICO: Este resultado corresponde a uma predição computacional experimental e NÃO substitui o diagnóstico presencial de um engenheiro agrônomo.
+==============================================================================
+
+RESPOSTA AO USUÁRIO:
+  Diagnóstico mais provável: Requeima (Mela) (Tomate (Solanum lycopersicum)), confiança 99% [CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS]. Doença de rápida progressão em condições frias e úmidas. Isolar focos iniciais, reduzir molhamento foliar prolongado e buscar assistência agronômica imediata.
+
+##############################################################################
+# 2. Concordância em outra cultura (pergunta sobre gravidade)
+# Imagem  : plantvillage_Corn_maize_Common_rust.jpg
+# Mensagem: Pústulas marrom-avermelhadas salientes que soltam pó de ferrugem nas folhas do milho. Isso é grave?
+# Intenção da pergunta: severity (conf=96%) | sintomas: 'Pústulas marrom-avermelhadas salientes que soltam pó de ferrugem nas folhas do milho.'
+##############################################################################
+==============================================================================
+  PLANTAI - RELATÓRIO DE DIAGNÓSTICO MULTIAGENTE
+==============================================================================
+Status da Decisão    : CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS
+Regra Acionada       : R03_EXACT_CONCORDANCE_BOOST
+Modo de Operação     : integrated
+Classe Identificada  : Corn_(maize)___Common_rust_
+Cultura / Doença     : Milho (Zea mays) — Ferrugem-comum do Milho
+Agente Etiológico    : Puccinia sorghi
+Confiança Consolidada: 99.00%
+------------------------------------------------------------------------------
+[1] SAÍDAS DOS AGENTES ESPECIALISTAS (CONTRATO PADRONIZADO):
+  • VisionAgent (MobileNetV2): Top-1='Corn_(maize)___Common_rust_' (conf=100.00%) | Top-K=[Corn_(maize)___Common_rust_ (100.0%), Potato___Early_blight (0.0%), Tomato___healthy (0.0%)]
+    Qualidade Visual: válida=True | brilho=94.4 | nitidez=739.41
+  • NLPAgent (TF-IDF + ML)   : Top-1='Corn_(maize)___Common_rust_' (conf=99.48%) | Top-K=[Corn_(maize)___Common_rust_ (99.5%), Tomato___Late_blight (0.1%), Potato___Late_blight (0.1%)]
+    Sintomas Extraídos: ['pustulas_ferruginosas'] | Cultura citada: ['Corn_(maize)']
+------------------------------------------------------------------------------
+[2] HIPÓTESES CONSIDERADAS PELO COORDENADOR:
+  - Corn_(maize)___Common_rust_ (confiança=99.00%, origem=vision+nlp)
+------------------------------------------------------------------------------
+[3] EVIDÊNCIAS UTILIZADAS NA TOMADA DE DECISÃO:
+  ✓ Concordância exata entre agentes: Visão ('Corn_(maize)___Common_rust_', 100.00%) e PLN ('Corn_(maize)___Common_rust_', 99.48%) convergiram para o mesmo diagnóstico.
+  ✓ Confiança consolidada elevada para 99.00% por fusão de múltiplas evidências.
+  ✓ Sintomas textuais identificados: ['pustulas_ferruginosas'].
+------------------------------------------------------------------------------
+[5] RECOMENDAÇÕES TÉCNICAS GERAIS:
+  -> Priorizar híbridos resistentes em plantios futuros, monitorar a evolução das pústulas antes do pendoamento e consultar recomendação agronômica local.
+------------------------------------------------------------------------------
+  AVISO CIENTÍFICO E AGRONÔMICO: Este resultado corresponde a uma predição computacional experimental e NÃO substitui o diagnóstico presencial de um engenheiro agrônomo.
+==============================================================================
+
+RESPOSTA AO USUÁRIO:
+  Diagnóstico mais provável: Ferrugem-comum do Milho (Milho (Zea mays)), confiança 99% [CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS]. Gravidade geralmente baixa a moderada; as perdas são maiores quando há infecção precoce e severa em híbridos suscetíveis.
+
+##############################################################################
+# 3. Divergência: relato (milho) contradiz a foto (tomate saudável)
+# Imagem  : plantvillage_Tomato_healthy.jpg
+# Mensagem: Folhas de milho cobertas por pústulas marrom-avermelhadas cor de ferrugem. Qual doença é essa?
+# Intenção da pergunta: diagnose (conf=98%) | sintomas: 'Folhas de milho cobertas por pústulas marrom-avermelhadas cor de ferrugem.'
+##############################################################################
+==============================================================================
+  PLANTAI - RELATÓRIO DE DIAGNÓSTICO MULTIAGENTE
+==============================================================================
+Status da Decisão    : DIVERGENCIA_DETECTADA
+Regra Acionada       : R05_EXPLICIT_AGENT_DIVERGENCE
+Modo de Operação     : integrated
+Classe Identificada  : INCONCLUSIVO / REQUER REVISÃO
+Cultura / Doença     : Não determinado — Diagnóstico inconclusivo / requer revisão
+Agente Etiológico    : Não determinado
+Confiança Consolidada: 100.00%
+------------------------------------------------------------------------------
+[1] SAÍDAS DOS AGENTES ESPECIALISTAS (CONTRATO PADRONIZADO):
+  • VisionAgent (MobileNetV2): Top-1='Tomato___healthy' (conf=100.00%) | Top-K=[Tomato___healthy (100.0%), Potato___Early_blight (0.0%), Tomato___Early_blight (0.0%)]
+    Qualidade Visual: válida=True | brilho=127.81 | nitidez=2311.0
+  • NLPAgent (TF-IDF + ML)   : Top-1='Corn_(maize)___Common_rust_' (conf=99.27%) | Top-K=[Corn_(maize)___Common_rust_ (99.3%), Tomato___Late_blight (0.1%), Potato___Late_blight (0.1%)]
+    Sintomas Extraídos: ['pustulas_ferruginosas'] | Cultura citada: ['Corn_(maize)']
+------------------------------------------------------------------------------
+[2] HIPÓTESES CONSIDERADAS PELO COORDENADOR:
+  - Tomato___healthy (confiança=100.00%, origem=vision)
+  - Corn_(maize)___Common_rust_ (confiança=99.27%, origem=nlp)
+------------------------------------------------------------------------------
+[3] EVIDÊNCIAS UTILIZADAS NA TOMADA DE DECISÃO:
+  ✓ Conflito explícito entre especialistas: Agente Visual previu 'Tomato___healthy' (confiança=100.00%), enquanto Agente de PLN previu 'Corn_(maize)___Common_rust_' (confiança=99.27%).
+  ✓ Sintomas textuais extraídos (['pustulas_ferruginosas']) divergem do padrão visual dominante na imagem.
+------------------------------------------------------------------------------
+[4] ALERTAS DE INCERTEZA E DIVERGÊNCIA:
+  ! DIVERGÊNCIA DETECTADA: Os modelos de Visão Computacional e PLN apontam para diagnósticos conflitantes. Por rigor científico, o sistema NÃO oculta essa contradição e não emite um laudo único automático.
+------------------------------------------------------------------------------
+[5] RECOMENDAÇÕES TÉCNICAS GERAIS:
+  -> 1. Verifique se a fotografia enviada corresponde à mesma folha cujos sintomas foram descritos.
+  -> 2. Envie uma nova foto focando na face inferior e superior da folha.
+  -> 3. Solicite revisão técnica presencial de um engenheiro agrônomo considerando ambas as hipóteses.
+------------------------------------------------------------------------------
+  AVISO CIENTÍFICO E AGRONÔMICO: Este resultado corresponde a uma predição computacional experimental e NÃO substitui o diagnóstico presencial de um engenheiro agrônomo.
+==============================================================================
+
+RESPOSTA AO USUÁRIO:
+  Não há evidência suficiente para responder com segurança. DIVERGÊNCIA DETECTADA: Os modelos de Visão Computacional e PLN apontam para diagnósticos conflitantes. Por rigor científico, o sistema NÃO oculta essa contradição e não emite um laudo único automático. Envie uma foto nítida e descreva os sintomas observados.
+
+##############################################################################
+# 4. Somente imagem (sem relato), pergunta de prevenção
+# Imagem  : plantvillage_Potato_Early_blight.jpg
+# Mensagem: Como evitar que isso volte?
+# Intenção da pergunta: prevention (conf=96%) | sintomas: ''
+##############################################################################
+==============================================================================
+  PLANTAI - RELATÓRIO DE DIAGNÓSTICO MULTIAGENTE
+==============================================================================
+Status da Decisão    : DIAGNOSTICO_SOMENTE_VISUAL
+Regra Acionada       : R02_VISION_ONLY_HIGH_CONFIDENCE
+Modo de Operação     : vision_only
+Classe Identificada  : Potato___Early_blight
+Cultura / Doença     : Batata (Solanum tuberosum) — Pinta-preta da Batateira
+Agente Etiológico    : Alternaria solani
+Confiança Consolidada: 99.98%
+------------------------------------------------------------------------------
+[1] SAÍDAS DOS AGENTES ESPECIALISTAS (CONTRATO PADRONIZADO):
+  • VisionAgent (MobileNetV2): Top-1='Potato___Early_blight' (conf=99.98%) | Top-K=[Potato___Early_blight (100.0%), Potato___Late_blight (0.0%), Corn_(maize)___Common_rust_ (0.0%)]
+    Qualidade Visual: válida=True | brilho=140.88 | nitidez=1596.0
+  • NLPAgent (TF-IDF + ML)   : Sem descrição textual informada.
+------------------------------------------------------------------------------
+[2] HIPÓTESES CONSIDERADAS PELO COORDENADOR:
+  - Potato___Early_blight (confiança=99.98%, origem=vision)
+------------------------------------------------------------------------------
+[3] EVIDÊNCIAS UTILIZADAS NA TOMADA DE DECISÃO:
+  ✓ Modo Somente Visual: MobileNetV2 classificou 'Potato___Early_blight' com confiança 99.98% (>= limiar 75.00%).
+  ✓ Nenhuma descrição textual de sintomas foi fornecida pelo usuário.
+------------------------------------------------------------------------------
+[4] ALERTAS DE INCERTEZA E DIVERGÊNCIA:
+  ! Análise baseada exclusivamente na imagem. A adição de descrição textual dos sintomas permite validação cruzada pelo módulo de PLN.
+------------------------------------------------------------------------------
+[5] RECOMENDAÇÕES TÉCNICAS GERAIS:
+  -> Realizar rotação de culturas, manter nutrição equilibrada (especialmente potássio e nitrogênio), eliminar restos culturais e avaliar manejo técnico especializado.
+------------------------------------------------------------------------------
+  AVISO CIENTÍFICO E AGRONÔMICO: Este resultado corresponde a uma predição computacional experimental e NÃO substitui o diagnóstico presencial de um engenheiro agrônomo.
+==============================================================================
+
+RESPOSTA AO USUÁRIO:
+  Diagnóstico mais provável: Pinta-preta da Batateira (Batata (Solanum tuberosum)), confiança 100% [DIAGNOSTICO_SOMENTE_VISUAL]. Faça rotação de culturas, mantenha nutrição equilibrada (nitrogênio e potássio), use tubérculos-semente sadios e elimine restos culturais.
+
+##############################################################################
+# 5. Foto de campo (PlantDoc, fundo não controlado) + relato + pergunta de confirmação
+# Imagem  : plantdoc_Tomato_Early_blight.jpg
+# Mensagem: Folhas de baixo com manchas marrons em anéis tipo alvo e amarelando. Será que é pinta-preta?
+# Intenção da pergunta: confirm (conf=97%) | sintomas: 'Folhas de baixo com manchas marrons em anéis tipo alvo e amarelando.'
+##############################################################################
+==============================================================================
+  PLANTAI - RELATÓRIO DE DIAGNÓSTICO MULTIAGENTE
+==============================================================================
+Status da Decisão    : CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS
+Regra Acionada       : R03_EXACT_CONCORDANCE_BOOST
+Modo de Operação     : integrated
+Classe Identificada  : Tomato___Early_blight
+Cultura / Doença     : Tomate (Solanum lycopersicum) — Pinta-preta (Alternariose)
+Agente Etiológico    : Alternaria solani
+Confiança Consolidada: 90.98%
+------------------------------------------------------------------------------
+[1] SAÍDAS DOS AGENTES ESPECIALISTAS (CONTRATO PADRONIZADO):
+  • VisionAgent (MobileNetV2): Top-1='Tomato___Early_blight' (conf=99.54%) | Top-K=[Tomato___Early_blight (99.5%), Potato___Early_blight (0.4%), Corn_(maize)___Common_rust_ (0.0%)]
+    Qualidade Visual: válida=True | brilho=156.57 | nitidez=140.87
+  • NLPAgent (TF-IDF + ML)   : Top-1='Tomato___Early_blight' (conf=66.20%) | Top-K=[Tomato___Early_blight (66.2%), Potato___Early_blight (27.3%), Tomato___Late_blight (1.8%)]
+    Sintomas Extraídos: ['aneis_concentricos', 'necrose_foliar'] | Cultura citada: não especificada
+------------------------------------------------------------------------------
+[2] HIPÓTESES CONSIDERADAS PELO COORDENADOR:
+  - Tomato___Early_blight (confiança=90.98%, origem=vision+nlp)
+------------------------------------------------------------------------------
+[3] EVIDÊNCIAS UTILIZADAS NA TOMADA DE DECISÃO:
+  ✓ Concordância exata entre agentes: Visão ('Tomato___Early_blight', 99.54%) e PLN ('Tomato___Early_blight', 66.20%) convergiram para o mesmo diagnóstico.
+  ✓ Confiança consolidada elevada para 90.98% por fusão de múltiplas evidências.
+  ✓ Sintomas textuais identificados: ['aneis_concentricos', 'necrose_foliar'].
+------------------------------------------------------------------------------
+[5] RECOMENDAÇÕES TÉCNICAS GERAIS:
+  -> Remover folhas baixeiras severamente atacadas, evitar irrigação por aspersão no final da tarde, melhorar a ventilação entre plantas e consultar um engenheiro agrônomo para manejo fungicida registrado.
+------------------------------------------------------------------------------
+  AVISO CIENTÍFICO E AGRONÔMICO: Este resultado corresponde a uma predição computacional experimental e NÃO substitui o diagnóstico presencial de um engenheiro agrônomo.
+==============================================================================
+
+RESPOSTA AO USUÁRIO:
+  Diagnóstico mais provável: Pinta-preta (Alternariose) (Tomate (Solanum lycopersicum)), confiança 91% [CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS]. Com base nas evidências disponíveis, o resultado indica Pinta-preta (Alternariose) (Tomate (Solanum lycopersicum)).

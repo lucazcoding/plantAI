@@ -1,52 +1,60 @@
 {
   "experiment_id": "exp2_transfer_learning",
-  "model_name": "Exp 2 — MobileNetV2 Transfer Learning Head (30 Descritores)",
-  "dataset_name": "PlantVillage (Teste 15%)",
-  "num_samples": 90,
-  "training_time_sec": 0.4234,
-  "accuracy": 1.0,
-  "precision_macro": 1.0,
-  "recall_macro": 1.0,
-  "f1_macro": 1.0,
+  "model_name": "Exp 2B — MobileNetV2 (ImageNet) + cabeça [LogReg C=0.1 + aumento de dados (2 cópias)]",
+  "dataset_name": "PlantVillage (teste)",
+  "num_samples": 1097,
+  "training_time_sec": 0.573,
+  "accuracy": 0.9763,
+  "precision_macro": 0.9777,
+  "recall_macro": 0.973,
+  "f1_macro": 0.9752,
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
-    "Tomato___Healthy",
+    "Tomato___healthy",
     "Potato___Early_blight",
     "Potato___Late_blight",
     "Corn_(maize)___Common_rust_"
   ],
   "confusion_matrix": [
     [
-      15,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      15,
-      0,
-      0,
+      132,
+      6,
+      1,
+      2,
       0,
       0
     ],
     [
+      3,
+      266,
       0,
       0,
-      15,
-      0,
-      0,
+      3,
       0
     ],
     [
       0,
       0,
+      226,
       0,
-      15,
       0,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      143,
+      0,
+      0
+    ],
+    [
+      2,
+      8,
+      0,
+      0,
+      134,
       0
     ],
     [
@@ -54,92 +62,24 @@
       0,
       0,
       0,
-      15,
-      0
-    ],
-    [
       0,
-      0,
-      0,
-      0,
-      0,
-      15
+      170
     ]
   ],
   "top_errors": [
-    "Nenhum erro de classificação observado na amostra avaliada."
+    "8x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "6x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'",
+    "3x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'",
+    "3x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+    "2x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'"
   ],
   "extra_metadata": {
-    "features_used": 30,
-    "epochs": 20,
-    "learning_rate": 0.001,
-    "history": {
-      "train_acc": [
-        0.9643,
-        0.9976,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0
-      ],
-      "val_acc": [
-        0.9889,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0
-      ],
-      "train_loss": [
-        0.8655,
-        0.2239,
-        0.0278,
-        0.0027,
-        0.0006,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004,
-        0.0004
-      ]
-    }
+    "features_used": 1984,
+    "feature_set": "multiscale",
+    "selected_config": "LogReg C=0.1 + aumento de dados (2 cópias)",
+    "accuracy_ci95": [
+      0.9662716499544212,
+      0.9845031905195989
+    ]
   }
 }

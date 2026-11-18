@@ -1,0 +1,83 @@
+{
+  "experiment_id": "exp6_domain_adaptation",
+  "model_name": "Exp 6B — Adaptação: PlantVillage + 50% do PlantDoc",
+  "dataset_name": "PlantDoc (50% reservado, N=293)",
+  "num_samples": 293,
+  "training_time_sec": 0.0,
+  "accuracy": 0.5666,
+  "precision_macro": 0.5671,
+  "recall_macro": 0.5699,
+  "f1_macro": 0.5638,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      24,
+      8,
+      0,
+      8,
+      3,
+      0
+    ],
+    [
+      12,
+      25,
+      4,
+      6,
+      7,
+      0
+    ],
+    [
+      2,
+      3,
+      22,
+      0,
+      4,
+      0
+    ],
+    [
+      18,
+      0,
+      3,
+      22,
+      12,
+      3
+    ],
+    [
+      9,
+      9,
+      2,
+      13,
+      16,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      57
+    ]
+  ],
+  "top_errors": [
+    "18x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
+    "13x 'Potato___Late_blight' classificada como 'Potato___Early_blight'",
+    "12x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'",
+    "12x 'Potato___Early_blight' classificada como 'Potato___Late_blight'",
+    "9x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'"
+  ],
+  "extra_metadata": {
+    "same_subset_without_adaptation_acc": 0.4539249146757679,
+    "accuracy_ci95": [
+      0.5119453924914675,
+      0.621160409556314
+    ]
+  }
+}

@@ -1,8 +1,409 @@
 {
-  "vision_isolated_accuracy": 0.6666666666666666,
-  "vision_isolated_f1_macro": 0.7103758169934641,
-  "nlp_isolated_cv_accuracy": 0.95,
-  "nlp_isolated_cv_f1_macro": 0.9499582289055973,
-  "multiagent_integrated_accuracy": 0.95,
-  "multiagent_integrated_f1_macro": 0.948849104859335
+  "nlp_source": "predições fora-da-dobra (5-fold) do TF-IDF+LR; cada texto nunca foi visto pelo modelo que o classificou",
+  "plantvillage_test": {
+    "headline_p0": {
+      "p_wrong_text": 0.0,
+      "n": 1097,
+      "statuses_integrated": {
+        "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 959,
+        "DIVERGENCIA_DETECTADA": 122,
+        "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 10,
+        "QUALIDADE_IMAGEM_INSUFICIENTE": 6
+      },
+      "vision_only": {
+        "accuracy": 0.9526,
+        "ci95": [
+          0.9389,
+          0.9644
+        ],
+        "f1_macro": 0.9692,
+        "coverage": 0.9644,
+        "accuracy_when_answered": 0.9877
+      },
+      "nlp_only": {
+        "accuracy": 0.763,
+        "ci95": [
+          0.7375,
+          0.7885
+        ],
+        "f1_macro": 0.8088,
+        "coverage": 0.876,
+        "accuracy_when_answered": 0.871
+      },
+      "integrated": {
+        "accuracy": 0.8769,
+        "ci95": [
+          0.8569,
+          0.8961
+        ],
+        "f1_macro": 0.9251,
+        "coverage": 0.8833,
+        "accuracy_when_answered": 0.9928
+      }
+    },
+    "sensitivity_to_wrong_user_text": [
+      {
+        "p_wrong_text": 0.1,
+        "n": 1097,
+        "statuses_integrated": {
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 864,
+          "DIVERGENCIA_DETECTADA": 216,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 11,
+          "QUALIDADE_IMAGEM_INSUFICIENTE": 6
+        },
+        "vision_only": {
+          "accuracy": 0.9526,
+          "ci95": [
+            0.9389,
+            0.9644
+          ],
+          "f1_macro": 0.9692,
+          "coverage": 0.9644,
+          "accuracy_when_answered": 0.9877
+        },
+        "nlp_only": {
+          "accuracy": 0.6964,
+          "ci95": [
+            0.6691,
+            0.7229
+          ],
+          "f1_macro": 0.7338,
+          "coverage": 0.8851,
+          "accuracy_when_answered": 0.7868
+        },
+        "integrated": {
+          "accuracy": 0.7903,
+          "ci95": [
+            0.7657,
+            0.8141
+          ],
+          "f1_macro": 0.8741,
+          "coverage": 0.7976,
+          "accuracy_when_answered": 0.9909
+        }
+      },
+      {
+        "p_wrong_text": 0.2,
+        "n": 1097,
+        "statuses_integrated": {
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 767,
+          "DIVERGENCIA_DETECTADA": 317,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 7,
+          "QUALIDADE_IMAGEM_INSUFICIENTE": 6
+        },
+        "vision_only": {
+          "accuracy": 0.9526,
+          "ci95": [
+            0.9389,
+            0.9644
+          ],
+          "f1_macro": 0.9692,
+          "coverage": 0.9644,
+          "accuracy_when_answered": 0.9877
+        },
+        "nlp_only": {
+          "accuracy": 0.598,
+          "ci95": [
+            0.5679,
+            0.6281
+          ],
+          "f1_macro": 0.6316,
+          "coverage": 0.8769,
+          "accuracy_when_answered": 0.6819
+        },
+        "integrated": {
+          "accuracy": 0.6983,
+          "ci95": [
+            0.6709,
+            0.7256
+          ],
+          "f1_macro": 0.8133,
+          "coverage": 0.7056,
+          "accuracy_when_answered": 0.9897
+        }
+      },
+      {
+        "p_wrong_text": 0.3,
+        "n": 1097,
+        "statuses_integrated": {
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 694,
+          "DIVERGENCIA_DETECTADA": 394,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 3,
+          "QUALIDADE_IMAGEM_INSUFICIENTE": 6
+        },
+        "vision_only": {
+          "accuracy": 0.9526,
+          "ci95": [
+            0.9389,
+            0.9644
+          ],
+          "f1_macro": 0.9692,
+          "coverage": 0.9644,
+          "accuracy_when_answered": 0.9877
+        },
+        "nlp_only": {
+          "accuracy": 0.546,
+          "ci95": [
+            0.5169,
+            0.5752
+          ],
+          "f1_macro": 0.5678,
+          "coverage": 0.8979,
+          "accuracy_when_answered": 0.6081
+        },
+        "integrated": {
+          "accuracy": 0.629,
+          "ci95": [
+            0.6007,
+            0.6563
+          ],
+          "f1_macro": 0.7639,
+          "coverage": 0.6354,
+          "accuracy_when_answered": 0.99
+        }
+      },
+      {
+        "p_wrong_text": 0.5,
+        "n": 1097,
+        "statuses_integrated": {
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 502,
+          "DIVERGENCIA_DETECTADA": 582,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 7,
+          "QUALIDADE_IMAGEM_INSUFICIENTE": 6
+        },
+        "vision_only": {
+          "accuracy": 0.9526,
+          "ci95": [
+            0.9389,
+            0.9644
+          ],
+          "f1_macro": 0.9692,
+          "coverage": 0.9644,
+          "accuracy_when_answered": 0.9877
+        },
+        "nlp_only": {
+          "accuracy": 0.3956,
+          "ci95": [
+            0.3674,
+            0.4257
+          ],
+          "f1_macro": 0.4123,
+          "coverage": 0.8879,
+          "accuracy_when_answered": 0.4456
+        },
+        "integrated": {
+          "accuracy": 0.4585,
+          "ci95": [
+            0.4303,
+            0.4886
+          ],
+          "f1_macro": 0.6216,
+          "coverage": 0.464,
+          "accuracy_when_answered": 0.9882
+        }
+      }
+    ]
+  },
+  "plantdoc_field": {
+    "headline_p0": {
+      "p_wrong_text": 0.0,
+      "n": 586,
+      "statuses_integrated": {
+        "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 260,
+        "DIVERGENCIA_DETECTADA": 301,
+        "INCONCLUSIVO_BAIXA_CONFIANCA": 1,
+        "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 24
+      },
+      "vision_only": {
+        "accuracy": 0.3993,
+        "ci95": [
+          0.3601,
+          0.4386
+        ],
+        "f1_macro": 0.3548,
+        "coverage": 0.8379,
+        "accuracy_when_answered": 0.4766
+      },
+      "nlp_only": {
+        "accuracy": 0.7765,
+        "ci95": [
+          0.744,
+          0.8106
+        ],
+        "f1_macro": 0.8201,
+        "coverage": 0.8976,
+        "accuracy_when_answered": 0.865
+      },
+      "integrated": {
+        "accuracy": 0.4249,
+        "ci95": [
+          0.3823,
+          0.4642
+        ],
+        "f1_macro": 0.4797,
+        "coverage": 0.4846,
+        "accuracy_when_answered": 0.8768
+      }
+    },
+    "sensitivity_to_wrong_user_text": [
+      {
+        "p_wrong_text": 0.1,
+        "n": 586,
+        "statuses_integrated": {
+          "DIVERGENCIA_DETECTADA": 319,
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 246,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 21
+        },
+        "vision_only": {
+          "accuracy": 0.3993,
+          "ci95": [
+            0.3601,
+            0.4386
+          ],
+          "f1_macro": 0.3548,
+          "coverage": 0.8379,
+          "accuracy_when_answered": 0.4766
+        },
+        "nlp_only": {
+          "accuracy": 0.6809,
+          "ci95": [
+            0.6399,
+            0.7201
+          ],
+          "f1_macro": 0.7173,
+          "coverage": 0.8942,
+          "accuracy_when_answered": 0.7615
+        },
+        "integrated": {
+          "accuracy": 0.3874,
+          "ci95": [
+            0.3481,
+            0.4249
+          ],
+          "f1_macro": 0.4609,
+          "coverage": 0.4556,
+          "accuracy_when_answered": 0.8502
+        }
+      },
+      {
+        "p_wrong_text": 0.2,
+        "n": 586,
+        "statuses_integrated": {
+          "DIVERGENCIA_DETECTADA": 320,
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 243,
+          "INCONCLUSIVO_BAIXA_CONFIANCA": 1,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 22
+        },
+        "vision_only": {
+          "accuracy": 0.3993,
+          "ci95": [
+            0.3601,
+            0.4386
+          ],
+          "f1_macro": 0.3548,
+          "coverage": 0.8379,
+          "accuracy_when_answered": 0.4766
+        },
+        "nlp_only": {
+          "accuracy": 0.6058,
+          "ci95": [
+            0.5666,
+            0.6451
+          ],
+          "f1_macro": 0.6402,
+          "coverage": 0.884,
+          "accuracy_when_answered": 0.6853
+        },
+        "integrated": {
+          "accuracy": 0.3532,
+          "ci95": [
+            0.314,
+            0.3942
+          ],
+          "f1_macro": 0.4131,
+          "coverage": 0.4522,
+          "accuracy_when_answered": 0.7811
+        }
+      },
+      {
+        "p_wrong_text": 0.3,
+        "n": 586,
+        "statuses_integrated": {
+          "DIVERGENCIA_DETECTADA": 349,
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 209,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 27,
+          "INCONCLUSIVO_BAIXA_CONFIANCA": 1
+        },
+        "vision_only": {
+          "accuracy": 0.3993,
+          "ci95": [
+            0.3601,
+            0.4386
+          ],
+          "f1_macro": 0.3548,
+          "coverage": 0.8379,
+          "accuracy_when_answered": 0.4766
+        },
+        "nlp_only": {
+          "accuracy": 0.5478,
+          "ci95": [
+            0.5085,
+            0.587
+          ],
+          "f1_macro": 0.5741,
+          "coverage": 0.8993,
+          "accuracy_when_answered": 0.6091
+        },
+        "integrated": {
+          "accuracy": 0.3225,
+          "ci95": [
+            0.285,
+            0.3618
+          ],
+          "f1_macro": 0.3981,
+          "coverage": 0.4027,
+          "accuracy_when_answered": 0.8008
+        }
+      },
+      {
+        "p_wrong_text": 0.5,
+        "n": 586,
+        "statuses_integrated": {
+          "DIVERGENCIA_DETECTADA": 396,
+          "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS": 163,
+          "DESAMBIGUADO_POR_EVIDENCIA_TEXTUAL": 27
+        },
+        "vision_only": {
+          "accuracy": 0.3993,
+          "ci95": [
+            0.3601,
+            0.4386
+          ],
+          "f1_macro": 0.3548,
+          "coverage": 0.8379,
+          "accuracy_when_answered": 0.4766
+        },
+        "nlp_only": {
+          "accuracy": 0.3959,
+          "ci95": [
+            0.3567,
+            0.4352
+          ],
+          "f1_macro": 0.4129,
+          "coverage": 0.8908,
+          "accuracy_when_answered": 0.4444
+        },
+        "integrated": {
+          "accuracy": 0.2321,
+          "ci95": [
+            0.198,
+            0.2663
+          ],
+          "f1_macro": 0.3061,
+          "coverage": 0.3242,
+          "accuracy_when_answered": 0.7158
+        }
+      }
+    ]
+  }
 }

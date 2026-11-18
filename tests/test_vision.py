@@ -1,65 +1,64 @@
-"""Testes unitários do módulo de Visão Computacional (`ImageProcessor` e `VisionAgent`)."""
+"""Testes do módulo de Visão Computacional (ImageProcessor, MobileNetV2Embedder, VisionAgent) com imagens REAIS."""
 
 from __future__ import annotations
 
 import numpy as np
-from PIL import Image
+import pytest
 
 from src.agents.vision_agent import VisionAgent
+from src.vision.classifier import MobileNetV2Classifier, ModelNotTrainedError
+from src.vision.embedder import MULTISCALE_DIM, MobileNetV2Embedder
 from src.vision.image_processor import ImageProcessor
+from tests.helpers import dark_image, exemplo, flat_image
 
 
-def test_image_processor_valid_and_feature_extraction() -> None:
-    """Verifica redimensionamento 224x224, normalização [0, 1] e extração de 30 atributos visuais."""
-    processor = ImageProcessor()
-    raw_img = ImageProcessor.create_synthetic_leaf_image("Tomato___Early_blight", size=(300, 260))
-
-    processed = processor.process(raw_img)
-    assert processed.is_valid is True
-    assert processed.is_corrupted is False
-    assert processed.original_size == (300, 260)
-    assert processed.tensor is not None
-    assert processed.tensor.shape == (1, 224, 224, 3)
-    assert 0.0 <= float(np.min(processed.tensor)) <= float(np.max(processed.tensor)) <= 1.0
-    assert processed.feature_vector is not None
-    assert processed.feature_vector.shape == (30,)
-    assert "necrotic_lesion_ratio" in processed.visual_features
-    assert len(processed.detected_visual_patterns) >= 1
+def test_processor_real_image_shape_range_and_features() -> None:
+    res = ImageProcessor().process(exemplo("plantvillage_Tomato_Early_blight.jpg"))
+    assert res.is_valid and not res.is_corrupted
+    assert res.tensor is not None and res.tensor.shape == (1, 224, 224, 3)
+    assert 0.0 <= float(res.tensor.min()) and float(res.tensor.max()) <= 1.0
+    assert res.feature_vector is not None and res.feature_vector.shape == (30,)
 
 
-def test_image_processor_detects_corrupted_dark_blurry_and_low_res() -> None:
-    """Garante detecção de bytes corrompidos, imagem escura, imagem borrada e baixa resolução."""
-    processor = ImageProcessor()
-
-    corrupted = processor.process(b"invalid_image_bytes_stream")
-    assert corrupted.is_corrupted is True
-    assert corrupted.is_valid is False
-    assert corrupted.tensor is None
-
-    dark = processor.process(ImageProcessor.create_synthetic_leaf_image("dark"))
-    assert dark.is_too_dark is True
-    assert dark.is_valid is False
-
-    blurry = processor.process(ImageProcessor.create_synthetic_leaf_image("blurry"))
-    assert blurry.is_blurry is True
-    assert blurry.is_valid is False
-
-    tiny_pil = Image.fromarray(np.full((16, 16, 3), 120, dtype=np.uint8))
-    tiny_res = processor.process(tiny_pil)
-    assert tiny_res.is_valid is False
-    assert any("Resolução muito baixa" in msg for msg in tiny_res.quality_issues)
+def test_processor_quality_gates_and_corrupted_input() -> None:
+    proc = ImageProcessor()
+    assert proc.process(dark_image()).is_too_dark
+    assert proc.process(flat_image()).is_blurry
+    bad = proc.process(b"nao-e-uma-imagem")
+    assert bad.is_corrupted and not bad.is_valid
+    assert proc.process(None).is_corrupted
 
 
-def test_vision_agent_encapsulation_and_contract() -> None:
-    """Garante que o VisionAgent processa imagens e devolve o contrato padronizado."""
+def test_embedder_dimensions() -> None:
+    emb = MobileNetV2Embedder()
+    img = np.random.default_rng(1).integers(0, 255, (224, 224, 3), dtype=np.uint8)
+    assert emb.embed(img).shape == (1280,)
+    assert emb.embed_multiscale(img).shape == (MULTISCALE_DIM,)
+    with pytest.raises(ValueError):
+        emb.embed(img[:100])
+
+
+def test_untrained_classifier_refuses_to_invent_probabilities() -> None:
+    clf = MobileNetV2Classifier(weights_path=None)
+    tensor = ImageProcessor().process(exemplo("plantvillage_Tomato_healthy.jpg")).tensor
+    assert tensor is not None
+    with pytest.raises(ModelNotTrainedError):
+        clf.predict(tensor)
+
+
+def test_vision_agent_contract_and_correct_class_on_real_examples() -> None:
     agent = VisionAgent()
-    rust_leaf = ImageProcessor.create_synthetic_leaf_image("Corn_(maize)___Common_rust_")
-
-    output = agent.analyze(rust_leaf)
-    assert output["agent_type"] == "vision"
-    assert output["predicted_class"] == "Corn_(maize)___Common_rust_"
-    assert 0.0 <= output["confidence"] <= 1.0
-    assert len(output["top_k"]) == 3
-    assert output["metadata"]["image_valid"] is True
-    assert "visual_features" in output["metadata"]
-
+    expected = {
+        "plantvillage_Tomato_Early_blight.jpg": "Tomato___Early_blight",
+        "plantvillage_Tomato_Late_blight.jpg": "Tomato___Late_blight",
+        "plantvillage_Tomato_healthy.jpg": "Tomato___healthy",
+        "plantvillage_Potato_Early_blight.jpg": "Potato___Early_blight",
+        "plantvillage_Potato_Late_blight.jpg": "Potato___Late_blight",
+        "plantvillage_Corn_maize_Common_rust.jpg": "Corn_(maize)___Common_rust_",
+    }
+    hits = 0
+    for fname, cls in expected.items():
+        out = agent.analyze(exemplo(fname))
+        assert out["agent_type"] == "vision" and 0.0 <= out["confidence"] <= 1.0 and len(out["top_k"]) == 3
+        hits += out["predicted_class"] == cls
+    assert hits >= 5, f"apenas {hits}/6 exemplos reais classificados corretamente"

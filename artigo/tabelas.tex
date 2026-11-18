@@ -1,0 +1,30 @@
+% GERADO por scripts/make_report_assets.py
+\begin{table}[t]\caption{Modelos visuais no conjunto de teste do PlantVillage (N=1097). IC 95\% por bootstrap.}\label{tab:vis}\centering\small
+\begin{tabular}{lcc}\toprule Modelo & Acurácia (\%) & F1-macro (\%)\\\midrule
+Classe majoritária & 24,8 & 6,6\\
+6 estatísticas RGB + LogReg & 60,4 & 62,2\\
+30 descritores clássicos + MLP & 96,7 & 96,6\\
+MobileNetV2 (1280-d final) + LogReg & 95,1 & 95,0\\
+MobileNetV2 multiescala + cabeça (implantado) & 97,6 & 97,5\\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra).}\label{tab:nlp}\centering\small
+\begin{tabular}{lccc}\toprule Modelo & N & Acurácia (\%) & F1-macro (\%)\\\midrule
+TF-IDF + LogReg & 180 & 82,8 & 82,8\\
+TF-IDF + LinearSVC calibrado & 180 & 83,9 & 83,9\\
+Intenção da pergunta (LogReg) & 150 & 84,7 & 84,7\\\bottomrule\end{tabular}\end{table}
+\begin{table*}[t]\caption{Experimento 5 — ablação (texto correto). Acurácia estrita conta \textit{inconclusivo} como erro; cobertura = fração respondida; precisão = acurácia entre as respondidas.}\label{tab:abl}\centering\small
+\begin{tabular}{llccc}\toprule Conjunto & Modo & Acurácia estrita (\%) & Cobertura (\%) & Precisão se respondeu (\%)\\\midrule
+PlantVillage teste (N=1097) & Visão isolada & 95,3 & 96,4 & 98,8\\
+PlantVillage teste (N=1097) & PLN isolado & 76,3 & 87,6 & 87,1\\
+PlantVillage teste (N=1097) & Integrado (visão+PLN+regras) & 87,7 & 88,3 & 99,3\\
+\midrule
+PlantDoc campo (N=586) & Visão isolada & 39,9 & 83,8 & 47,7\\
+PlantDoc campo (N=586) & PLN isolado & 77,6 & 89,8 & 86,5\\
+PlantDoc campo (N=586) & Integrado (visão+PLN+regras) & 42,5 & 48,5 & 87,7\\
+\bottomrule\end{tabular}\end{table*}
+\begin{table}[t]\caption{Generalização de domínio (acurácia, \%).}\label{tab:dom}\centering\small
+\begin{tabular}{lc}\toprule Cenário & Acurácia\\\midrule
+PlantVillage, teste (N=1097) & 97,6\\
+PlantDoc todo (N=586) & 43,9\\
+PlantDoc 50\% (N=293), sem adapt. & 45,4\\
+PlantDoc 50\%, com adapt. & 56,7\\\bottomrule\end{tabular}\end{table}

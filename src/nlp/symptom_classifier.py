@@ -224,7 +224,6 @@ class SymptomClassifier:
     def predict(
         self,
         text_or_processed: str | ProcessedText,
-        mock_probabilities: dict[str, float] | None = None,
     ) -> AgentOutputDict:
         """Classifica a descrição textual de sintomas e retorna no contrato padronizado."""
         processed = (
@@ -233,64 +232,51 @@ class SymptomClassifier:
             else self.text_processor.process(text_or_processed)
         )
 
-        if mock_probabilities is not None:
-            total = sum(mock_probabilities.values())
-            if total <= 0:
-                raise ValueError("As probabilidades simuladas de PLN devem ter soma positiva.")
-            sorted_probs = sorted(
-                ((k, float(v) / total) for k, v in mock_probabilities.items()),
-                key=lambda item: item[1],
-                reverse=True,
+        if not self.is_trained or self.pipeline is None:
+            if DEFAULT_DATASET_PATH.exists():
+                self.train_from_csv(DEFAULT_DATASET_PATH, evaluate_cv=False)
+            else:
+                raise RuntimeError("SymptomClassifier não está treinado e o CSV padrão não foi encontrado.")
+
+        if processed.is_empty:
+            return validate_agent_output(
+                {
+                    "agent_type": "nlp",
+                    "predicted_class": "UNKNOWN",
+                    "confidence": 0.0,
+                    "top_k": [],
+                    "metadata": {
+                        **processed.to_metadata(),
+                        "model": f"TF-IDF + {self.algorithm}",
+                        "warning": "Texto vazio ou sem termos informativos.",
+                    },
+                }
             )
-            top_k_list = [(cls_name, round(prob, 4)) for cls_name, prob in sorted_probs[: self.top_k]]
-            predicted_class, top_confidence = top_k_list[0]
-            backend = "mock_scenario_override"
-        else:
-            if not self.is_trained or self.pipeline is None:
-                if DEFAULT_DATASET_PATH.exists():
-                    self.train_from_csv(DEFAULT_DATASET_PATH, evaluate_cv=False)
+
+        proba_vec = self.pipeline.predict_proba([processed.normalized_text])[0]
+        probs_by_class = {
+            cls_name: float(prob)
+            for cls_name, prob in zip(self.classes_, proba_vec, strict=False)
+        }
+
+        # Ajuste leve e auditável se o usuário nomeou explicitamente a cultura agrícola
+        # (ex: "tomate" vs "batata"), evitando que sintomas idênticos de pinta-preta
+        # ou requeima troquem a espécie explicitamente declarada pelo produtor.
+        if len(processed.detected_crops) == 1:
+            mentioned_crop = processed.detected_crops[0]
+            boosted: dict[str, float] = {}
+            for cls_name, prob in probs_by_class.items():
+                if cls_name.startswith(mentioned_crop):
+                    boosted[cls_name] = prob * 1.35
                 else:
-                    raise RuntimeError("SymptomClassifier não está treinado e o CSV padrão não foi encontrado.")
+                    boosted[cls_name] = prob * 0.75
+            norm_factor = sum(boosted.values()) or 1.0
+            probs_by_class = {k: v / norm_factor for k, v in boosted.items()}
 
-            if processed.is_empty:
-                return validate_agent_output(
-                    {
-                        "agent_type": "nlp",
-                        "predicted_class": "UNKNOWN",
-                        "confidence": 0.0,
-                        "top_k": [],
-                        "metadata": {
-                            **processed.to_metadata(),
-                            "model": f"TF-IDF + {self.algorithm}",
-                            "warning": "Texto vazio ou sem termos informativos.",
-                        },
-                    }
-                )
-
-            proba_vec = self.pipeline.predict_proba([processed.normalized_text])[0]
-            probs_by_class = {
-                cls_name: float(prob)
-                for cls_name, prob in zip(self.classes_, proba_vec, strict=False)
-            }
-
-            # Ajuste leve e auditável se o usuário nomeou explicitamente a cultura agrícola
-            # (ex: "tomate" vs "batata"), evitando que sintomas idênticos de pinta-preta
-            # ou requeima troquem a espécie explicitamente declarada pelo produtor.
-            if len(processed.detected_crops) == 1:
-                mentioned_crop = processed.detected_crops[0]
-                boosted: dict[str, float] = {}
-                for cls_name, prob in probs_by_class.items():
-                    if cls_name.startswith(mentioned_crop):
-                        boosted[cls_name] = prob * 1.35
-                    else:
-                        boosted[cls_name] = prob * 0.75
-                norm_factor = sum(boosted.values()) or 1.0
-                probs_by_class = {k: v / norm_factor for k, v in boosted.items()}
-
-            sorted_probs = sorted(probs_by_class.items(), key=lambda item: item[1], reverse=True)
-            top_k_list = [(cls_name, round(float(prob), 4)) for cls_name, prob in sorted_probs[: self.top_k]]
-            predicted_class, top_confidence = top_k_list[0]
-            backend = f"sklearn_tfidf_{self.algorithm}"
+        sorted_probs = sorted(probs_by_class.items(), key=lambda item: item[1], reverse=True)
+        top_k_list = [(cls_name, round(float(prob), 4)) for cls_name, prob in sorted_probs[: self.top_k]]
+        predicted_class, top_confidence = top_k_list[0]
+        backend = f"sklearn_tfidf_{self.algorithm}"
 
         metadata = {
             **processed.to_metadata(),

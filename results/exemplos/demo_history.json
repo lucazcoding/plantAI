@@ -1,0 +1,594 @@
+[
+  {
+    "status": "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS",
+    "final_class": "Tomato___Late_blight",
+    "disease_info": {
+      "crop": "Tomate (Solanum lycopersicum)",
+      "common_name": "Requeima (Mela)",
+      "pathogen": "Phytophthora infestans",
+      "recommendation": "Doença de rápida progressão em condições frias e úmidas. Isolar focos iniciais, reduzir molhamento foliar prolongado e buscar assistência agronômica imediata."
+    },
+    "combined_confidence": 0.9873,
+    "operation_mode": "integrated",
+    "rule_triggered": "R03_EXACT_CONCORDANCE_BOOST",
+    "evidences": [
+      "Concordância exata entre agentes: Visão ('Tomato___Late_blight', 100.00%) e PLN ('Tomato___Late_blight', 95.12%) convergiram para o mesmo diagnóstico.",
+      "Confiança consolidada elevada para 98.73% por fusão de múltiplas evidências.",
+      "Sintomas textuais identificados: ['lesoes_encharcadas', 'mofo_esbranquicado']."
+    ],
+    "warnings": [],
+    "recommendations": [
+      "Doença de rápida progressão em condições frias e úmidas. Isolar focos iniciais, reduzir molhamento foliar prolongado e buscar assistência agronômica imediata."
+    ],
+    "candidate_hypotheses": [
+      {
+        "class": "Tomato___Late_blight",
+        "confidence": 0.9873,
+        "source": "vision+nlp"
+      }
+    ],
+    "vision_output": {
+      "agent_type": "vision",
+      "predicted_class": "Tomato___Late_blight",
+      "confidence": 1.0,
+      "top_k": [
+        [
+          "Tomato___Late_blight",
+          1.0
+        ],
+        [
+          "Tomato___Early_blight",
+          0.0
+        ],
+        [
+          "Potato___Late_blight",
+          0.0
+        ]
+      ],
+      "metadata": {
+        "architecture": "MobileNetV2 (ImageNet, congelado) + cabeça treinada",
+        "input_resolution": "224x224",
+        "inference_backend": "tflite_mobilenetv2_embeddings+sklearn_head",
+        "head": "StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)",
+        "image_valid": true,
+        "is_corrupted": false,
+        "is_too_dark": false,
+        "is_too_bright": false,
+        "is_blurry": false,
+        "brightness": 105.7,
+        "blur_score": 1116.77,
+        "original_size": [
+          256,
+          256
+        ],
+        "target_size": [
+          224,
+          224
+        ],
+        "visual_features": {
+          "mean_r": 0.4356,
+          "mean_g": 0.4186,
+          "mean_b": 0.3381,
+          "std_r": 0.2032,
+          "std_g": 0.1775,
+          "std_b": 0.1962,
+          "excess_green_index": 0.0635,
+          "green_healthy_ratio": 0.2432,
+          "necrotic_lesion_ratio": 0.1892,
+          "chlorotic_halo_ratio": 0.0,
+          "rust_pustule_ratio": 0.0003,
+          "water_soaked_ratio": 0.0349,
+          "texture_gradient_energy": 0.0357,
+          "center_vs_border_diff": 0.0789
+        },
+        "detected_visual_patterns": [
+          "padrao_foliar_geral"
+        ],
+        "quality_issues": [],
+        "ml_agent": "MLAgent"
+      }
+    },
+    "nlp_output": {
+      "agent_type": "nlp",
+      "predicted_class": "Tomato___Late_blight",
+      "confidence": 0.9512,
+      "top_k": [
+        [
+          "Tomato___Late_blight",
+          0.9512
+        ],
+        [
+          "Tomato___Early_blight",
+          0.0215
+        ],
+        [
+          "Potato___Late_blight",
+          0.0157
+        ]
+      ],
+      "metadata": {
+        "original_text": "As folhas do tomateiro estão com manchas grandes encharcadas e mofo branco embaixo.",
+        "normalized_text": "folhas tomate manchas grandes encharcadas mofo branco embaixo cultura_tomato sintoma_lesoes_encharcadas sintoma_mofo_esbranquicado interacao_tomato_lesoes_encharcadas interacao_tomato_mofo_esbranquicado",
+        "token_count": 8,
+        "extracted_symptoms": [
+          "lesoes_encharcadas",
+          "mofo_esbranquicado"
+        ],
+        "detected_crops": [
+          "Tomato"
+        ],
+        "is_empty_text": false,
+        "model": "TF-IDF + logistic_regression",
+        "inference_backend": "sklearn_tfidf_logistic_regression"
+      }
+    }
+  },
+  {
+    "status": "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS",
+    "final_class": "Corn_(maize)___Common_rust_",
+    "disease_info": {
+      "crop": "Milho (Zea mays)",
+      "common_name": "Ferrugem-comum do Milho",
+      "pathogen": "Puccinia sorghi",
+      "recommendation": "Priorizar híbridos resistentes em plantios futuros, monitorar a evolução das pústulas antes do pendoamento e consultar recomendação agronômica local."
+    },
+    "combined_confidence": 0.99,
+    "operation_mode": "integrated",
+    "rule_triggered": "R03_EXACT_CONCORDANCE_BOOST",
+    "evidences": [
+      "Concordância exata entre agentes: Visão ('Corn_(maize)___Common_rust_', 100.00%) e PLN ('Corn_(maize)___Common_rust_', 99.48%) convergiram para o mesmo diagnóstico.",
+      "Confiança consolidada elevada para 99.00% por fusão de múltiplas evidências.",
+      "Sintomas textuais identificados: ['pustulas_ferruginosas']."
+    ],
+    "warnings": [],
+    "recommendations": [
+      "Priorizar híbridos resistentes em plantios futuros, monitorar a evolução das pústulas antes do pendoamento e consultar recomendação agronômica local."
+    ],
+    "candidate_hypotheses": [
+      {
+        "class": "Corn_(maize)___Common_rust_",
+        "confidence": 0.99,
+        "source": "vision+nlp"
+      }
+    ],
+    "vision_output": {
+      "agent_type": "vision",
+      "predicted_class": "Corn_(maize)___Common_rust_",
+      "confidence": 1.0,
+      "top_k": [
+        [
+          "Corn_(maize)___Common_rust_",
+          1.0
+        ],
+        [
+          "Potato___Early_blight",
+          0.0
+        ],
+        [
+          "Tomato___healthy",
+          0.0
+        ]
+      ],
+      "metadata": {
+        "architecture": "MobileNetV2 (ImageNet, congelado) + cabeça treinada",
+        "input_resolution": "224x224",
+        "inference_backend": "tflite_mobilenetv2_embeddings+sklearn_head",
+        "head": "StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)",
+        "image_valid": true,
+        "is_corrupted": false,
+        "is_too_dark": false,
+        "is_too_bright": false,
+        "is_blurry": false,
+        "brightness": 94.4,
+        "blur_score": 739.41,
+        "original_size": [
+          256,
+          256
+        ],
+        "target_size": [
+          224,
+          224
+        ],
+        "visual_features": {
+          "mean_r": 0.3692,
+          "mean_g": 0.3898,
+          "mean_b": 0.2718,
+          "std_r": 0.2234,
+          "std_g": 0.2277,
+          "std_b": 0.1764,
+          "excess_green_index": 0.1385,
+          "green_healthy_ratio": 0.267,
+          "necrotic_lesion_ratio": 0.059,
+          "chlorotic_halo_ratio": 0.0016,
+          "rust_pustule_ratio": 0.0003,
+          "water_soaked_ratio": 0.005,
+          "texture_gradient_energy": 0.0265,
+          "center_vs_border_diff": -0.1406
+        },
+        "detected_visual_patterns": [
+          "padrao_foliar_geral"
+        ],
+        "quality_issues": [],
+        "ml_agent": "MLAgent"
+      }
+    },
+    "nlp_output": {
+      "agent_type": "nlp",
+      "predicted_class": "Corn_(maize)___Common_rust_",
+      "confidence": 0.9948,
+      "top_k": [
+        [
+          "Corn_(maize)___Common_rust_",
+          0.9948
+        ],
+        [
+          "Tomato___Late_blight",
+          0.0011
+        ],
+        [
+          "Potato___Late_blight",
+          0.0011
+        ]
+      ],
+      "metadata": {
+        "original_text": "Pústulas marrom-avermelhadas salientes que soltam pó de ferrugem nas folhas do milho.",
+        "normalized_text": "pustulas marrom avermelhadas salientes soltam po ferrugem folhas milho cultura_corn_(maize) sintoma_pustulas_ferruginosas interacao_corn_(maize)_pustulas_ferruginosas",
+        "token_count": 9,
+        "extracted_symptoms": [
+          "pustulas_ferruginosas"
+        ],
+        "detected_crops": [
+          "Corn_(maize)"
+        ],
+        "is_empty_text": false,
+        "model": "TF-IDF + logistic_regression",
+        "inference_backend": "sklearn_tfidf_logistic_regression"
+      }
+    }
+  },
+  {
+    "status": "DIVERGENCIA_DETECTADA",
+    "final_class": null,
+    "disease_info": {
+      "crop": "Não determinado",
+      "common_name": "Diagnóstico inconclusivo / requer revisão",
+      "pathogen": "Não determinado",
+      "recommendation": "Forneça uma nova fotografia nítida da folha sob iluminação natural e/ou detalhe os sintomas observados na planta para nova análise."
+    },
+    "combined_confidence": 1.0,
+    "operation_mode": "integrated",
+    "rule_triggered": "R05_EXPLICIT_AGENT_DIVERGENCE",
+    "evidences": [
+      "Conflito explícito entre especialistas: Agente Visual previu 'Tomato___healthy' (confiança=100.00%), enquanto Agente de PLN previu 'Corn_(maize)___Common_rust_' (confiança=99.27%).",
+      "Sintomas textuais extraídos (['pustulas_ferruginosas']) divergem do padrão visual dominante na imagem."
+    ],
+    "warnings": [
+      "DIVERGÊNCIA DETECTADA: Os modelos de Visão Computacional e PLN apontam para diagnósticos conflitantes. Por rigor científico, o sistema NÃO oculta essa contradição e não emite um laudo único automático."
+    ],
+    "recommendations": [
+      "1. Verifique se a fotografia enviada corresponde à mesma folha cujos sintomas foram descritos.",
+      "2. Envie uma nova foto focando na face inferior e superior da folha.",
+      "3. Solicite revisão técnica presencial de um engenheiro agrônomo considerando ambas as hipóteses."
+    ],
+    "candidate_hypotheses": [
+      {
+        "class": "Tomato___healthy",
+        "confidence": 1.0,
+        "source": "vision"
+      },
+      {
+        "class": "Corn_(maize)___Common_rust_",
+        "confidence": 0.9927,
+        "source": "nlp"
+      }
+    ],
+    "vision_output": {
+      "agent_type": "vision",
+      "predicted_class": "Tomato___healthy",
+      "confidence": 1.0,
+      "top_k": [
+        [
+          "Tomato___healthy",
+          1.0
+        ],
+        [
+          "Potato___Early_blight",
+          0.0
+        ],
+        [
+          "Tomato___Early_blight",
+          0.0
+        ]
+      ],
+      "metadata": {
+        "architecture": "MobileNetV2 (ImageNet, congelado) + cabeça treinada",
+        "input_resolution": "224x224",
+        "inference_backend": "tflite_mobilenetv2_embeddings+sklearn_head",
+        "head": "StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)",
+        "image_valid": true,
+        "is_corrupted": false,
+        "is_too_dark": false,
+        "is_too_bright": false,
+        "is_blurry": false,
+        "brightness": 127.81,
+        "blur_score": 2311.0,
+        "original_size": [
+          256,
+          256
+        ],
+        "target_size": [
+          224,
+          224
+        ],
+        "visual_features": {
+          "mean_r": 0.4841,
+          "mean_g": 0.5169,
+          "mean_b": 0.4655,
+          "std_r": 0.1372,
+          "std_g": 0.1364,
+          "std_b": 0.1717,
+          "excess_green_index": 0.0843,
+          "green_healthy_ratio": 0.3843,
+          "necrotic_lesion_ratio": 0.0053,
+          "chlorotic_halo_ratio": 0.0001,
+          "rust_pustule_ratio": 0.0,
+          "water_soaked_ratio": 0.0062,
+          "texture_gradient_energy": 0.0522,
+          "center_vs_border_diff": -0.0027
+        },
+        "detected_visual_patterns": [
+          "padrao_foliar_geral"
+        ],
+        "quality_issues": [],
+        "ml_agent": "MLAgent"
+      }
+    },
+    "nlp_output": {
+      "agent_type": "nlp",
+      "predicted_class": "Corn_(maize)___Common_rust_",
+      "confidence": 0.9927,
+      "top_k": [
+        [
+          "Corn_(maize)___Common_rust_",
+          0.9927
+        ],
+        [
+          "Tomato___Late_blight",
+          0.0015
+        ],
+        [
+          "Potato___Late_blight",
+          0.0015
+        ]
+      ],
+      "metadata": {
+        "original_text": "Folhas de milho cobertas por pústulas marrom-avermelhadas cor de ferrugem.",
+        "normalized_text": "folhas milho cobertas pustulas marrom avermelhadas cor ferrugem cultura_corn_(maize) sintoma_pustulas_ferruginosas interacao_corn_(maize)_pustulas_ferruginosas",
+        "token_count": 8,
+        "extracted_symptoms": [
+          "pustulas_ferruginosas"
+        ],
+        "detected_crops": [
+          "Corn_(maize)"
+        ],
+        "is_empty_text": false,
+        "model": "TF-IDF + logistic_regression",
+        "inference_backend": "sklearn_tfidf_logistic_regression"
+      }
+    }
+  },
+  {
+    "status": "DIAGNOSTICO_SOMENTE_VISUAL",
+    "final_class": "Potato___Early_blight",
+    "disease_info": {
+      "crop": "Batata (Solanum tuberosum)",
+      "common_name": "Pinta-preta da Batateira",
+      "pathogen": "Alternaria solani",
+      "recommendation": "Realizar rotação de culturas, manter nutrição equilibrada (especialmente potássio e nitrogênio), eliminar restos culturais e avaliar manejo técnico especializado."
+    },
+    "combined_confidence": 0.9998,
+    "operation_mode": "vision_only",
+    "rule_triggered": "R02_VISION_ONLY_HIGH_CONFIDENCE",
+    "evidences": [
+      "Modo Somente Visual: MobileNetV2 classificou 'Potato___Early_blight' com confiança 99.98% (>= limiar 75.00%).",
+      "Nenhuma descrição textual de sintomas foi fornecida pelo usuário."
+    ],
+    "warnings": [
+      "Análise baseada exclusivamente na imagem. A adição de descrição textual dos sintomas permite validação cruzada pelo módulo de PLN."
+    ],
+    "recommendations": [
+      "Realizar rotação de culturas, manter nutrição equilibrada (especialmente potássio e nitrogênio), eliminar restos culturais e avaliar manejo técnico especializado."
+    ],
+    "candidate_hypotheses": [
+      {
+        "class": "Potato___Early_blight",
+        "confidence": 0.9998,
+        "source": "vision"
+      }
+    ],
+    "vision_output": {
+      "agent_type": "vision",
+      "predicted_class": "Potato___Early_blight",
+      "confidence": 0.9998,
+      "top_k": [
+        [
+          "Potato___Early_blight",
+          0.9998
+        ],
+        [
+          "Potato___Late_blight",
+          0.0002
+        ],
+        [
+          "Corn_(maize)___Common_rust_",
+          0.0
+        ]
+      ],
+      "metadata": {
+        "architecture": "MobileNetV2 (ImageNet, congelado) + cabeça treinada",
+        "input_resolution": "224x224",
+        "inference_backend": "tflite_mobilenetv2_embeddings+sklearn_head",
+        "head": "StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)",
+        "image_valid": true,
+        "is_corrupted": false,
+        "is_too_dark": false,
+        "is_too_bright": false,
+        "is_blurry": false,
+        "brightness": 140.88,
+        "blur_score": 1596.0,
+        "original_size": [
+          256,
+          256
+        ],
+        "target_size": [
+          224,
+          224
+        ],
+        "visual_features": {
+          "mean_r": 0.5365,
+          "mean_g": 0.5685,
+          "mean_b": 0.5118,
+          "std_r": 0.1534,
+          "std_g": 0.1358,
+          "std_b": 0.1998,
+          "excess_green_index": 0.0887,
+          "green_healthy_ratio": 0.3607,
+          "necrotic_lesion_ratio": 0.0176,
+          "chlorotic_halo_ratio": 0.0007,
+          "rust_pustule_ratio": 0.0,
+          "water_soaked_ratio": 0.0079,
+          "texture_gradient_energy": 0.0412,
+          "center_vs_border_diff": 0.0093
+        },
+        "detected_visual_patterns": [
+          "padrao_foliar_geral"
+        ],
+        "quality_issues": [],
+        "ml_agent": "MLAgent"
+      }
+    },
+    "nlp_output": null
+  },
+  {
+    "status": "CONFIRMADO_POR_MULTIPLAS_EVIDENCIAS",
+    "final_class": "Tomato___Early_blight",
+    "disease_info": {
+      "crop": "Tomate (Solanum lycopersicum)",
+      "common_name": "Pinta-preta (Alternariose)",
+      "pathogen": "Alternaria solani",
+      "recommendation": "Remover folhas baixeiras severamente atacadas, evitar irrigação por aspersão no final da tarde, melhorar a ventilação entre plantas e consultar um engenheiro agrônomo para manejo fungicida registrado."
+    },
+    "combined_confidence": 0.9098,
+    "operation_mode": "integrated",
+    "rule_triggered": "R03_EXACT_CONCORDANCE_BOOST",
+    "evidences": [
+      "Concordância exata entre agentes: Visão ('Tomato___Early_blight', 99.54%) e PLN ('Tomato___Early_blight', 66.20%) convergiram para o mesmo diagnóstico.",
+      "Confiança consolidada elevada para 90.98% por fusão de múltiplas evidências.",
+      "Sintomas textuais identificados: ['aneis_concentricos', 'necrose_foliar']."
+    ],
+    "warnings": [],
+    "recommendations": [
+      "Remover folhas baixeiras severamente atacadas, evitar irrigação por aspersão no final da tarde, melhorar a ventilação entre plantas e consultar um engenheiro agrônomo para manejo fungicida registrado."
+    ],
+    "candidate_hypotheses": [
+      {
+        "class": "Tomato___Early_blight",
+        "confidence": 0.9098,
+        "source": "vision+nlp"
+      }
+    ],
+    "vision_output": {
+      "agent_type": "vision",
+      "predicted_class": "Tomato___Early_blight",
+      "confidence": 0.9954,
+      "top_k": [
+        [
+          "Tomato___Early_blight",
+          0.9954
+        ],
+        [
+          "Potato___Early_blight",
+          0.0045
+        ],
+        [
+          "Corn_(maize)___Common_rust_",
+          0.0001
+        ]
+      ],
+      "metadata": {
+        "architecture": "MobileNetV2 (ImageNet, congelado) + cabeça treinada",
+        "input_resolution": "224x224",
+        "inference_backend": "tflite_mobilenetv2_embeddings+sklearn_head",
+        "head": "StandardScaler + LogReg C=0.1 + aumento de dados (2 cópias) sobre características MobileNetV2 'multiscale' (treino PlantVillage)",
+        "image_valid": true,
+        "is_corrupted": false,
+        "is_too_dark": false,
+        "is_too_bright": false,
+        "is_blurry": false,
+        "brightness": 156.57,
+        "blur_score": 140.87,
+        "original_size": [
+          640,
+          480
+        ],
+        "target_size": [
+          224,
+          224
+        ],
+        "visual_features": {
+          "mean_r": 0.57,
+          "mean_g": 0.6544,
+          "mean_b": 0.5217,
+          "std_r": 0.2041,
+          "std_g": 0.1446,
+          "std_b": 0.2015,
+          "excess_green_index": 0.2171,
+          "green_healthy_ratio": 0.4172,
+          "necrotic_lesion_ratio": 0.0126,
+          "chlorotic_halo_ratio": 0.0338,
+          "rust_pustule_ratio": 0.0,
+          "water_soaked_ratio": 0.015,
+          "texture_gradient_energy": 0.0163,
+          "center_vs_border_diff": 0.0215
+        },
+        "detected_visual_patterns": [
+          "padrao_foliar_geral"
+        ],
+        "quality_issues": [],
+        "ml_agent": "MLAgent"
+      }
+    },
+    "nlp_output": {
+      "agent_type": "nlp",
+      "predicted_class": "Tomato___Early_blight",
+      "confidence": 0.662,
+      "top_k": [
+        [
+          "Tomato___Early_blight",
+          0.662
+        ],
+        [
+          "Potato___Early_blight",
+          0.2731
+        ],
+        [
+          "Tomato___Late_blight",
+          0.018
+        ]
+      ],
+      "metadata": {
+        "original_text": "Folhas de baixo com manchas marrons em anéis tipo alvo e amarelando.",
+        "normalized_text": "folhas baixo manchas marrons aneis tipo alvo amarelando sintoma_aneis_concentricos sintoma_necrose_foliar",
+        "token_count": 8,
+        "extracted_symptoms": [
+          "aneis_concentricos",
+          "necrose_foliar"
+        ],
+        "detected_crops": [],
+        "is_empty_text": false,
+        "model": "TF-IDF + logistic_regression",
+        "inference_backend": "sklearn_tfidf_logistic_regression"
+      }
+    }
+  }
+]

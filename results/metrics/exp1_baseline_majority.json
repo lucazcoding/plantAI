@@ -1,0 +1,77 @@
+{
+  "experiment_id": "exp1_baseline_majority",
+  "model_name": "Exp 1A — Baseline: classe majoritária",
+  "dataset_name": "PlantVillage (teste)",
+  "num_samples": 1097,
+  "training_time_sec": 0.0,
+  "accuracy": 0.2479,
+  "precision_macro": 0.0413,
+  "recall_macro": 0.1667,
+  "f1_macro": 0.0662,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      0,
+      141,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      272,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      226,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      144,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      144,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      170,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "top_errors": [
+    "226x 'Tomato___healthy' classificada como 'Tomato___Late_blight'",
+    "170x 'Corn_(maize)___Common_rust_' classificada como 'Tomato___Late_blight'",
+    "144x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "144x 'Potato___Early_blight' classificada como 'Tomato___Late_blight'",
+    "141x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'"
+  ],
+  "extra_metadata": {}
+}

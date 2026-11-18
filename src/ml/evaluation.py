@@ -163,8 +163,10 @@ class ExperimentEvaluator:
         ax.set_yticks(np.arange(len(short_labels)))
         ax.set_xticklabels(short_labels, rotation=30, ha="right", fontsize=8)
         ax.set_yticklabels(short_labels, fontsize=8)
+        import textwrap
+
         ax.set_title(
-            f"Matriz de Confusão — {report.model_name}\n"
+            "Matriz de Confusão — " + "\n".join(textwrap.wrap(report.model_name, 55)) + "\n"
             f"(Acc={report.accuracy:.2%} | F1={report.f1_macro:.2%} | N={report.num_samples})",
             fontsize=11,
             fontweight="bold",

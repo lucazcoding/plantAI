@@ -128,7 +128,7 @@ PLANTVILLAGE_CLASS_INFO: dict[str, dict[str, str]] = {
             "reduzir molhamento foliar prolongado e buscar assistência agronômica imediata."
         ),
     },
-    "Tomato___Healthy": {
+    "Tomato___healthy": {
         "crop": "Tomate (Solanum lycopersicum)",
         "common_name": "Planta Saudável",
         "pathogen": "Nenhum patógeno detectado",
@@ -163,6 +163,36 @@ PLANTVILLAGE_CLASS_INFO: dict[str, dict[str, str]] = {
             "Priorizar híbridos resistentes em plantios futuros, monitorar a evolução das "
             "pústulas antes do pendoamento e consultar recomendação agronômica local."
         ),
+    },
+}
+
+
+# Conhecimento fitossanitário usado para responder às perguntas de prevenção e gravidade.
+# Texto de caráter geral (boas práticas de manejo); não substitui orientação agronômica local.
+CLASS_QA_INFO: dict[str, dict[str, str]] = {
+    "Tomato___Early_blight": {
+        "prevention": "Use sementes/mudas sadias, faça rotação de culturas, evite molhar a folhagem, mantenha espaçamento e adubação equilibrada e elimine restos culturais infectados.",
+        "severity": "Gravidade moderada: avança devagar a partir das folhas velhas, mas causa desfolha e perda de produtividade se não manejada.",
+    },
+    "Tomato___Late_blight": {
+        "prevention": "Evite períodos prolongados de folha molhada (irrigação por gotejamento), use cultivares tolerantes, elimine plantas e restos infectados e monitore a lavoura em clima frio e úmido.",
+        "severity": "Gravidade alta: pode destruir a lavoura em poucos dias sob frio e umidade e se dispersa pelo vento e pela água.",
+    },
+    "Tomato___healthy": {
+        "prevention": "Mantenha monitoramento periódico, irrigação sem encharcar a folhagem, adubação equilibrada e uso de material de plantio sadio.",
+        "severity": "Nenhum sinal de doença identificado; sem risco imediato.",
+    },
+    "Potato___Early_blight": {
+        "prevention": "Faça rotação de culturas, mantenha nutrição equilibrada (nitrogênio e potássio), use tubérculos-semente sadios e elimine restos culturais.",
+        "severity": "Gravidade moderada: reduz a área foliar e a produtividade, sobretudo em plantas estressadas.",
+    },
+    "Potato___Late_blight": {
+        "prevention": "Use tubérculos-semente certificados, elimine plantas voluntárias e restos de cultura, monitore clima frio e úmido e aplique manejo preventivo orientado por agrônomo.",
+        "severity": "Gravidade alta: é a doença que causou a fome irlandesa; destrói folhas, hastes e tubérculos rapidamente em clima úmido.",
+    },
+    "Corn_(maize)___Common_rust_": {
+        "prevention": "Prefira híbridos resistentes, evite plantio tardio, monitore as folhas antes do pendoamento e siga o manejo recomendado localmente.",
+        "severity": "Gravidade geralmente baixa a moderada; as perdas são maiores quando há infecção precoce e severa em híbridos suscetíveis.",
     },
 }
 

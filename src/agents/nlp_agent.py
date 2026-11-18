@@ -48,12 +48,10 @@ class NLPAgent:
     def analyze(
         self,
         symptom_text: str | None,
-        mock_probabilities: dict[str, float] | None = None,
     ) -> AgentOutputDict:
         """Processa o relato de sintomas do usuário e classifica no formato do contrato padrão."""
         processed = self.text_processor.process(symptom_text)
         return self.classifier.predict(
             text_or_processed=processed,
-            mock_probabilities=mock_probabilities,
         )
 

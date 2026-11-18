@@ -1,9 +1,11 @@
 # PlantAI — Sistema Multiagente para Identificação e Análise de Doenças em Plantas
 
 **Instituição:** AFYA | UNIMA Maceió  
-**Disciplina:** Inteligência Artificial Aplicada  
+**Disciplina:** Inteligência Artificial  
 **Professor:** Ícaro Ferreira  
-**Ambiente:** Python 3.10+ / Google Colab / GitHub / Overleaf (IEEE)
+**Ambiente:** Python 3.10+ / Google Colab / GitHub / Overleaf (IEEE)  
+**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **link do Overleaf: _[preencher]_**  
+**Aprovação do Projeto E (tema livre):** _[preencher: data e forma de aprovação do professor]_
 
 ---
 
@@ -11,158 +13,145 @@
 
 | Integrante | Cargo | Responsabilidades no Projeto |
 |---|---|---|
-| **Lucas Gomes** | **Tech Lead** | Liderança Técnica, Governança do Repositório e Revisão/Merge de PRs na `main`, Documentação dos Notebooks (`00`, `01`, `06`) e Artigo Científico no Overleaf (IEEE) |
-| **Viny Carnaúba** | **Desenvolvedor (Dev)** | Arquitetura Multiagente (`contracts.py`), Agente Coordenador (`CoordinatorAgent`), Motor de Regras e Heurísticas (`DecisionRulesEngine`), Relatórios (`ReportGenerator`) e Testes Integrados |
-| **Fabiano** | **Desenvolvedor (Dev)** | Preparação e Divisão Estratificada do PlantVillage (70/15/15), Visão Computacional (`VisionAgent`) e Treinamento de Machine Learning (`MLAgent` / `MobileNetV2`) |
-| **Nogueira** | **Desenvolvedor (Dev)** | Corpus de Sintomas Agronômicos (`data/symptoms_sample.csv`), Pré-processamento Textual e Classificador de PLN (`NLPAgent` — TF-IDF + LR/SVM) |
+| **Lucas Gomes** | **Tech Lead** | Liderança técnica, governança do repositório, documentação dos notebooks e artigo (IEEE) |
+| **Viny Carnaúba** | **Desenvolvedor** | Arquitetura multiagente (`contracts.py`), `CoordinatorAgent`, `DecisionRulesEngine`, relatórios e testes integrados |
+| **Fabiano** | **Desenvolvedor** | Preparação e divisão do PlantVillage, `VisionAgent`, `MLAgent` / MobileNetV2 |
+| **Nogueira** | **Desenvolvedor** | Corpus de sintomas, pré-processamento textual, `NLPAgent` (TF-IDF + LR/SVM) |
+
+_(Nomes completos e matrículas: preencher.)_
 
 ---
 
-## 2. Definição do Problema e Objetivos
+## 2. Problema e Objetivos
 
-Doenças foliares em culturas como **tomate, batata e milho** provocam perdas severas de produtividade agrícola e exigem diagnóstico precoce. Modelos puramente visuais treinados em laboratório frequentemente sofrem com variações de iluminação em campo ou confundem lesões visualmente parecidas em estágios iniciais (ex.: *Pinta-preta* vs. *Requeima*).
+Doenças foliares em tomate, batata e milho causam perdas agrícolas e exigem diagnóstico precoce. O PlantAI recebe **uma foto da folha e, opcionalmente, uma mensagem em português** (sintomas e/ou pergunta) e devolve um diagnóstico com explicação, usando:
 
-O **PlantAI** resolve esse problema integrando **Visão Computacional**, **Machine Learning Supervisionado**, **Processamento de Linguagem Natural (PLN)** e um **Sistema Multiagente Baseado em Regras e Heurísticas** capaz de:
-1. Inspecionar a qualidade da fotografia enviada (rejeitando imagens corrompidas, escuras ou borradas antes de inferir).
-2. Extrair descritores visuais e classificar a folha em 6 categorias do **PlantVillage**.
-3. Interpretar descrições textuais de sintomas em português brasileiro sem inventar sintomas não informados.
-4. Combinar as evidências no `CoordinatorAgent`, desempatando ambiguidades visuais moderadas pela evidência textual e **alertando explicitamente quando há divergência** entre imagem e texto.
+1. **Visão computacional**: controle de qualidade (nitidez, brilho) e extração de características com MobileNetV2 pré-treinado (ImageNet).
+2. **Machine Learning**: cabeça supervisionada (LogReg) sobre características multiescala, comparada a baselines.
+3. **PLN**: TF-IDF + LR/LinearSVC para sintomas e classificador de intenção da pergunta (5 intenções).
+4. **Decisão multiagente**: 6 regras explícitas (R01–R06) combinam evidências, desambiguam, **alertam divergência** e abstêm-se quando incerto.
 
----
+Classes (6): Tomate (requeima, pinta-preta, saudável), Batata (requeima, pinta-preta), Milho (ferrugem comum).
 
-## 3. Arquitetura Multiagente e Contrato Padronizado
+## 3. Tecnologias
 
-```mermaid
-flowchart LR
-    IMG["Fotografia da Folha"] --> VA["Agente 1: VisionAgent (224x224 + Nitidez Laplaciana + 30 Descritores)"]
-    VA --> MLA["Agente 2: MLAgent (MobileNetV2 / MLP Head)"]
-    TXT["Relato de Sintomas (Opcional)"] --> NLPA["Agente 3: NLPAgent (TF-IDF + LR / LinearSVC)"]
-    MLA --> COORD["Agente 4: CoordinatorAgent"]
-    NLPA --> COORD
-    COORD --> RULES["DecisionRulesEngine (6 Heurísticas Explícitas)"]
-    RULES --> REP["Relatório Final (F07) + Histórico Experimental (F08)"]
+Python, NumPy, scikit-learn, Pillow, matplotlib, `ai-edge-litert` (MobileNetV2 1.0/224 INT8 TFLite), pytest, nbclient (notebooks), LaTeX IEEEtran. TensorFlow é opcional (apenas para o script de fine-tuning no Colab).
+
+## 4. Arquitetura
+
+`Imagem → VisionAgent (qualidade + embeddings) → MLAgent (cabeça)` e `Texto → NLPAgent (sintomas + intenção)` → `CoordinatorAgent (DecisionRulesEngine R01–R06)` → resposta. Diagrama: `results/plots/arquitetura.png`; detalhes em `Docs/architecture.md`.
+
+```
+plantAI/
+├── src/ (contracts, agents/, vision/, ml/, nlp/, decision/)
+├── data/ (symptoms_sample.csv, question_intents.csv; imagens baixadas por script)
+├── models/ (mobilenet_v2 tflite, plantai_head.joblib)
+├── notebooks/ (00–07 executados)   ├── tests/   ├── scripts/
+├── results/ (metrics/, plots/, exemplos/)   ├── Docs/   └── artigo/
 ```
 
-Todos os agentes especialistas comunicam-se com o Coordenador por meio do contrato padronizado (`src/contracts.py`):
-
-```python
-{
-    "agent_type": "vision" | "nlp",
-    "predicted_class": str,          # ex: "Tomato___Early_blight"
-    "confidence": float,             # 0.0 a 1.0
-    "top_k": list[tuple[str, float]],# Top-3 classes e probabilidades
-    "metadata": dict                 # ex: qualidade da imagem, sintomas extraídos, etc.
-}
-```
-
----
-
-## 4. Estrutura Completa do Repositório
-
-```text
-PlantAI/
-├── README.md
-├── requirements.txt
-├── LICENSE
-├── .gitignore
-├── demo_pipeline.py                         # Demonstração executável ponta a ponta (4 cenários + ablação)
-├── data/
-│   └── symptoms_sample.csv                  # 60 descrições rotuladas de sintomas (Tomate, Batata e Milho)
-├── notebooks/
-│   ├── 00_PlantAI_Projeto_Completo.ipynb    # Notebook Mestre executado (todos os experimentos e gráficos)
-│   ├── 01_exploracao_dataset.ipynb          # Exploração das classes e corpus textual
-│   ├── 02_preprocessamento.ipynb            # Qualidade visual, deduplicação e divisão 70/15/15
-│   ├── 03_treinamento_cnn.ipynb             # Experimento 1: Modelo Baseline Visual
-│   ├── 04_transfer_learning.ipynb           # Experimentos 2 e 3: Transfer Learning e Hiperparâmetros
-│   ├── 05_experimentos_pln.ipynb            # Experimento 4: TF-IDF + LogisticRegression vs. SVM
-│   ├── 06_avaliacao_modelos.ipynb           # Consolidação de métricas e Experimento 6 (Generalização)
-│   └── 07_integracao_multiagente.ipynb      # Experimento 5: Fusão Multiagente e Estudo de Ablação
-├── src/
-│   ├── contracts.py                         # Contratos de dados tipados (AgentOutputDict / DecisionResult)
-│   ├── vision/
-│   │   ├── image_processor.py               # Validação (brilho/blur), resize 224x224 e 30 descritores
-│   │   └── classifier.py                    # Arquitetura MobileNetV2 e classificador visual
-│   ├── nlp/
-│   │   ├── text_processor.py                # Limpeza textual, preservação de negação e léxico agronômico
-│   │   └── symptom_classifier.py            # Pipeline TF-IDF + LR/SVM com validação cruzada 5-Fold
-│   ├── ml/
-│   │   ├── training.py                      # Divisão estratificada 70/15/15, deduplicação e treino
-│   │   ├── evaluation.py                    # Cálculo de Accuracy, Precision, Recall, F1 e Matrizes de Confusão
-│   │   └── run_all_experiments.py           # Executor automatizado dos 6 experimentos e dos 8 notebooks
-│   ├── agents/
-│   │   ├── vision_agent.py                  # Agente 1 — Visão Computacional
-│   │   ├── ml_agent.py                      # Agente 2 — Machine Learning
-│   │   ├── nlp_agent.py                     # Agente 3 — Processamento de Linguagem Natural
-│   │   └── coordinator_agent.py             # Agente 4 — Coordenador e Histórico Experimental (F08)
-│   ├── decision/
-│   │   └── decision_rules.py                # 6 Regras e Heurísticas determinísticas e auditáveis
-│   └── reports/
-│       └── report_generator.py              # Gerador de relatórios técnicos e avisos de incerteza (F07)
-├── tests/
-│   ├── test_vision.py                       # Testes de Visão Computacional e qualidade de imagem
-│   ├── test_nlp.py                          # Testes de limpeza textual, negação e classificação PLN
-│   ├── test_classifier.py                   # Testes de divisão 70/15/15, deduplicação e MLAgent
-│   ├── test_decision_rules.py               # Testes das 6 heurísticas de decisão
-│   └── test_coordinator.py                  # Testes ponta a ponta da coordenação multiagente
-├── results/
-│   ├── metrics/                             # JSONs e CSV consolidado de todos os 6 experimentos
-│   ├── confusion_matrices/                  # Matrizes de confusão em PNG de alta resolução
-│   └── plots/                               # Gráficos de curvas de treino, hiperparâmetros e ablação
-├── Docs/
-│   ├── architecture.md                      # Documentação detalhada da arquitetura
-│   ├── methodology.md                       # Metodologia científica e regras de negócio
-│   └── experiments.md                       # Resultados quantitativos e discussão crítica
-└── models/
-    └── README.md                            # Instruções para pesos treinados (.keras / Google Drive)
-```
-
----
-
-## 5. Resultados Experimentais Obtidos
-
-Todos os 6 experimentos planejados foram executados e auditados (detalhes em `Docs/experiments.md` e `results/metrics/summary_all_experiments.csv`):
-
-| Experimento | Modelo / Configuração | Conjunto de Avaliação | Accuracy | Precision | Recall | F1-Score |
-|---|---|---|---:|---:|---:|---:|
-| **Exp 1** | Baseline Visual (Atributos Globais Básicos) | Teste Estratificado (15%, $N=90$) | 77,78% | 81,20% | 77,78% | 74,45% |
-| **Exp 2** | MobileNetV2 Transfer Learning Head (30 Descritores) | Teste Estratificado (15%, $N=90$) | **100,00%** | **100,00%** | **100,00%** | **100,00%** |
-| **Exp 3** | Ajuste de Hiperparâmetros (`LR=0.001` vs. `LR=0.05`) | Validação/Teste ($N=90$) | **100,00%** | **100,00%** | **100,00%** | **100,00%** |
-| **Exp 4A** | PLN Baseline (`TF-IDF + LogisticRegression`) | 5-Fold Stratified CV ($N=60$) | **95,00%** | **95,15%** | **95,00%** | **95,00%** |
-| **Exp 4B** | PLN Comparativo (`TF-IDF + Calibrated LinearSVC`) | 5-Fold Stratified CV ($N=60$) | **95,00%** | **95,15%** | **95,00%** | **95,00%** |
-| **Exp 5A** | Estudo de Ablação — Visão Isolada (c/ Fotos Ambíguas) | Multimodal ($N=60$) | 66,67% | 81,82% | 66,67% | 71,04% |
-| **Exp 5C** | Estudo de Ablação — **Sistema Multiagente Integrado** | Multimodal ($N=60$) | **95,00%** | **96,15%** | **95,00%** | **94,88%** |
-| **Exp 6** | Generalização Externa em Campo (Estilo PlantDoc c/ Ruído) | Domínio Externo ($N=27$) | 44,44% | 41,29% | 45,83% | 35,28% |
-
----
-
-## 6. Instalação e Execução Reprodutível
+## 5. Instalação e Execução
 
 ```bash
-# 1. Instalar dependências
 pip install -r requirements.txt
-
-# 2. Executar todos os 21 testes automatizados (Visão, PLN, ML, Regras e Coordenador)
-python -m pytest -v
-
-# 3. Executar a demonstração interativa no terminal (4 cenários + ablação)
-python demo_pipeline.py
-
-# 4. Reexecutar os 6 experimentos científicos, regenerar gráficos e atualizar os 8 notebooks (.ipynb)
-python -m src.ml.run_all_experiments
+bash scripts/download_datasets.sh          # PlantVillage (6 classes) e PlantDoc (git sparse clone)
+pytest -q                                   # testes
+python demo_pipeline.py                     # demo com imagens reais (ou --image F.jpg --message "texto")
+python -m src.ml.run_all_experiments        # Experimentos 1–6 -> results/metrics, plots, models/
+python scripts/build_notebooks.py           # executa notebooks 00–07
+python scripts/make_report_assets.py        # números/tabelas/figuras do artigo
 ```
 
----
+## 6. Modelos
 
-## 7. Limitações Científicas e Trabalhos Futuros
+- **Backbone:** MobileNetV2 1.0/224 INT8 (ImageNet, Apache-2.0), **congelado**; características finais (1280-d) + médias/desvios de blocos intermediários (multiescala, 1984-d).
+- **Cabeça implantada:** StandardScaler + LogReg (C=0,1), com aumento de dados (2 cópias), selecionada na validação (regra definida a priori).
+- **PLN:** TF-IDF + LogReg / LinearSVC calibrado; intenção da pergunta com TF-IDF palavra+caractere.
+- **Fine-tuning completo:** `scripts/colab_finetune_mobilenetv2.py` — **não executado** neste ambiente.
 
-1. **Generalização de Domínio (PlantVillage vs. PlantDoc):** Conforme demonstrado quantitativamente no **Experimento 6**, classificadores treinados em imagens com fundo homogêneo apresentam queda de acurácia sob iluminação irregular e fundo complexo de campo (`44,44%`), o que motiva a segmentação foliar prévia e *data augmentation* de fundo como trabalhos futuros.
-2. **Escopo do Diagnóstico Computacional:** As predições emitidas pelo sistema têm finalidade acadêmica e de triagem inicial, não substituindo o laudo técnico presencial de um engenheiro agrônomo.
+## 7. Resultados (reais, gerados em `results/metrics/*.json`)
 
----
+Divisão 70/15/15 estratificada **por folha** (sem vazamento), com deduplicação MD5+dHash. PlantDoc = imagens de campo (domínio externo).
 
-## 8. Referências Principais
 
-1. HUGHES, D.; SALATHÉ, M. *An open access repository of images on plant health to enable the development of mobile disease diagnostics (PlantVillage)*. arXiv:1511.08060, 2015.
-2. SANDLER, M. et al. *MobileNetV2: Inverted Residuals and Linear Bottlenecks*. IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), p. 4510–4520, 2018.
-3. SINGH, D. et al. *PlantDoc: A Dataset for Visual Plant Disease Detection*. ACM India Joint International Conference on Data Science & Management of Data (CODS-COMAD), 2020.
-4. PEDREGOSA, F. et al. *Scikit-learn: Machine Learning in Python*. Journal of Machine Learning Research, v. 12, p. 2825–2830, 2011.
+| Modelo | Acurácia (%) | F1-macro (%) | IC95% acurácia |
+|---|--:|--:|---|
+| Classe majoritária | 24,8 | 6,6 | — |
+| 6 estatísticas RGB + LogReg | 60,4 | 62,2 | [57,6; 63,4] |
+| 30 descritores clássicos + MLP | 96,7 | 96,6 | [95,6; 97,7] |
+| MobileNetV2 (1280-d final) + LogReg | 95,1 | 95,0 | — |
+| MobileNetV2 multiescala + cabeça (implantado) | 97,6 | 97,5 | [96,6; 98,5] |
+
+| Modelo PLN | N | Acurácia (%) | F1-macro (%) |
+|---|--:|--:|--:|
+| TF-IDF + LogReg | 180 | 82,8 | 82,8 |
+| TF-IDF + LinearSVC calibrado | 180 | 83,9 | 83,9 |
+| Intenção da pergunta | 150 | 84,7 | 84,7 |
+
+| Conjunto | Modo | Acurácia estrita (%) | Cobertura (%) | Precisão se respondeu (%) | IC95% acurácia |
+|---|---|--:|--:|--:|---|
+| PlantVillage teste (N=1097) | Visão isolada | 95,3 | 96,4 | 98,8 | [93,9; 96,4] |
+| PlantVillage teste (N=1097) | PLN isolado | 76,3 | 87,6 | 87,1 | [73,8; 78,8] |
+| PlantVillage teste (N=1097) | Integrado (visão+PLN+regras) | 87,7 | 88,3 | 99,3 | [85,7; 89,6] |
+| PlantDoc campo (N=586) | Visão isolada | 39,9 | 83,8 | 47,7 | [36,0; 43,9] |
+| PlantDoc campo (N=586) | PLN isolado | 77,6 | 89,8 | 86,5 | [74,4; 81,1] |
+| PlantDoc campo (N=586) | Integrado (visão+PLN+regras) | 42,5 | 48,5 | 87,7 | [38,2; 46,4] |
+
+Sensibilidade ao erro do usuário (fração de relatos textuais errados → acurácia estrita / precisão do integrado):
+
+| Conjunto | p=0,1 | p=0,2 | p=0,3 | p=0,5 |
+|---|---|---|---|---|
+| plantvillage_test | 79,0 / 99,1 | 69,8 / 99,0 | 62,9 / 99,0 | 45,9 / 98,8 |
+| plantdoc_field | 38,7 / 85,0 | 35,3 / 78,1 | 32,2 / 80,1 | 23,2 / 71,6 |
+
+| Cenário | Acurácia (%) |
+|---|--:|
+| PlantVillage teste | 97,6 |
+| PlantDoc inteiro, sem adaptação | 43,9 [39,8; 48,0] |
+| PlantDoc 50% reservado, sem adaptação | 45,4 |
+| PlantDoc 50% reservado, com adaptação | 56,7 [51,2; 62,1] |
+
+Conjuntos de características (cabeça LogReg C=0,1):
+
+| Conjunto | Dim | F1 val | Acc teste | Acc PlantDoc |
+|---|--:|--:|--:|--:|
+| final | 1280 | 94,9 | 95,1 | 41,5 |
+| multiscale | 1984 | 97,2 | 97,7 | 42,1 |
+| multiscale+handcrafted | 2014 | 97,2 | 97,9 | 41,6 |
+
+Hiperparâmetros da cabeça (seleção pela validação):
+
+| Configuração | F1 val | F1 teste | Acc PlantDoc |
+|---|--:|--:|--:|
+| LogReg C=0.0001 | 92,9 | 94,0 | 39,8 |
+| LogReg C=0.001 | 96,2 | 96,8 | 41,5 |
+| LogReg C=0.01 | 97,0 | 97,4 | 41,6 |
+| LogReg C=0.1 ✔ (melhor na validação) | 97,2 | 97,7 | 42,1 |
+| LogReg C=1 | 97,0 | 97,7 | 37,2 |
+| LogReg C=10 | 97,0 | 97,9 | 35,0 |
+| MLP (256) lr=1e-3 | 96,7 | 97,1 | 40,4 |
+| MLP (512,128) lr=1e-3 | 95,9 | 97,4 | 38,7 |
+| MLP (256) lr=5e-2 (instável) | 95,4 | 96,9 | 40,1 |
+| LogReg C=0.1 + aumento de dados (2 cópias) ✔ (implantada) | 97,0 | 97,5 | 43,9 |
+
+Divisão: train=5484, val=1097, test=1097; folhas (grupos)=3956; imagens com folha mapeada=4918/7678.
+
+
+## 8. Limitações (leia antes de citar os números)
+
+- **Viés do PlantVillage:** descritores clássicos simples chegam a 96,7%, indicando que fundo/condições de captura bastam para classificar; alta acurácia no PlantVillage **não** implica desempenho em campo.
+- **Domínio externo:** em PlantDoc a visão acerta apenas ~40–44% e as probabilidades **não são calibradas** fora do domínio.
+- **PLN otimista:** os textos são redigidos pela equipe (180) e amostrados da classe verdadeira; não há usuários reais. A sensibilidade a relatos errados está na tabela acima.
+- **Fusão troca cobertura por precisão:** o integrado responde menos, mas erra menos quando responde.
+- **Mapeamento de folhas** cobre 4918 de 7678 imagens; as demais ficam em grupos próprios.
+- **Aumento de dados** foi adotado após observar o desempenho baixo no PlantDoc (regra de adoção fixada a priori, mas é um ajuste pós-observação).
+- **Fine-tuning** não foi executado.
+- Não é ferramenta de diagnóstico agronômico profissional.
+
+## 9. Referências
+
+Hughes & Salathé (2015) PlantVillage; Singh et al. (2020) PlantDoc; Sandler et al. (2018) MobileNetV2; Noyan (2022) viés de fundo no PlantVillage. Lista completa verificada em `artigo/main.tex`.
+
+## 10. Licença
+
+Ver `LICENSE`. Pesos MobileNetV2: Apache-2.0 (google-coral/test_data).

@@ -1,134 +1,171 @@
 {
-  "logistic_regression_5fold_cv": {
-    "algorithm": "TF-IDF + logistic_regression",
-    "num_samples": 60,
-    "accuracy": 0.95,
-    "precision_macro": 0.9515,
-    "recall_macro": 0.95,
-    "f1_macro": 0.95,
+  "logreg": {
+    "experiment_id": "exp4_nlp_lr",
+    "model_name": "Exp 4A — PLN TF-IDF + LogisticRegression",
+    "dataset_name": "Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",
+    "num_samples": 180,
+    "training_time_sec": 0.4306,
+    "accuracy": 0.8278,
+    "precision_macro": 0.8288,
+    "recall_macro": 0.8278,
+    "f1_macro": 0.8277,
     "class_names": [
-      "Corn_(maize)___Common_rust_",
+      "Tomato___Early_blight",
+      "Tomato___Late_blight",
+      "Tomato___healthy",
       "Potato___Early_blight",
       "Potato___Late_blight",
-      "Tomato___Early_blight",
-      "Tomato___Healthy",
-      "Tomato___Late_blight"
+      "Corn_(maize)___Common_rust_"
     ],
     "confusion_matrix": [
       [
-        10,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        10,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        1,
-        9,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        9,
-        0,
-        1
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        10,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
+        23,
         1,
         0,
-        9
+        6,
+        0,
+        0
+      ],
+      [
+        1,
+        21,
+        0,
+        0,
+        8,
+        0
+      ],
+      [
+        0,
+        0,
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        26,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        0,
+        1,
+        21,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        0,
+        28
       ]
-    ]
+    ],
+    "top_errors": [
+      "8x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+      "8x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+      "6x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
+      "4x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
+      "1x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'"
+    ],
+    "extra_metadata": {
+      "accuracy_ci95": [
+        0.7722222222222223,
+        0.8777777777777778
+      ]
+    }
   },
-  "calibrated_linear_svm_5fold_cv": {
-    "algorithm": "TF-IDF + svm",
-    "num_samples": 60,
-    "accuracy": 0.95,
-    "precision_macro": 0.9515,
-    "recall_macro": 0.95,
-    "f1_macro": 0.95,
+  "svm": {
+    "experiment_id": "exp4_nlp_svm",
+    "model_name": "Exp 4B — PLN TF-IDF + LinearSVC calibrado",
+    "dataset_name": "Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",
+    "num_samples": 180,
+    "training_time_sec": 0.8222,
+    "accuracy": 0.8389,
+    "precision_macro": 0.84,
+    "recall_macro": 0.8389,
+    "f1_macro": 0.8389,
     "class_names": [
-      "Corn_(maize)___Common_rust_",
+      "Tomato___Early_blight",
+      "Tomato___Late_blight",
+      "Tomato___healthy",
       "Potato___Early_blight",
       "Potato___Late_blight",
-      "Tomato___Early_blight",
-      "Tomato___Healthy",
-      "Tomato___Late_blight"
+      "Corn_(maize)___Common_rust_"
     ],
     "confusion_matrix": [
       [
-        10,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        10,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        1,
-        9,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        9,
-        0,
-        1
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        10,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
+        24,
         1,
         0,
-        9
+        5,
+        0,
+        0
+      ],
+      [
+        1,
+        22,
+        0,
+        0,
+        7,
+        0
+      ],
+      [
+        0,
+        0,
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        26,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        0,
+        1,
+        21,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        0,
+        28
       ]
-    ]
+    ],
+    "top_errors": [
+      "8x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+      "7x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+      "5x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
+      "4x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
+      "1x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'"
+    ],
+    "extra_metadata": {
+      "accuracy_ci95": [
+        0.7833333333333333,
+        0.8888888888888888
+      ]
+    }
+  },
+  "question_intent": {
+    "n": 150,
+    "accuracy": 0.8467,
+    "f1_macro": 0.8467
   }
 }

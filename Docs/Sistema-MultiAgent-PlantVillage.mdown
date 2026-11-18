@@ -1,3 +1,5 @@
+> **Nota (revisão final):** este é o documento de *planejamento* original da equipe. A implementação e os resultados reais estão descritos em `README.md`, `Docs/experiments.md` e no artigo (`artigo/`). Onde este plano cita "MobileNetV2 com fine-tuning", o repositório usa o MobileNetV2 pré-treinado **congelado** + cabeça treinada (o fine-tuning completo está em `scripts/colab_finetune_mobilenetv2.py`, não executado no ambiente de revisão).
+
 # PROJETO INTEGRADOR FINAL — INTELIGÊNCIA ARTIFICIAL APLICADA
 
 # PlantAI — Sistema Multiagente para Identificação e Análise de Doenças em Plantas

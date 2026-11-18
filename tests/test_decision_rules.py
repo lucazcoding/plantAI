@@ -32,7 +32,7 @@ def _make_vision_output(
         top_k = [
             (predicted_class, confidence),
             (alt_cls, round(rem * 0.7, 4)),
-            ("Tomato___Healthy", round(rem * 0.3, 4)),
+            ("Tomato___healthy", round(rem * 0.3, 4)),
         ]
     return {
         "agent_type": "vision",
@@ -154,7 +154,7 @@ def test_rule_4_nlp_disambiguates_moderate_vision() -> None:
         top_k=[
             ("Tomato___Early_blight", 0.52),
             ("Tomato___Late_blight", 0.43),
-            ("Tomato___Healthy", 0.05),
+            ("Tomato___healthy", 0.05),
         ],
     )
     n_strong_late_blight = _make_nlp_output(
@@ -174,10 +174,10 @@ def test_rule_5_divergence_detected_explicitly() -> None:
     """Regra 5: Quando Visão e PLN apontam classes diferentes com alta confiança, expõe conflito."""
     engine = DecisionRulesEngine()
     v_out = _make_vision_output(
-        predicted_class="Tomato___Healthy",
+        predicted_class="Tomato___healthy",
         confidence=0.91,
         top_k=[
-            ("Tomato___Healthy", 0.91),
+            ("Tomato___healthy", 0.91),
             ("Tomato___Early_blight", 0.06),
             ("Tomato___Late_blight", 0.03),
         ],
@@ -197,7 +197,7 @@ def test_rule_5_divergence_detected_explicitly() -> None:
     assert decision.final_class is None
     assert len(decision.candidate_hypotheses) == 2
     classes_in_hypotheses = {h[0] for h in decision.candidate_hypotheses}
-    assert classes_in_hypotheses == {"Tomato___Healthy", "Corn_(maize)___Common_rust_"}
+    assert classes_in_hypotheses == {"Tomato___healthy", "Corn_(maize)___Common_rust_"}
 
 
 def test_rule_6_general_uncertainty_low_confidence() -> None:

@@ -1,76 +1,82 @@
 {
   "experiment_id": "exp4_nlp_lr",
-  "model_name": "Exp 4A — PLN Baseline (TF-IDF + LogisticRegression)",
-  "dataset_name": "Symptoms Sample Dataset (5-Fold CV, N=60)",
-  "num_samples": 60,
-  "training_time_sec": 0.04,
-  "accuracy": 0.95,
-  "precision_macro": 0.9515,
-  "recall_macro": 0.95,
-  "f1_macro": 0.95,
+  "model_name": "Exp 4A — PLN TF-IDF + LogisticRegression",
+  "dataset_name": "Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",
+  "num_samples": 180,
+  "training_time_sec": 0.4306,
+  "accuracy": 0.8278,
+  "precision_macro": 0.8288,
+  "recall_macro": 0.8278,
+  "f1_macro": 0.8277,
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
-    "Tomato___Healthy",
+    "Tomato___healthy",
     "Potato___Early_blight",
     "Potato___Late_blight",
     "Corn_(maize)___Common_rust_"
   ],
   "confusion_matrix": [
     [
-      10,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      10,
-      0,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      1,
-      9,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0,
-      9,
-      0,
-      1
-    ],
-    [
-      0,
-      0,
-      0,
-      0,
-      10,
-      0
-    ],
-    [
-      0,
-      0,
-      0,
+      23,
       1,
       0,
-      9
+      6,
+      0,
+      0
+    ],
+    [
+      1,
+      21,
+      0,
+      0,
+      8,
+      0
+    ],
+    [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ],
+    [
+      4,
+      0,
+      0,
+      26,
+      0,
+      0
+    ],
+    [
+      0,
+      8,
+      0,
+      1,
+      21,
+      0
+    ],
+    [
+      1,
+      0,
+      1,
+      0,
+      0,
+      28
     ]
   ],
   "top_errors": [
-    "Nenhum erro de classificação observado na amostra avaliada."
+    "8x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+    "8x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "6x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
+    "4x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
+    "1x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'"
   ],
   "extra_metadata": {
-    "cv_accuracy": 0.95,
-    "cv_f1_macro": 0.9499582289055973
+    "accuracy_ci95": [
+      0.7722222222222223,
+      0.8777777777777778
+    ]
   }
 }

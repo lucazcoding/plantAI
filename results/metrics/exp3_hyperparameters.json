@@ -1,46 +1,101 @@
 [
   {
-    "config_name": "Config A (LR=0.01, Head=(32,), alpha=0.01)",
-    "learning_rate": 0.01,
-    "hidden_layers": "(32,)",
-    "alpha": 0.01,
-    "val_accuracy": 1.0,
-    "val_f1_macro": 1.0,
-    "test_accuracy": 1.0,
-    "test_f1_macro": 1.0,
-    "training_time_sec": 0.3086
+    "config_name": "LogReg C=0.0001",
+    "val_accuracy": 0.9344,
+    "val_f1_macro": 0.9291,
+    "test_accuracy": 0.9435,
+    "test_f1_macro": 0.9405,
+    "training_time_sec": 1.231,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.3976
   },
   {
-    "config_name": "Config B (LR=0.001, Head=(64, 32), alpha=0.001) [Padrão]",
-    "learning_rate": 0.001,
-    "hidden_layers": "(64, 32)",
-    "alpha": 0.001,
-    "val_accuracy": 1.0,
-    "val_f1_macro": 1.0,
-    "test_accuracy": 1.0,
-    "test_f1_macro": 1.0,
-    "training_time_sec": 0.3595
+    "config_name": "LogReg C=0.001",
+    "val_accuracy": 0.9644,
+    "val_f1_macro": 0.9625,
+    "test_accuracy": 0.969,
+    "test_f1_macro": 0.9678,
+    "training_time_sec": 1.487,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.4147
   },
   {
-    "config_name": "Config C (LR=0.0005, Head=(128, 64), alpha=0.0005)",
-    "learning_rate": 0.0005,
-    "hidden_layers": "(128, 64)",
-    "alpha": 0.0005,
-    "val_accuracy": 1.0,
-    "val_f1_macro": 1.0,
-    "test_accuracy": 1.0,
-    "test_f1_macro": 1.0,
-    "training_time_sec": 0.5326
+    "config_name": "LogReg C=0.01",
+    "val_accuracy": 0.9708,
+    "val_f1_macro": 0.9696,
+    "test_accuracy": 0.9745,
+    "test_f1_macro": 0.9736,
+    "training_time_sec": 0.916,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.4164
   },
   {
-    "config_name": "Config D (LR=0.05, Alta Taxa / Instável)",
-    "learning_rate": 0.05,
-    "hidden_layers": "(32,)",
-    "alpha": 0.1,
-    "val_accuracy": 0.9778,
-    "val_f1_macro": 0.9777,
-    "test_accuracy": 0.9778,
-    "test_f1_macro": 0.9777,
-    "training_time_sec": 0.2242
+    "config_name": "LogReg C=0.1",
+    "val_accuracy": 0.9736,
+    "val_f1_macro": 0.9721,
+    "test_accuracy": 0.9772,
+    "test_f1_macro": 0.9767,
+    "training_time_sec": 0.573,
+    "selected_by_validation": true,
+    "plantdoc_accuracy": 0.4215
+  },
+  {
+    "config_name": "LogReg C=1",
+    "val_accuracy": 0.9717,
+    "val_f1_macro": 0.9703,
+    "test_accuracy": 0.9772,
+    "test_f1_macro": 0.9765,
+    "training_time_sec": 0.404,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.372
+  },
+  {
+    "config_name": "LogReg C=10",
+    "val_accuracy": 0.9717,
+    "val_f1_macro": 0.9703,
+    "test_accuracy": 0.979,
+    "test_f1_macro": 0.9785,
+    "training_time_sec": 0.385,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.3498
+  },
+  {
+    "config_name": "MLP (256) lr=1e-3",
+    "val_accuracy": 0.969,
+    "val_f1_macro": 0.967,
+    "test_accuracy": 0.9717,
+    "test_f1_macro": 0.9711,
+    "training_time_sec": 4.336,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.4044
+  },
+  {
+    "config_name": "MLP (512,128) lr=1e-3",
+    "val_accuracy": 0.9608,
+    "val_f1_macro": 0.9593,
+    "test_accuracy": 0.9736,
+    "test_f1_macro": 0.9736,
+    "training_time_sec": 6.819,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.3874
+  },
+  {
+    "config_name": "MLP (256) lr=5e-2 (instável)",
+    "val_accuracy": 0.9562,
+    "val_f1_macro": 0.9537,
+    "test_accuracy": 0.9699,
+    "test_f1_macro": 0.9685,
+    "training_time_sec": 5.374,
+    "selected_by_validation": false,
+    "plantdoc_accuracy": 0.401
+  },
+  {
+    "config_name": "LogReg C=0.1 + aumento de dados (2 cópias)",
+    "val_accuracy": 0.9717,
+    "val_f1_macro": 0.9701,
+    "test_accuracy": 0.9763,
+    "test_f1_macro": 0.9752,
+    "plantdoc_accuracy": 0.4386,
+    "deployed": true
   }
 ]

@@ -1,151 +1,79 @@
-"""Script de demonstração ponta a ponta do Sistema Multiagente PlantAI.
+"""Demonstração ponta a ponta do PlantAI com imagens REAIS e modelo REAL (sem probabilidades simuladas).
 
-Executa:
-1. Treinamento e avaliação científica (5-Fold Stratified CV) do módulo Baseline de PLN
-   (`TF-IDF + LogisticRegression`) sobre `data/symptoms_sample.csv`.
-2. Simulação dos 4 cenários principais no `CoordinatorAgent`:
-   - Cenário 1: Concordância Total (Visão + PLN convergem com boost de confiança)
-   - Cenário 2: Desempate por PLN (Visão em dúvida moderada no Top-K desempatada pelo texto)
-   - Cenário 3: Divergência Crítica (Conflito explícito entre Visão e PLN sem ocultar erro)
-   - Cenário 4: Somente Imagem (Fallback automático quando o usuário não envia texto)
-3. Demonstração do Estudo de Ablação (Visão Isolada vs. PLN Isolado vs. Sistema Integrado).
+    python demo_pipeline.py                              # roda 5 cenários com as imagens de results/exemplos/
+    python demo_pipeline.py --image minha_folha.jpg --message "Manchas em anel nas folhas de baixo. Como tratar?"
+
+Fluxo (Seção 4.5 do PDF): imagem -> visão (MobileNetV2 + cabeça treinada) -> mensagem do usuário ->
+PLN (sintomas + intenção da pergunta) -> regras de decisão -> resposta contextualizada.
+O relatório completo é salvo em results/exemplos/demo_output.txt.
 """
 
 from __future__ import annotations
 
+import argparse
 import sys
+from pathlib import Path
 
 from src.agents.coordinator_agent import CoordinatorAgent
-from src.agents.nlp_agent import NLPAgent
-from src.agents.vision_agent import VisionAgent
-from src.vision.image_processor import ImageProcessor
+
+EXEMPLOS = Path(__file__).resolve().parent / "results" / "exemplos"
+
+SCENARIOS = [
+    ("1. Concordância (imagem real + relato correto + pergunta de tratamento)", "plantvillage_Tomato_Late_blight.jpg",
+     "As folhas do tomateiro estão com manchas grandes encharcadas e mofo branco embaixo. Como tratar?"),
+    ("2. Concordância em outra cultura (pergunta sobre gravidade)", "plantvillage_Corn_maize_Common_rust.jpg",
+     "Pústulas marrom-avermelhadas salientes que soltam pó de ferrugem nas folhas do milho. Isso é grave?"),
+    ("3. Divergência: relato (milho) contradiz a foto (tomate saudável)", "plantvillage_Tomato_healthy.jpg",
+     "Folhas de milho cobertas por pústulas marrom-avermelhadas cor de ferrugem. Qual doença é essa?"),
+    ("4. Somente imagem (sem relato), pergunta de prevenção", "plantvillage_Potato_Early_blight.jpg",
+     "Como evitar que isso volte?"),
+    ("5. Foto de campo (PlantDoc, fundo não controlado) + relato + pergunta de confirmação", "plantdoc_Tomato_Early_blight.jpg",
+     "Folhas de baixo com manchas marrons em anéis tipo alvo e amarelando. Será que é pinta-preta?"),
+]
 
 
 def main() -> None:
-    # Garante saída UTF-8 limpa em terminais Windows
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--image", type=Path, help="Caminho de uma foto de folha.")
+    ap.add_argument("--message", type=str, default="", help="Relato de sintomas e/ou pergunta.")
+    args = ap.parse_args()
 
-    print("=" * 78)
-    print("  PLANTAI — INICIALIZANDO PIPELINE MULTIAGENTE E TREINAMENTO BASELINE PLN")
-    print("=" * 78)
+    coordinator = CoordinatorAgent()
+    m = coordinator.nlp_agent.evaluation_metrics
+    lines: list[str] = []
 
-    nlp_agent = NLPAgent(algorithm="logistic_regression", auto_train_from_sample=True)
-    vision_agent = VisionAgent()
-    coordinator = CoordinatorAgent(vision_agent=vision_agent, nlp_agent=nlp_agent)
+    def emit(text: str = "") -> None:
+        print(text)
+        lines.append(text)
 
-    metrics = nlp_agent.evaluation_metrics
-    if metrics is not None:
-        print(f"Modelo PLN Treinado : {metrics.algorithm}")
-        print(f"Amostras no Dataset : {metrics.num_samples} descrições (data/symptoms_sample.csv)")
-        print(f"Classes Cobertas    : {len(metrics.class_names)} classes do PlantVillage")
-        print(
-            f"Métricas (5-Fold CV): "
-            f"Accuracy={metrics.accuracy:.2%} | "
-            f"Precision={metrics.precision_macro:.2%} | "
-            f"Recall={metrics.recall_macro:.2%} | "
-            f"F1-Score={metrics.f1_macro:.2%}"
-        )
-    print()
+    emit("=" * 78)
+    emit("  PLANTAI — DEMONSTRAÇÃO COM MODELOS TREINADOS EM DADOS REAIS")
+    emit("=" * 78)
+    emit(f"Visão : {coordinator.ml_agent.classifier.head_description}")
+    if m is not None:
+        emit(f"PLN   : {m.algorithm} | CV 5-fold em {m.num_samples} textos: acc={m.accuracy:.2%}, F1={m.f1_macro:.2%}")
+    emit()
 
-    sharp_leaf = ImageProcessor.create_synthetic_leaf_image("healthy_sharp")
+    cases = [("Entrada do usuário", args.image, args.message)] if args.image else [(t, EXEMPLOS / img, msg) for t, img, msg in SCENARIOS]
+    for title, img, msg in cases:
+        resp = coordinator.answer(img, msg)
+        emit("#" * 78)
+        emit(f"# {title}")
+        emit(f"# Imagem  : {Path(img).name}")
+        emit(f"# Mensagem: {msg}")
+        emit(f"# Intenção da pergunta: {resp.intent} (conf={resp.intent_confidence:.0%}) | sintomas: '{resp.symptom_text}'")
+        emit("#" * 78)
+        emit(coordinator.generate_report(resp.decision))
+        emit(f"\nRESPOSTA AO USUÁRIO:\n  {resp.answer}\n")
 
-    # -------------------------------------------------------------------------
-    # CENÁRIO 1: CONCORDÂNCIA TOTAL (Visão + PLN)
-    # -------------------------------------------------------------------------
-    d1 = coordinator.diagnose(
-        image_input=sharp_leaf,
-        symptom_text=(
-            "Folhas mais velhas do tomateiro apresentando manchas escuras arredondadas "
-            "com anéis concêntricos tipo alvo e halo amarelado ao redor."
-        ),
-        mock_vision_probs={
-            "Tomato___Early_blight": 0.88,
-            "Tomato___Late_blight": 0.08,
-            "Tomato___Healthy": 0.04,
-        },
-    )
-    print(coordinator.generate_report(d1, title="CENÁRIO 1: CONCORDÂNCIA TOTAL"))
-    print()
-
-    # -------------------------------------------------------------------------
-    # CENÁRIO 2: DESEMPATE POR PLN (Visão em dúvida moderada no Top-K)
-    # -------------------------------------------------------------------------
-    d2 = coordinator.diagnose(
-        image_input=sharp_leaf,
-        symptom_text=(
-            "Requeima severa no tomate: grandes lesões encharcadas de aspecto oleoso "
-            "nas bordas das folhas e formação de mofo esbranquiçado na face inferior."
-        ),
-        mock_vision_probs={
-            "Tomato___Early_blight": 0.51,
-            "Tomato___Late_blight": 0.44,
-            "Tomato___Healthy": 0.05,
-        },
-    )
-    print(coordinator.generate_report(d2, title="CENÁRIO 2: DESEMPATE VISUAL PELO PLN"))
-    print()
-
-    # -------------------------------------------------------------------------
-    # CENÁRIO 3: DIVERGÊNCIA CRÍTICA (Conflito explícito entre Visão e PLN)
-    # -------------------------------------------------------------------------
-    d3 = coordinator.diagnose(
-        image_input=sharp_leaf,
-        symptom_text=(
-            "Folhas de milho cobertas por numerosas pústulas salientes marrom-avermelhadas "
-            "cor de canela e ferrugem nas duas faces da lâmina foliar."
-        ),
-        mock_vision_probs={
-            "Tomato___Healthy": 0.91,
-            "Tomato___Early_blight": 0.06,
-            "Tomato___Late_blight": 0.03,
-        },
-    )
-    print(coordinator.generate_report(d3, title="CENÁRIO 3: DIVERGÊNCIA CRÍTICA"))
-    print()
-
-    # -------------------------------------------------------------------------
-    # CENÁRIO 4: SOMENTE IMAGEM (Fallback sem texto do usuário)
-    # -------------------------------------------------------------------------
-    d4 = coordinator.diagnose(
-        image_input=sharp_leaf,
-        symptom_text="",
-        mock_vision_probs={
-            "Potato___Late_blight": 0.86,
-            "Potato___Early_blight": 0.10,
-            "Tomato___Late_blight": 0.04,
-        },
-    )
-    print(coordinator.generate_report(d4, title="CENÁRIO 4: MODO SOMENTE IMAGEM"))
-    print()
-
-    # -------------------------------------------------------------------------
-    # BÔNUS CIENTÍFICO: ESTUDO DE ABLAÇÃO (Visão vs. PLN vs. Integrado)
-    # -------------------------------------------------------------------------
-    ablation = coordinator.run_ablation_comparison(
-        image_input=sharp_leaf,
-        symptom_text=(
-            "Folhas de batata com manchas encharcadas escuras nas margens e mofo branco "
-            "na face inferior, típicas de requeima da batateira."
-        ),
-        mock_vision_probs={
-            "Potato___Early_blight": 0.54,
-            "Potato___Late_blight": 0.41,
-            "Tomato___Late_blight": 0.05,
-        },
-    )
-    print("=" * 78)
-    print("  RESUMO DO ESTUDO DE ABLAÇÃO (CASO COM AMBIGUIDADE VISUAL)")
-    print("  Verdadeiro (Ground Truth): Potato___Late_blight")
-    print("-" * 78)
-    for mode_name, result in ablation.items():
-        print(
-            f"  Modo: {mode_name:<12} | Status: {result.status.value:<36} | "
-            f"Classe Final: {str(result.final_class):<22} | Conf: {result.combined_confidence:.2%}"
-        )
-    print("=" * 78)
+    if not args.image:
+        out = EXEMPLOS / "demo_output.txt"
+        out.write_text("\n".join(lines), encoding="utf-8")
+        coordinator.export_experimental_history(EXEMPLOS / "demo_history.json")
+        print(f"[salvo] {out}")
 
 
 if __name__ == "__main__":
     main()
-

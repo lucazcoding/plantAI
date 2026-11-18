@@ -1,0 +1,75 @@
+{
+  "experiment_id": "exp5_integrated_plantvillage_test",
+  "model_name": "Exp 5 — Sistema integrado (plantvillage_test)",
+  "dataset_name": "plantvillage_test",
+  "num_samples": 1097,
+  "training_time_sec": 0.0,
+  "accuracy": 0.8769,
+  "precision_macro": 0.8502,
+  "recall_macro": 0.7469,
+  "f1_macro": 0.7929,
+  "class_names": [
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Corn_(maize)___Common_rust_"
+  ],
+  "confusion_matrix": [
+    [
+      112,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      220,
+      0,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      226,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      127,
+      0,
+      0
+    ],
+    [
+      0,
+      3,
+      0,
+      0,
+      107,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      170
+    ]
+  ],
+  "top_errors": [
+    "3x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
+    "3x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "1x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'"
+  ],
+  "extra_metadata": {}
+}

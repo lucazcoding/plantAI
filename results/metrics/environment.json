@@ -1,0 +1,10 @@
+{
+  "python": "3.13.18",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "scikit-learn": "1.9.1",
+  "seed": 42,
+  "backbone": "MobileNetV2 1.0/224 INT8 (TFLite) \u2014 ImageNet, google-coral/test_data (Apache-2.0)",
+  "selected_head": "LogReg C=0.1 + aumento de dados (2 c\u00f3pias)",
+  "feature_set": "multiscale"
+}

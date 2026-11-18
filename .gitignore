@@ -28,6 +28,7 @@ models/*.pt
 models/*.pth
 models/*.pkl
 models/*.joblib
+!models/plantai_head.joblib
 !data/symptoms_sample.csv
 
 # IDE & OS files
@@ -40,3 +41,6 @@ Thumbs.db
 entregas_branches/
 
 
+
+# Cache de características (regenerável) e saídas de notebooks temporárias
+results/cache/

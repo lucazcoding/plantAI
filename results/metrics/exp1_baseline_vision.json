@@ -1,80 +1,84 @@
 {
   "experiment_id": "exp1_baseline_vision",
-  "model_name": "Exp 1 — Baseline Visual (Atributos Globais RGB)",
-  "dataset_name": "PlantVillage (Teste 15%)",
-  "num_samples": 90,
-  "training_time_sec": 0.0118,
-  "accuracy": 0.7778,
-  "precision_macro": 0.812,
-  "recall_macro": 0.7778,
-  "f1_macro": 0.7445,
+  "model_name": "Exp 1B — Baseline: 6 estatísticas RGB + LogReg",
+  "dataset_name": "PlantVillage (teste)",
+  "num_samples": 1097,
+  "training_time_sec": 0.0456,
+  "accuracy": 0.6044,
+  "precision_macro": 0.6389,
+  "recall_macro": 0.6232,
+  "f1_macro": 0.6224,
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
-    "Tomato___Healthy",
+    "Tomato___healthy",
     "Potato___Early_blight",
     "Potato___Late_blight",
     "Corn_(maize)___Common_rust_"
   ],
   "confusion_matrix": [
     [
-      11,
-      0,
-      0,
-      0,
-      0,
+      72,
+      43,
+      8,
+      4,
+      10,
       4
     ],
     [
-      1,
-      3,
-      4,
-      7,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      15,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0,
+      51,
+      103,
+      66,
+      23,
       13,
+      16
+    ],
+    [
+      3,
+      74,
+      147,
+      0,
       2,
       0
     ],
     [
-      0,
-      0,
-      0,
-      0,
+      1,
+      7,
+      1,
+      133,
+      2,
+      0
+    ],
+    [
       15,
+      70,
+      10,
+      0,
+      49,
       0
     ],
     [
-      2,
       0,
+      9,
+      1,
+      1,
       0,
-      0,
-      0,
-      13
+      159
     ]
   ],
   "top_errors": [
-    "7x 'Tomato___Late_blight' classificada como 'Potato___Early_blight'",
-    "4x 'Tomato___Late_blight' classificada como 'Tomato___Healthy'",
-    "4x 'Tomato___Early_blight' classificada como 'Corn_(maize)___Common_rust_'",
-    "2x 'Potato___Early_blight' classificada como 'Potato___Late_blight'",
-    "2x 'Corn_(maize)___Common_rust_' classificada como 'Tomato___Early_blight'"
+    "74x 'Tomato___healthy' classificada como 'Tomato___Late_blight'",
+    "70x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "66x 'Tomato___Late_blight' classificada como 'Tomato___healthy'",
+    "51x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'",
+    "43x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'"
   ],
   "extra_metadata": {
     "features_used": 6,
-    "split": "70/15/15"
+    "split": "71/14/14",
+    "accuracy_ci95": [
+      0.5761166818596172,
+      0.6335460346399271
+    ]
   }
 }

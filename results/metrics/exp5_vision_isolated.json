@@ -11,7 +11,7 @@
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
-    "Tomato___Healthy",
+    "Tomato___healthy",
     "Potato___Early_blight",
     "Potato___Late_blight",
     "Corn_(maize)___Common_rust_"
@@ -70,7 +70,7 @@
     "4x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'",
     "4x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
     "3x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'",
-    "3x 'Tomato___Healthy' classificada como 'Tomato___Early_blight'",
+    "3x 'Tomato___healthy' classificada como 'Tomato___Early_blight'",
     "3x 'Potato___Late_blight' classificada como 'Tomato___Early_blight'"
   ],
   "extra_metadata": {}

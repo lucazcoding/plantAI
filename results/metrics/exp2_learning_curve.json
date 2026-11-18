@@ -1,0 +1,32 @@
+[
+  {
+    "train_fraction": 0.02,
+    "n_train": 109,
+    "test_accuracy": 0.9043
+  },
+  {
+    "train_fraction": 0.05,
+    "n_train": 274,
+    "test_accuracy": 0.9198
+  },
+  {
+    "train_fraction": 0.1,
+    "n_train": 548,
+    "test_accuracy": 0.9398
+  },
+  {
+    "train_fraction": 0.25,
+    "n_train": 1371,
+    "test_accuracy": 0.9599
+  },
+  {
+    "train_fraction": 0.5,
+    "n_train": 2742,
+    "test_accuracy": 0.969
+  },
+  {
+    "train_fraction": 1.0,
+    "n_train": 5484,
+    "test_accuracy": 0.9772
+  }
+]

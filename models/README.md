@@ -1,22 +1,15 @@
-# Diretório de Modelos Treinados (`models/`)
+# Modelos (`models/`)
 
-Conforme a Seção 8 da documentação oficial do projeto (`Sistema-MultiAgent-PlantVillage.mdown`), os arquivos binários pesados de pesos neurais (`.keras`, `.h5`, `.pt`) não devem ser versionados diretamente no Git para não exceder os limites do repositório.
+| Arquivo | O que é | Origem / licença |
+| --- | --- | --- |
+| `mobilenet_v2_1.0_224_quant.tflite` | MobileNetV2 1.0/224 **pré-treinado no ImageNet**, quantizado INT8 (3,6 MB). Usado como extrator de características (backbone congelado). | [google-coral/test_data](https://github.com/google-coral/test_data) — Apache-2.0. Arquitetura: Sandler et al., 2018. |
+| `plantai_head.joblib` | **Cabeça de classificação treinada por este projeto** sobre características do MobileNetV2 com imagens reais do PlantVillage (≈100 KB). Gerada por `python -m src.ml.run_all_experiments`. | Produzida pelo projeto. |
+| `mobilenetv2_plantvillage.keras` | (opcional, não versionado) fine-tuning completo em Keras, gerado no Colab por `scripts/colab_finetune_mobilenetv2.py`. | — |
 
-## 1. Como Obter ou Gerar os Modelos
-
-### 1.1. Execução Local Reprodutível (Imediata)
-Ao executar `python demo_pipeline.py` ou os notebooks da pasta `notebooks/`, o sistema:
-- Treina e avalia automaticamente os classificadores de PLN (`TF-IDF + LogisticRegression` e `TF-IDF + LinearSVC Calibrado`) usando `data/symptoms_sample.csv`.
-- Treina e avalia a cabeça de classificação visual sobre os 30 descritores extraídos pelo `ImageProcessor` (`src/ml/training.py`).
-
-### 1.2. Pesos MobileNetV2 (Google Colab + Google Drive)
-Durante o treinamento com GPU no Google Colab (`notebooks/04_transfer_learning.ipynb`):
-1. O modelo `PlantAI_MobileNetV2` é construído via `MobileNetV2Classifier.build_mobilenetv2_architecture(num_classes=6)`.
-2. Os pesos treinados são exportados para `models/mobilenetv2_plantvillage.keras` (ou montados via Google Drive).
-3. Para carregar os pesos no `VisionAgent` / `MLAgent`:
-   ```python
-   from src.agents import VisionAgent
-   agent = VisionAgent(weights_path="models/mobilenetv2_plantvillage.keras")
-   ```
-   Caso o arquivo `.keras` não esteja presente localmente, o classificador opera automaticamente com o modelo de atributos visuais treinado ou em modo fallback determinístico, permitindo que todos os testes (`pytest`) e fluxos multiagente rodem sem interrupção.
-
+## Como regenerar
+```bash
+bash scripts/download_datasets.sh          # PlantVillage + PlantDoc reais (via git, ~350 MB)
+python -m src.ml.run_all_experiments       # ~3 min em CPU: extrai características, treina, avalia e grava a cabeça
+```
+O `VisionAgent` carrega `plantai_head.joblib` automaticamente. Se o arquivo não existir, a inferência
+levanta `ModelNotTrainedError` — o sistema **não inventa probabilidades**.

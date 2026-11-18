@@ -20,7 +20,7 @@ from PIL import Image
 
 from src.agents.ml_agent import MLAgent
 from src.contracts import AgentOutputDict
-from src.vision.classifier import MobileNetV2Classifier
+from src.vision.classifier import DEFAULT_HEAD_PATH, MobileNetV2Classifier
 from src.vision.image_processor import ImageProcessor, ProcessedImage
 
 
@@ -35,7 +35,7 @@ class VisionAgent:
         weights_path: str | Path | None = None,
     ) -> None:
         self.image_processor = image_processor or ImageProcessor()
-        self.classifier = classifier or MobileNetV2Classifier(weights_path=weights_path)
+        self.classifier = classifier or MobileNetV2Classifier(weights_path=weights_path or DEFAULT_HEAD_PATH)
         self.ml_agent = ml_agent or MLAgent(classifier=self.classifier)
 
     def extract_and_prepare(
@@ -48,11 +48,7 @@ class VisionAgent:
     def analyze(
         self,
         image_input: str | Path | bytes | Image.Image | np.ndarray | None,
-        mock_probabilities: dict[str, float] | None = None,
     ) -> AgentOutputDict:
         """Processa a imagem e encaminha ao MLAgent (etapa 8) para obter o contrato padrão."""
         processed = self.extract_and_prepare(image_input)
-        return self.ml_agent.classify_processed_image(
-            processed_image=processed,
-            mock_probabilities=mock_probabilities,
-        )
+        return self.ml_agent.classify_processed_image(processed_image=processed)
