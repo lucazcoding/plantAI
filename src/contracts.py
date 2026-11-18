@@ -1,8 +1,8 @@
 """Contratos de dados padronizados entre os módulos e agentes do PlantAI.
 
 Este módulo define o protocolo inegociável de comunicação entre:
-- Agente de Visão Computacional / ML (Fabiano)
-- Agente de Processamento de Linguagem Natural (Nogueira)
+- Agente de Visão Computacional / ML (Fabiano Nasiazeno)
+- Agente de Processamento de Linguagem Natural (José Nogueira)
 - Agente Coordenador e Motor de Regras/Heurísticas (Viny Carnaúba)
 """
 
