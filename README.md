@@ -4,7 +4,7 @@
 **Disciplina:** Inteligência Artificial  
 **Professor:** Ícaro Ferreira  
 **Ambiente:** Python 3.10+ / Google Colab / GitHub / Overleaf (IEEE)  
-**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **Overleaf: [abrir o artigo no Overleaf](https://www.overleaf.com/project/6afdb72978af010f8bd1f9fd/share#f3c01366aedc227848d8f0fbcec891abc989776660197f72)**
+**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **Overleaf: [abrir o artigo no Overleaf](https://pt.overleaf.com/project/6afdd06c97ec108d21c04d22/share#173abeba7cc90e5c76388c6c22d6e338d639b8c79446a5ca)**
 
 ---
 
