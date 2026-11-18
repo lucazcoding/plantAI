@@ -3,14 +3,14 @@
 Todos os números abaixo são gerados por `python -m src.ml.run_all_experiments` e `scripts/make_report_assets.py` a partir de `results/metrics/*.json` (cópia em `Docs/results_tables.md`). Imagens reais: PlantVillage (6 classes, 7692 arquivos) e PlantDoc (campo).
 
 ## Dados e divisão
-- Deduplicação por MD5 + dHash; divisão 70/15/15 com `StratifiedGroupKFold` agrupando por folha (`leaf-map.json`); verificação automática de ausência de vazamento entre grupos.
+- Deduplicação por MD5 + dHash; divisão ≈71/14/14 (alvo nominal 70/15/15) com `StratifiedGroupKFold` agrupando por folha (`leaf-map.json`); verificação automática de ausência de vazamento entre grupos.
 - Treino 5484 / validação 1097 / teste 1097; 3956 grupos; mapeamento de folha cobre 4918/7678 imagens.
 
 ## Experimentos
 1. **Baselines** (classe majoritária, estatísticas RGB).
 2. **Transfer learning** (MobileNetV2 congelado + cabeça), conjuntos de características, curva de aprendizado e descritores clássicos.
 3. **Hiperparâmetros** selecionados na validação.
-4. **PLN**: sintomas (LR vs LinearSVC, 5-fold out-of-fold) e intenção da pergunta.
+4. **PLN**: sintomas (LR vs LinearSVC, 5-fold out-of-fold; TF-IDF puro 80,6/81,1% vs. NLPAgent com reforço de cultura 82,8/83,9%) e intenção da pergunta.
 5. **Multiagente**: ablação visão / PLN / integrado, com varredura de relatos errados.
 6. **Generalização externa** (PlantDoc) e adaptação de domínio.
 

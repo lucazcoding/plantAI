@@ -1,0 +1,24 @@
+{
+  "n": 180,
+  "cv": "StratifiedKFold(5, shuffle=True, random_state=42)",
+  "crop_boost_factors": {
+    "match": 1.35,
+    "other": 0.75
+  },
+  "logreg_pure": {
+    "accuracy": 0.8056,
+    "f1_macro": 0.8058
+  },
+  "logreg_crop_boost": {
+    "accuracy": 0.8278,
+    "f1_macro": 0.8277
+  },
+  "svm_pure": {
+    "accuracy": 0.8111,
+    "f1_macro": 0.8116
+  },
+  "svm_crop_boost": {
+    "accuracy": 0.8389,
+    "f1_macro": 0.8389
+  }
+}

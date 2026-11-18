@@ -361,6 +361,11 @@ def run_all_scientific_experiments() -> dict[str, Any]:
     (ev.metrics_dir / "exp4_nlp_models.json").write_text(json.dumps({"logreg": nlp_reports["lr"].to_dict(), "svm": nlp_reports["svm"].to_dict(), "question_intent": qi}, indent=2, ensure_ascii=False), encoding="utf-8")
     # ambiguidade cultura-agnóstica: textos tomate/batata
     out["exp4"] = {"lr": nlp_reports["lr"].to_dict(), "svm": nlp_reports["svm"].to_dict(), "intent": qi}
+    # ablação: TF-IDF puro vs. NLPAgent com reforço por cultura citada (mesmo CV 5-fold)
+    from src.ml import nlp_ablation
+    nlp_abl = nlp_ablation.run(seed=SEED)
+    (ev.metrics_dir / "exp4_nlp_crop_boost_ablation.json").write_text(json.dumps(nlp_abl, indent=2, ensure_ascii=False), encoding="utf-8")
+    out["exp4"]["crop_boost_ablation"] = nlp_abl
 
     # ===== Exp 5 — integração (ablação) com PLN fora-da-dobra
     engine = DecisionRulesEngine()

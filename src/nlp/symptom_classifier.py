@@ -36,6 +36,10 @@ from src.nlp.text_processor import ProcessedText, TextProcessor
 ClassifierAlgorithm = Literal["logistic_regression", "svm"]
 DEFAULT_DATASET_PATH = Path(__file__).resolve().parents[2] / "data" / "symptoms_sample.csv"
 
+# Reforço por cultura citada (regra auditável aplicada em `predict`, fora do pipeline TF-IDF).
+CROP_BOOST_MATCH = 1.35  # multiplicador das classes da cultura citada
+CROP_BOOST_OTHER = 0.75  # multiplicador das demais classes
+
 
 @dataclass(slots=True)
 class NLPEvaluationMetrics:
@@ -73,7 +77,11 @@ class SymptomClassifier:
         top_k: int = 3,
         random_state: int = 42,
         text_processor: TextProcessor | None = None,
+        crop_boost: bool = True,
     ) -> None:
+        # crop_boost=True (padrão do sistema): `predict` aplica o reforço por cultura citada.
+        # crop_boost=False: devolve o TF-IDF + modelo linear "puro" (usado na ablação do Exp. 4).
+        self.crop_boost = crop_boost
         self.algorithm: ClassifierAlgorithm = algorithm
         self.top_k = top_k
         self.random_state = random_state
@@ -262,14 +270,14 @@ class SymptomClassifier:
         # Ajuste leve e auditável se o usuário nomeou explicitamente a cultura agrícola
         # (ex: "tomate" vs "batata"), evitando que sintomas idênticos de pinta-preta
         # ou requeima troquem a espécie explicitamente declarada pelo produtor.
-        if len(processed.detected_crops) == 1:
+        if self.crop_boost and len(processed.detected_crops) == 1:
             mentioned_crop = processed.detected_crops[0]
             boosted: dict[str, float] = {}
             for cls_name, prob in probs_by_class.items():
                 if cls_name.startswith(mentioned_crop):
-                    boosted[cls_name] = prob * 1.35
+                    boosted[cls_name] = prob * CROP_BOOST_MATCH
                 else:
-                    boosted[cls_name] = prob * 0.75
+                    boosted[cls_name] = prob * CROP_BOOST_OTHER
             norm_factor = sum(boosted.values()) or 1.0
             probs_by_class = {k: v / norm_factor for k, v in boosted.items()}
 

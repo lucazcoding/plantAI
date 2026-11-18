@@ -4,7 +4,7 @@
 **Disciplina:** Inteligência Artificial  
 **Professor:** Ícaro Ferreira  
 **Ambiente:** Python 3.10+ / Google Colab / GitHub / Overleaf (IEEE)  
-**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **link do Overleaf: _[preencher]_**  
+**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **Overleaf: [abrir o artigo no Overleaf](https://www.overleaf.com/project/6afdb72978af010f8bd1f9fd/share#f3c01366aedc227848d8f0fbcec891abc989776660197f72)**  
 **Aprovação do Projeto E (tema livre):** _[preencher: data e forma de aprovação do professor]_
 
 ---
@@ -18,7 +18,12 @@
 | **Fabiano** | **Desenvolvedor** | Preparação e divisão do PlantVillage, `VisionAgent`, `MLAgent` / MobileNetV2 |
 | **Nogueira** | **Desenvolvedor** | Corpus de sintomas, pré-processamento textual, `NLPAgent` (TF-IDF + LR/SVM) |
 
-_(Nomes completos e matrículas: preencher.)_
+| Integrante | Nome completo | Matrícula |
+|---|---|---|
+| Lucas Gomes | _[preencher]_ | _[preencher]_ |
+| Viny Carnaúba | _[preencher]_ | _[preencher]_ |
+| Fabiano | _[preencher]_ | _[preencher]_ |
+| Nogueira | _[preencher]_ | _[preencher]_ |
 
 ---
 
@@ -50,6 +55,8 @@ plantAI/
 ├── results/ (metrics/, plots/, exemplos/)   ├── Docs/   └── artigo/
 ```
 
+> **Nota sobre nomes de pastas:** o enunciado sugere `src/visao_computacional`, `pln`, `machine_learning` e `decisao`; neste repositório os equivalentes são `src/vision`, `src/nlp`, `src/ml` e `src/decision` (nomes em inglês, mesma responsabilidade).
+
 ## 5. Instalação e Execução
 
 ```bash
@@ -57,6 +64,7 @@ pip install -r requirements.txt
 bash scripts/download_datasets.sh          # PlantVillage (6 classes) e PlantDoc (git sparse clone)
 pytest -q                                   # testes
 python demo_pipeline.py                     # demo com imagens reais (ou --image F.jpg --message "texto")
+python -m src.ml.nlp_ablation                # só PLN (rápido, sem imagens): TF-IDF puro vs. com regra de cultura
 python -m src.ml.run_all_experiments        # Experimentos 1–6 -> results/metrics, plots, models/
 python scripts/build_notebooks.py           # executa notebooks 00–07
 python scripts/make_report_assets.py        # números/tabelas/figuras do artigo
@@ -71,7 +79,7 @@ python scripts/make_report_assets.py        # números/tabelas/figuras do artigo
 
 ## 7. Resultados (reais, gerados em `results/metrics/*.json`)
 
-Divisão 70/15/15 estratificada **por folha** (sem vazamento), com deduplicação MD5+dHash. PlantDoc = imagens de campo (domínio externo).
+Divisão ≈71/14/14 (5484/1097/1097 de 7678 imagens; alvo nominal 70/15/15, ajustado pelo agrupamento por folha), estratificada **por classe e agrupada por folha** (sem vazamento), com deduplicação MD5+dHash. PlantDoc = imagens de campo (domínio externo).
 
 
 | Modelo | Acurácia (%) | F1-macro (%) | IC95% acurácia |
@@ -84,9 +92,13 @@ Divisão 70/15/15 estratificada **por folha** (sem vazamento), com deduplicaçã
 
 | Modelo PLN | N | Acurácia (%) | F1-macro (%) |
 |---|--:|--:|--:|
-| TF-IDF + LogReg | 180 | 82,8 | 82,8 |
-| TF-IDF + LinearSVC calibrado | 180 | 83,9 | 83,9 |
+| TF-IDF + LogReg (**puro**, sem regra de cultura) | 180 | 80,6 | 80,6 |
+| TF-IDF + LinearSVC calibrado (**puro**) | 180 | 81,1 | 81,2 |
+| NLPAgent: TF-IDF + LogReg + **reforço de cultura** (implantado) | 180 | 82,8 | 82,8 |
+| NLPAgent: TF-IDF + LinearSVC + **reforço de cultura** | 180 | 83,9 | 83,9 |
 | Intenção da pergunta | 150 | 84,7 | 84,7 |
+
+> **Atenção (PLN):** os 82,8% / 83,9% incluem uma regra auditável no `NLPAgent.predict`: quando o texto cita exatamente uma cultura, as probabilidades das classes dessa cultura são multiplicadas por 1,35 e as demais por 0,75 (renormalizadas). O pipeline TF-IDF + modelo linear **sem** essa regra (`SymptomClassifier(crop_boost=False)`, ou `SymptomClassifier.evaluate_cross_validation`) dá 80,6% / 81,1%. Ambos usam o mesmo CV 5-fold e são reproduzíveis com `python -m src.ml.nlp_ablation` (saída em `results/metrics/exp4_nlp_crop_boost_ablation.json`).
 
 | Conjunto | Modo | Acurácia estrita (%) | Cobertura (%) | Precisão se respondeu (%) | IC95% acurácia |
 |---|---|--:|--:|--:|---|
@@ -141,6 +153,7 @@ Divisão: train=5484, val=1097, test=1097; folhas (grupos)=3956; imagens com fol
 
 - **Viés do PlantVillage:** descritores clássicos simples chegam a 96,7%, indicando que fundo/condições de captura bastam para classificar; alta acurácia no PlantVillage **não** implica desempenho em campo.
 - **Domínio externo:** em PlantDoc a visão acerta apenas ~40–44% e as probabilidades **não são calibradas** fora do domínio.
+- **PLN: regra de cultura e corpus pequeno.** Os números de PLN do sistema (82,8/83,9%) incluem o reforço por cultura; o TF-IDF puro dá 80,6/81,1%.
 - **PLN otimista:** os textos são redigidos pela equipe (180) e amostrados da classe verdadeira; não há usuários reais. A sensibilidade a relatos errados está na tabela acima.
 - **Fusão troca cobertura por precisão:** o integrado responde menos, mas erra menos quando responde.
 - **Mapeamento de folhas** cobre 4918 de 7678 imagens; as demais ficam em grupos próprios.

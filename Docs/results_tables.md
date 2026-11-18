@@ -12,8 +12,10 @@ Geradas por `scripts/make_report_assets.py` a partir de `results/metrics/*.json`
 
 | Modelo PLN | N | Acurácia (%) | F1-macro (%) |
 |---|--:|--:|--:|
-| TF-IDF + LogReg | 180 | 82,8 | 82,8 |
-| TF-IDF + LinearSVC calibrado | 180 | 83,9 | 83,9 |
+| TF-IDF + LogReg (puro, sem regra de cultura) | 180 | 80,6 | 80,6 |
+| TF-IDF + LinearSVC calibrado (puro, sem regra de cultura) | 180 | 81,1 | 81,2 |
+| NLPAgent: TF-IDF + LogReg + reforço de cultura (implantado) | 180 | 82,8 | 82,8 |
+| NLPAgent: TF-IDF + LinearSVC + reforço de cultura | 180 | 83,9 | 83,9 |
 | Intenção da pergunta | 150 | 84,7 | 84,7 |
 
 | Conjunto | Modo | Acurácia estrita (%) | Cobertura (%) | Precisão se respondeu (%) | IC95% acurácia |

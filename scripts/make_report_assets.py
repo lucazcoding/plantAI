@@ -28,6 +28,7 @@ def main() -> None:
     sp, e1, e1m, e2a, e2, e6, e6b = (J(n) for n in ("dataset_split_70_15_15", "exp1_baseline_vision", "exp1_baseline_majority", "exp2_classic_descriptors", "exp2_transfer_learning", "exp6_generalization_plantdoc", "exp6_domain_adaptation"))
     fs, hp, e5 = J("exp2_feature_sets"), J("exp3_hyperparameters"), J("exp5_multiagent_ablation")
     lr, svm, qi = J("exp4_nlp_lr"), J("exp4_nlp_svm"), J("exp4_question_intent")
+    abl = J("exp4_nlp_crop_boost_ablation")
     env = J("environment")
     ci = lambda r: f"[{pct(r['extra_metadata']['accuracy_ci95'][0])}; {pct(r['extra_metadata']['accuracy_ci95'][1])}]"  # noqa: E731
     final = next(r for r in fs if r["feature_set"] == "final")
@@ -40,7 +41,7 @@ def main() -> None:
         "nPlantDoc": str(e6["num_samples"]), "nSym": str(lr["num_samples"]),
         "accMajority": pct(e1m["accuracy"]), "accRGB": pct(e1["accuracy"]), "accClassic": pct(e2a["accuracy"]), "accFinal": pct(final["test_accuracy"]), "accMobile": pct(e2["accuracy"]), "fMobile": pct(e2["f1_macro"]),
         "ciMobile": ci(e2), "selectedHead": env["selected_head"].replace("_", r"\_").replace("%", r"\%"),
-        "nlpLR": pct(lr["accuracy"]), "nlpSVM": pct(svm["accuracy"]), "nlpLRci": ci(lr), "nlpSVMci": ci(svm), "intentAcc": pct(qi["accuracy"]), "nIntent": str(qi["n"]),
+        "nlpLRpure": pct(abl["logreg_pure"]["accuracy"]), "nlpSVMpure": pct(abl["svm_pure"]["accuracy"]), "nlpLR": pct(lr["accuracy"]), "nlpSVM": pct(svm["accuracy"]), "nlpLRci": ci(lr), "nlpSVMci": ci(svm), "intentAcc": pct(qi["accuracy"]), "nIntent": str(qi["n"]),
         "pdAcc": pct(e6["accuracy"]), "pdCI": ci(e6), "pdConf": pct(e6["extra_metadata"]["mean_confidence_plantdoc"]), "pvConf": pct(e6["extra_metadata"]["mean_confidence_plantvillage_test"]),
         "pdHalfNo": pct(e6b["extra_metadata"]["same_subset_without_adaptation_acc"]), "pdHalfYes": pct(e6b["accuracy"]), "nPDhalf": str(e6b["num_samples"]),
     }
@@ -72,13 +73,18 @@ def main() -> None:
         md.append(f"| {name} | {pct(acc)} | {pct(f1)} | {c} |")
     tex.append("\\bottomrule\\end{tabular}\\end{table}")
 
-    tex += ["\\begin{table}[t]\\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra).}\\label{tab:nlp}\\centering\\small",
+    tex += ["\\begin{table}[t]\\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra). ``Puro'' = TF-IDF + modelo linear; ``regra de cultura'' = reforço $\\times$1,35/$\\times$0,75 do NLPAgent.}\\label{tab:nlp}\\centering\\small",
             "\\begin{tabular}{lccc}\\toprule Modelo & N & Acurácia (\\%) & F1-macro (\\%)\\\\\\midrule",
-            f"TF-IDF + LogReg & {lr['num_samples']} & {pct(lr['accuracy'])} & {pct(lr['f1_macro'])}\\\\",
-            f"TF-IDF + LinearSVC calibrado & {svm['num_samples']} & {pct(svm['accuracy'])} & {pct(svm['f1_macro'])}\\\\",
+            f"TF-IDF + LogReg (puro) & {lr['num_samples']} & {pct(abl['logreg_pure']['accuracy'])} & {pct(abl['logreg_pure']['f1_macro'])}\\\\",
+            f"TF-IDF + SVC calibrado (puro) & {svm['num_samples']} & {pct(abl['svm_pure']['accuracy'])} & {pct(abl['svm_pure']['f1_macro'])}\\\\",
+            f"NLPAgent: LogReg + regra de cultura & {lr['num_samples']} & {pct(lr['accuracy'])} & {pct(lr['f1_macro'])}\\\\",
+            f"NLPAgent: SVC + regra de cultura & {svm['num_samples']} & {pct(svm['accuracy'])} & {pct(svm['f1_macro'])}\\\\",
             f"Intenção da pergunta (LogReg) & {qi['n']} & {pct(qi['accuracy'])} & {pct(qi['f1_macro'])}\\\\\\bottomrule\\end{{tabular}}\\end{{table}}"]
     md += ["", "| Modelo PLN | N | Acurácia (%) | F1-macro (%) |", "|---|--:|--:|--:|",
-           f"| TF-IDF + LogReg | {lr['num_samples']} | {pct(lr['accuracy'])} | {pct(lr['f1_macro'])} |", f"| TF-IDF + LinearSVC calibrado | {svm['num_samples']} | {pct(svm['accuracy'])} | {pct(svm['f1_macro'])} |",
+           f"| TF-IDF + LogReg (puro, sem regra de cultura) | {lr['num_samples']} | {pct(abl['logreg_pure']['accuracy'])} | {pct(abl['logreg_pure']['f1_macro'])} |",
+           f"| TF-IDF + LinearSVC calibrado (puro, sem regra de cultura) | {svm['num_samples']} | {pct(abl['svm_pure']['accuracy'])} | {pct(abl['svm_pure']['f1_macro'])} |",
+           f"| NLPAgent: TF-IDF + LogReg + reforço de cultura (implantado) | {lr['num_samples']} | {pct(lr['accuracy'])} | {pct(lr['f1_macro'])} |",
+           f"| NLPAgent: TF-IDF + LinearSVC + reforço de cultura | {svm['num_samples']} | {pct(svm['accuracy'])} | {pct(svm['f1_macro'])} |",
            f"| Intenção da pergunta | {qi['n']} | {pct(qi['accuracy'])} | {pct(qi['f1_macro'])} |"]
 
     tex += ["\\begin{table*}[t]\\caption{Experimento 5 — ablação (texto correto). Acurácia estrita conta \\textit{inconclusivo} como erro; cobertura = fração respondida; precisão = acurácia entre as respondidas.}\\label{tab:abl}\\centering\\small",

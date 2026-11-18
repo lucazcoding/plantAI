@@ -62,3 +62,22 @@ def test_nlp_agent_handles_empty_input_gracefully() -> None:
     assert res["confidence"] == 0.0
     assert res["metadata"]["is_empty_text"] is True
 
+
+
+def test_symptom_classifier_crop_boost_flag_changes_only_culture_mentions() -> None:
+    texts = [
+        "manchas escuras com anéis concêntricos nas folhas do tomate",
+        "manchas encharcadas que escurecem rápido nas folhas da batata",
+        "folha verde sem manchas no tomate",
+        "pústulas alaranjadas nas folhas do milho",
+    ] * 6
+    labels = ["Tomato___Early_blight", "Potato___Late_blight", "Tomato___healthy", "Corn_(maize)___Common_rust_"] * 6
+    boosted = SymptomClassifier(crop_boost=True).train(texts, labels)
+    pure = SymptomClassifier(crop_boost=False).train(texts, labels)
+    q = "manchas escuras na folha do tomate"
+    pb, pp = boosted.predict(q), pure.predict(q)
+    assert pb["predicted_class"].startswith("Tomato")
+    # sem reforço a confiança no top-1 não pode ser maior que com reforço na cultura citada
+    assert pb["confidence"] >= pp["confidence"] or pb["predicted_class"] != pp["predicted_class"]
+    no_crop = "manchas escuras com anéis"
+    assert boosted.predict(no_crop)["top_k"] == pure.predict(no_crop)["top_k"]

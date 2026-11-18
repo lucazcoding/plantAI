@@ -7,10 +7,12 @@ Classe majoritária & 24,8 & 6,6\\
 MobileNetV2 (1280-d final) + LogReg & 95,1 & 95,0\\
 MobileNetV2 multiescala + cabeça (implantado) & 97,6 & 97,5\\
 \bottomrule\end{tabular}\end{table}
-\begin{table}[t]\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra).}\label{tab:nlp}\centering\small
+\begin{table}[t]\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra). ``Puro'' = TF-IDF + modelo linear; ``regra de cultura'' = reforço $\times$1,35/$\times$0,75 do NLPAgent.}\label{tab:nlp}\centering\small
 \begin{tabular}{lccc}\toprule Modelo & N & Acurácia (\%) & F1-macro (\%)\\\midrule
-TF-IDF + LogReg & 180 & 82,8 & 82,8\\
-TF-IDF + LinearSVC calibrado & 180 & 83,9 & 83,9\\
+TF-IDF + LogReg (puro) & 180 & 80,6 & 80,6\\
+TF-IDF + SVC calibrado (puro) & 180 & 81,1 & 81,2\\
+NLPAgent: LogReg + regra de cultura & 180 & 82,8 & 82,8\\
+NLPAgent: SVC + regra de cultura & 180 & 83,9 & 83,9\\
 Intenção da pergunta (LogReg) & 150 & 84,7 & 84,7\\\bottomrule\end{tabular}\end{table}
 \begin{table*}[t]\caption{Experimento 5 — ablação (texto correto). Acurácia estrita conta \textit{inconclusivo} como erro; cobertura = fração respondida; precisão = acurácia entre as respondidas.}\label{tab:abl}\centering\small
 \begin{tabular}{llccc}\toprule Conjunto & Modo & Acurácia estrita (\%) & Cobertura (\%) & Precisão se respondeu (\%)\\\midrule
