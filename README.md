@@ -4,8 +4,7 @@
 **Disciplina:** Inteligência Artificial  
 **Professor:** Ícaro Ferreira  
 **Ambiente:** Python 3.10+ / Google Colab / GitHub / Overleaf (IEEE)  
-**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **Overleaf: [abrir o artigo no Overleaf](https://www.overleaf.com/project/6afdb72978af010f8bd1f9fd/share#f3c01366aedc227848d8f0fbcec891abc989776660197f72)**  
-**Aprovação do Projeto E (tema livre):** _[preencher: data e forma de aprovação do professor]_
+**Artigo (IEEE, ≤ 6 págs.):** `artigo/main.tex` (compilar no Overleaf com IEEEtran) — prévia: `artigo/PlantAI_artigo_preview.pdf` — **Overleaf: [abrir o artigo no Overleaf](https://www.overleaf.com/project/6afdb72978af010f8bd1f9fd/share#f3c01366aedc227848d8f0fbcec891abc989776660197f72)**
 
 ---
 
@@ -17,13 +16,6 @@
 | **Viny Carnaúba** | **Desenvolvedor** | Arquitetura multiagente (`contracts.py`), `CoordinatorAgent`, `DecisionRulesEngine`, relatórios e testes integrados |
 | **Fabiano** | **Desenvolvedor** | Preparação e divisão do PlantVillage, `VisionAgent`, `MLAgent` / MobileNetV2 |
 | **Nogueira** | **Desenvolvedor** | Corpus de sintomas, pré-processamento textual, `NLPAgent` (TF-IDF + LR/SVM) |
-
-| Integrante | Nome completo | Matrícula |
-|---|---|---|
-| Lucas Gomes | _[preencher]_ | _[preencher]_ |
-| Viny Carnaúba | _[preencher]_ | _[preencher]_ |
-| Fabiano | _[preencher]_ | _[preencher]_ |
-| Nogueira | _[preencher]_ | _[preencher]_ |
 
 ---
 
