@@ -77,9 +77,9 @@
     "plantvillage_test_acc": 0.9762989972652689,
     "accuracy_ci95": [
       0.39761092150170646,
-      0.47952218430034127
+      0.4778156996587031
     ],
-    "mean_confidence_plantdoc": 0.9062,
+    "mean_confidence_plantdoc": 0.9063,
     "mean_confidence_plantvillage_test": 0.9818,
     "note": "confiança média >> acurácia em campo: as probabilidades da cabeça não são calibradas fora do domínio"
   }

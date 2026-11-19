@@ -4,9 +4,9 @@
   "dataset_name": "plantvillage_test",
   "num_samples": 1097,
   "training_time_sec": 0.0,
-  "accuracy": 0.8769,
-  "precision_macro": 0.8502,
-  "recall_macro": 0.7469,
+  "accuracy": 0.8751,
+  "precision_macro": 0.8528,
+  "recall_macro": 0.7454,
   "f1_macro": 0.7929,
   "class_names": [
     "Tomato___Early_blight",
@@ -27,10 +27,10 @@
     ],
     [
       0,
-      220,
+      219,
       0,
       0,
-      3,
+      1,
       0
     ],
     [
@@ -54,7 +54,7 @@
       3,
       0,
       0,
-      107,
+      106,
       0
     ],
     [
@@ -67,8 +67,8 @@
     ]
   ],
   "top_errors": [
-    "3x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
     "3x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "1x 'Tomato___Late_blight' classificada como 'Potato___Late_blight'",
     "1x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'"
   ],
   "extra_metadata": {}

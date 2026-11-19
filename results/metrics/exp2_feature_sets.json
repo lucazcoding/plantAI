@@ -13,10 +13,10 @@
     "feature_set": "multiscale",
     "dim": 1984,
     "head": "LogReg C=0.1",
-    "val_f1_macro": 0.9721,
+    "val_f1_macro": 0.9731,
     "test_accuracy": 0.9772,
     "test_f1_macro": 0.9767,
-    "plantdoc_accuracy": 0.4215,
+    "plantdoc_accuracy": 0.4232,
     "deployed_representation": true
   },
   {

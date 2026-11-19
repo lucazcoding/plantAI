@@ -3,7 +3,7 @@
   "model_name": "Exp 1B — Baseline: 6 estatísticas RGB + LogReg",
   "dataset_name": "PlantVillage (teste)",
   "num_samples": 1097,
-  "training_time_sec": 0.0456,
+  "training_time_sec": 0.12,
   "accuracy": 0.6044,
   "precision_macro": 0.6389,
   "recall_macro": 0.6232,

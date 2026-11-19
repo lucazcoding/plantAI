@@ -51,9 +51,31 @@ popd >/dev/null
 for i in "${!PV_CLASSES[@]}"; do
   dst="$ROOT/data/plantdoc/${PV_CLASSES[$i]}"
   mkdir -p "$dst"
+  declare -A seen_hashes=()
+  while IFS= read -r existing_hash; do
+    [ -n "$existing_hash" ] && seen_hashes["$existing_hash"]=1
+  done < <(find "$dst" -maxdepth 1 -type f -exec sha256sum {} + 2>/dev/null | cut -c1-16)
   for split in train test; do
     src="$TMP/pd/$split/${PD_FOLDERS[$i]}"
-    [ -d "$src" ] && cp -n "$src/"* "$dst/" 2>/dev/null || true
+    [ -d "$src" ] || continue
+    while IFS= read -r -d '' image; do
+      filename="${image##*/}"
+      safe_filename="$(printf '%s' "$filename" | tr -cd '[:alnum:]._-')"
+      [ -n "$safe_filename" ] || safe_filename="image"
+      source_hash="$(sha256sum "$image" | cut -c1-16)"
+      if [ -n "${seen_hashes[$source_hash]+x}" ]; then
+        continue
+      fi
+      target="$dst/$safe_filename"
+      if [ -e "$target" ]; then
+        extension="${safe_filename##*.}"
+        stem="${safe_filename%.*}"
+        target="$dst/${stem}_${source_hash}.${extension}"
+      fi
+      cp "$image" "$target"
+      seen_hashes["$source_hash"]=1
+    done < <(find "$src" -maxdepth 1 -type f -print0)
   done
+  unset seen_hashes
 done
 echo "OK: dados em $ROOT/data/plantvillage e $ROOT/data/plantdoc"

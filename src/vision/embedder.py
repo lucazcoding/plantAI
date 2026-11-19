@@ -1,19 +1,7 @@
-"""Extrator de características profundas: MobileNetV2 pré-treinado (ImageNet).
-
-Usa o modelo MobileNetV2 1.0/224 quantizado (INT8, TensorFlow Lite) distribuído em
-`google-coral/test_data` (Apache-2.0) e versionado em `models/`. O vetor de 1280
-dimensões vem da camada `Logits/AvgPool` (global average pooling), exatamente a
-representação que a "cabeça" de transfer learning do MobileNetV2 consome.
-
-Por que TFLite e não Keras? O ambiente de execução do projeto (Python 3.13, sem GPU)
-não possui TensorFlow completo; o runtime `ai-edge-litert` roda o mesmo grafo na CPU
-(~7 ms/imagem) e é instalável via pip. O fine-tuning completo em Keras continua
-disponível em `scripts/colab_finetune_mobilenetv2.py` (ver README).
-"""
-
 from __future__ import annotations
 
 from pathlib import Path
+import warnings
 
 import numpy as np
 
@@ -37,11 +25,17 @@ class MobileNetV2Embedder:
                 f"Pesos MobileNetV2 não encontrados em {self.model_path}. "
                 "Veja models/README.md para obter o arquivo."
             )
-        self._interp = Interpreter(
-            model_path=str(self.model_path),
-            experimental_preserve_all_tensors=True,
-            num_threads=num_threads,
-        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=r".*experimental_preserve_all_tensors.*",
+                category=UserWarning,
+            )
+            self._interp = Interpreter(
+                model_path=str(self.model_path),
+                experimental_preserve_all_tensors=True,
+                num_threads=num_threads,
+            )
         self._interp.allocate_tensors()
         self._input = self._interp.get_input_details()[0]
         pool = [d for d in self._interp.get_tensor_details() if d["name"].endswith("Logits/AvgPool")]

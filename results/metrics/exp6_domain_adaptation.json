@@ -4,10 +4,10 @@
   "dataset_name": "PlantDoc (50% reservado, N=293)",
   "num_samples": 293,
   "training_time_sec": 0.0,
-  "accuracy": 0.5666,
-  "precision_macro": 0.5671,
-  "recall_macro": 0.5699,
-  "f1_macro": 0.5638,
+  "accuracy": 0.5734,
+  "precision_macro": 0.567,
+  "recall_macro": 0.5744,
+  "f1_macro": 0.5685,
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
@@ -18,66 +18,66 @@
   ],
   "confusion_matrix": [
     [
-      24,
-      8,
+      23,
+      7,
       0,
-      8,
-      3,
+      9,
+      4,
       0
     ],
     [
-      12,
-      25,
+      9,
+      29,
       4,
-      6,
+      5,
       7,
       0
     ],
     [
       2,
-      3,
-      22,
-      0,
       4,
+      22,
+      2,
+      1,
       0
     ],
     [
-      18,
-      0,
-      3,
+      11,
+      7,
+      2,
       22,
-      12,
+      13,
       3
     ],
     [
-      9,
-      9,
+      6,
+      15,
       2,
-      13,
-      16,
+      12,
+      14,
       0
     ],
     [
       0,
-      1,
       0,
       0,
       0,
-      57
+      0,
+      58
     ]
   ],
   "top_errors": [
-    "18x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
-    "13x 'Potato___Late_blight' classificada como 'Potato___Early_blight'",
-    "12x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'",
-    "12x 'Potato___Early_blight' classificada como 'Potato___Late_blight'",
-    "9x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'"
+    "15x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "13x 'Potato___Early_blight' classificada como 'Potato___Late_blight'",
+    "12x 'Potato___Late_blight' classificada como 'Potato___Early_blight'",
+    "11x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
+    "9x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'"
   ],
   "extra_metadata": {
-    "same_subset_without_adaptation_acc": 0.4539249146757679,
+    "same_subset_without_adaptation_acc": 0.4300341296928328,
     "accuracy_ci95": [
-      0.5119453924914675,
-      0.621160409556314
+      0.5187713310580204,
+      0.6279863481228669
     ]
   }
 }

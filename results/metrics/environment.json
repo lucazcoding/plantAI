@@ -1,7 +1,7 @@
 {
-  "python": "3.13.18",
+  "python": "3.14.5",
   "numpy": "2.5.3",
-  "pandas": "3.0.5",
+  "pandas": "3.0.6",
   "scikit-learn": "1.9.1",
   "seed": 42,
   "backbone": "MobileNetV2 1.0/224 INT8 (TFLite) \u2014 ImageNet, google-coral/test_data (Apache-2.0)",

@@ -4,10 +4,10 @@
   "dataset_name": "plantdoc_field",
   "num_samples": 586,
   "training_time_sec": 0.0,
-  "accuracy": 0.4249,
-  "precision_macro": 0.7615,
-  "recall_macro": 0.3373,
-  "f1_macro": 0.4111,
+  "accuracy": 0.4078,
+  "precision_macro": 0.7952,
+  "recall_macro": 0.3216,
+  "f1_macro": 0.3948,
   "class_names": [
     "Tomato___Early_blight",
     "Tomato___Late_blight",
@@ -18,43 +18,43 @@
   ],
   "confusion_matrix": [
     [
-      36,
-      7,
+      35,
+      4,
       0,
-      3,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      66,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
       0,
       0
     ],
     [
       2,
-      69,
       0,
       0,
-      1,
-      0
-    ],
-    [
-      0,
-      0,
-      5,
-      0,
+      25,
       0,
       0
     ],
     [
-      3,
+      0,
+      25,
       0,
       0,
-      27,
-      1,
-      0
-    ],
-    [
-      0,
-      18,
-      0,
-      0,
-      9,
+      11,
       0
     ],
     [
@@ -63,15 +63,14 @@
       0,
       0,
       0,
-      103
+      100
     ]
   ],
   "top_errors": [
-    "18x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
-    "7x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'",
-    "3x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
-    "3x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'",
-    "2x 'Tomato___Late_blight' classificada como 'Tomato___Early_blight'"
+    "25x 'Potato___Late_blight' classificada como 'Tomato___Late_blight'",
+    "4x 'Tomato___Early_blight' classificada como 'Tomato___Late_blight'",
+    "2x 'Tomato___Early_blight' classificada como 'Potato___Early_blight'",
+    "2x 'Potato___Early_blight' classificada como 'Tomato___Early_blight'"
   ],
   "extra_metadata": {}
 }

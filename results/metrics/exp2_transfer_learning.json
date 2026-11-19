@@ -3,7 +3,7 @@
   "model_name": "Exp 2B — MobileNetV2 (ImageNet) + cabeça [LogReg C=0.1 + aumento de dados (2 cópias)]",
   "dataset_name": "PlantVillage (teste)",
   "num_samples": 1097,
-  "training_time_sec": 0.573,
+  "training_time_sec": 0.923,
   "accuracy": 0.9763,
   "precision_macro": 0.9777,
   "recall_macro": 0.973,

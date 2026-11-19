@@ -3,7 +3,7 @@
   "model_name": "Exp 4A — PLN TF-IDF + LogisticRegression",
   "dataset_name": "Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",
   "num_samples": 180,
-  "training_time_sec": 0.4306,
+  "training_time_sec": 1.0851,
   "accuracy": 0.8278,
   "precision_macro": 0.8288,
   "recall_macro": 0.8278,

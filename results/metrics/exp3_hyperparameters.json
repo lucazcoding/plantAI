@@ -5,7 +5,7 @@
     "val_f1_macro": 0.9291,
     "test_accuracy": 0.9435,
     "test_f1_macro": 0.9405,
-    "training_time_sec": 1.231,
+    "training_time_sec": 2.558,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.3976
   },
@@ -15,7 +15,7 @@
     "val_f1_macro": 0.9625,
     "test_accuracy": 0.969,
     "test_f1_macro": 0.9678,
-    "training_time_sec": 1.487,
+    "training_time_sec": 2.192,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.4147
   },
@@ -25,19 +25,19 @@
     "val_f1_macro": 0.9696,
     "test_accuracy": 0.9745,
     "test_f1_macro": 0.9736,
-    "training_time_sec": 0.916,
+    "training_time_sec": 1.796,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.4164
   },
   {
     "config_name": "LogReg C=0.1",
-    "val_accuracy": 0.9736,
-    "val_f1_macro": 0.9721,
+    "val_accuracy": 0.9745,
+    "val_f1_macro": 0.9731,
     "test_accuracy": 0.9772,
     "test_f1_macro": 0.9767,
-    "training_time_sec": 0.573,
+    "training_time_sec": 0.923,
     "selected_by_validation": true,
-    "plantdoc_accuracy": 0.4215
+    "plantdoc_accuracy": 0.4232
   },
   {
     "config_name": "LogReg C=1",
@@ -45,7 +45,7 @@
     "val_f1_macro": 0.9703,
     "test_accuracy": 0.9772,
     "test_f1_macro": 0.9765,
-    "training_time_sec": 0.404,
+    "training_time_sec": 0.616,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.372
   },
@@ -55,7 +55,7 @@
     "val_f1_macro": 0.9703,
     "test_accuracy": 0.979,
     "test_f1_macro": 0.9785,
-    "training_time_sec": 0.385,
+    "training_time_sec": 0.548,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.3498
   },
@@ -65,7 +65,7 @@
     "val_f1_macro": 0.967,
     "test_accuracy": 0.9717,
     "test_f1_macro": 0.9711,
-    "training_time_sec": 4.336,
+    "training_time_sec": 11.722,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.4044
   },
@@ -75,19 +75,19 @@
     "val_f1_macro": 0.9593,
     "test_accuracy": 0.9736,
     "test_f1_macro": 0.9736,
-    "training_time_sec": 6.819,
+    "training_time_sec": 15.426,
     "selected_by_validation": false,
     "plantdoc_accuracy": 0.3874
   },
   {
     "config_name": "MLP (256) lr=5e-2 (instável)",
-    "val_accuracy": 0.9562,
-    "val_f1_macro": 0.9537,
-    "test_accuracy": 0.9699,
-    "test_f1_macro": 0.9685,
-    "training_time_sec": 5.374,
+    "val_accuracy": 0.9572,
+    "val_f1_macro": 0.955,
+    "test_accuracy": 0.9654,
+    "test_f1_macro": 0.9644,
+    "training_time_sec": 20.654,
     "selected_by_validation": false,
-    "plantdoc_accuracy": 0.401
+    "plantdoc_accuracy": 0.3908
   },
   {
     "config_name": "LogReg C=0.1 + aumento de dados (2 cópias)",

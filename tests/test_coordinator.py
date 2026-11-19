@@ -81,9 +81,45 @@ def test_image_plus_question_flow(coordinator: CoordinatorAgent) -> None:
 def test_question_parsing_and_intent_model() -> None:
     parts = split_user_message("Folha com mancha escura. É grave?")
     assert parts.symptom_text == "Folha com mancha escura." and parts.question == "É grave?"
+    same_sentence = split_user_message("Folhas com manchas marrons em anéis, isso é grave?")
+    assert same_sentence.symptom_text == "Folhas com manchas marrons em anéis"
+    assert same_sentence.question == "isso é grave?"
+    no_comma = split_user_message("Folhas com manchas marrons em anéis isso é grave?")
+    assert no_comma.symptom_text == "Folhas com manchas marrons em anéis"
+    assert no_comma.question == "isso é grave?"
+    comparison = split_user_message("Manchas como anéis nas folhas isso é grave?")
+    assert comparison.symptom_text == "Manchas como anéis nas folhas"
+    assert comparison.question == "isso é grave?"
+    possible_severity = split_user_message("Folhas com manchas marrons isso pode ser grave?")
+    assert possible_severity.symptom_text == "Folhas com manchas marrons"
+    assert possible_severity.question == "isso pode ser grave?"
+    treatment = split_user_message("Folhas com manchas marrons como devo tratar?")
+    assert treatment.symptom_text == "Folhas com manchas marrons"
+    assert treatment.question == "como devo tratar?"
+    diagnosis = split_user_message("A folha tem manchas; que doença pode ser?")
+    assert diagnosis.symptom_text == "A folha tem manchas"
+    assert diagnosis.question == "que doença pode ser?"
+    question_only = split_user_message("Como tratar essa folha, e quando repetir o manejo?")
+    assert question_only.symptom_text == ""
     clf = QuestionIntentClassifier()
     assert clf.predict("Como posso prevenir essa doença no próximo plantio?")[0] == "prevention"
     assert clf.evaluate_cv()["accuracy"] >= 0.75
+
+
+def test_symptoms_and_question_in_one_sentence_use_both_agents(coordinator: CoordinatorAgent) -> None:
+    response = coordinator.answer(
+        exemplo("plantvillage_Tomato_Early_blight.jpg"),
+        "Folhas com manchas marrons em anéis, isso é grave?",
+    )
+    assert response.decision.operation_mode == "integrated"
+    assert response.decision.nlp_output is not None
+    assert response.intent == "severity"
+    no_comma = coordinator.answer(
+        exemplo("plantvillage_Tomato_Early_blight.jpg"),
+        "Folhas com manchas marrons em anéis isso é grave?",
+    )
+    assert no_comma.decision.operation_mode == "integrated"
+    assert no_comma.decision.nlp_output is not None
 
 
 def test_history_export(coordinator: CoordinatorAgent, tmp_path) -> None:

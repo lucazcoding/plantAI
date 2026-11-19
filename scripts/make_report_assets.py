@@ -62,7 +62,7 @@ def main() -> None:
     # ---------- tabelas (LaTeX + Markdown)
     rows_vis = [("Classe majoritária", e1m), ("6 estatísticas RGB + LogReg", e1), ("30 descritores clássicos + MLP", e2a), ("MobileNetV2 (1280-d final) + LogReg", None), (f"MobileNetV2 multiescala + cabeça (implantado)", e2)]
     tex = ["% GERADO por scripts/make_report_assets.py", "\\begin{table}[t]\\caption{Modelos visuais no conjunto de teste do PlantVillage (N=" + str(sp["test_count"]) + "). IC 95\\% por bootstrap.}\\label{tab:vis}\\centering\\small",
-           "\\begin{tabular}{lcc}\\toprule Modelo & Acurácia (\\%) & F1-macro (\\%)\\\\\\midrule"]
+           "\\resizebox{\\columnwidth}{!}{\\begin{tabular}{lcc}\\toprule Modelo & Acurácia (\\%) & F1-macro (\\%)\\\\\\midrule"]
     md = ["| Modelo | Acurácia (%) | F1-macro (%) | IC95% acurácia |", "|---|--:|--:|---|"]
     for name, r in rows_vis:
         if r is None:
@@ -71,15 +71,15 @@ def main() -> None:
             acc, f1, c = r["accuracy"], r["f1_macro"], ci(r) if r["extra_metadata"].get("accuracy_ci95") else "—"
         tex.append(f"{name} & {pct(acc)} & {pct(f1)}\\\\")
         md.append(f"| {name} | {pct(acc)} | {pct(f1)} | {c} |")
-    tex.append("\\bottomrule\\end{tabular}\\end{table}")
+    tex.append("\\bottomrule\\end{tabular}}\\end{table}")
 
     tex += ["\\begin{table}[t]\\caption{PLN: validação cruzada 5-fold (textos avaliados fora da dobra). ``Puro'' = TF-IDF + modelo linear; ``regra de cultura'' = reforço $\\times$1,35/$\\times$0,75 do NLPAgent.}\\label{tab:nlp}\\centering\\small",
-            "\\begin{tabular}{lccc}\\toprule Modelo & N & Acurácia (\\%) & F1-macro (\\%)\\\\\\midrule",
+            "\\resizebox{\\columnwidth}{!}{\\begin{tabular}{lccc}\\toprule Modelo & N & Acurácia (\\%) & F1-macro (\\%)\\\\\\midrule",
             f"TF-IDF + LogReg (puro) & {lr['num_samples']} & {pct(abl['logreg_pure']['accuracy'])} & {pct(abl['logreg_pure']['f1_macro'])}\\\\",
             f"TF-IDF + SVC calibrado (puro) & {svm['num_samples']} & {pct(abl['svm_pure']['accuracy'])} & {pct(abl['svm_pure']['f1_macro'])}\\\\",
             f"NLPAgent: LogReg + regra de cultura & {lr['num_samples']} & {pct(lr['accuracy'])} & {pct(lr['f1_macro'])}\\\\",
             f"NLPAgent: SVC + regra de cultura & {svm['num_samples']} & {pct(svm['accuracy'])} & {pct(svm['f1_macro'])}\\\\",
-            f"Intenção da pergunta (LogReg) & {qi['n']} & {pct(qi['accuracy'])} & {pct(qi['f1_macro'])}\\\\\\bottomrule\\end{{tabular}}\\end{{table}}"]
+            f"Intenção da pergunta (LogReg) & {qi['n']} & {pct(qi['accuracy'])} & {pct(qi['f1_macro'])}\\\\\\bottomrule\\end{{tabular}}}}\\end{{table}}"]
     md += ["", "| Modelo PLN | N | Acurácia (%) | F1-macro (%) |", "|---|--:|--:|--:|",
            f"| TF-IDF + LogReg (puro, sem regra de cultura) | {lr['num_samples']} | {pct(abl['logreg_pure']['accuracy'])} | {pct(abl['logreg_pure']['f1_macro'])} |",
            f"| TF-IDF + LinearSVC calibrado (puro, sem regra de cultura) | {svm['num_samples']} | {pct(abl['svm_pure']['accuracy'])} | {pct(abl['svm_pure']['f1_macro'])} |",
@@ -87,8 +87,8 @@ def main() -> None:
            f"| NLPAgent: TF-IDF + LinearSVC + reforço de cultura | {svm['num_samples']} | {pct(svm['accuracy'])} | {pct(svm['f1_macro'])} |",
            f"| Intenção da pergunta | {qi['n']} | {pct(qi['accuracy'])} | {pct(qi['f1_macro'])} |"]
 
-    tex += ["\\begin{table*}[t]\\caption{Experimento 5 — ablação (texto correto). Acurácia estrita conta \\textit{inconclusivo} como erro; cobertura = fração respondida; precisão = acurácia entre as respondidas.}\\label{tab:abl}\\centering\\small",
-            "\\begin{tabular}{llccc}\\toprule Conjunto & Modo & Acurácia estrita (\\%) & Cobertura (\\%) & Precisão se respondeu (\\%)\\\\\\midrule"]
+    tex += ["\\begin{table*}[t]\\caption{Experimento 5 -- ablação (texto correto). Acurácia estrita conta \\textit{inconclusivo} como erro; cobertura = fração respondida; precisão = acurácia entre as respondidas.}\\label{tab:abl}\\centering\\small",
+            "\\resizebox{\\textwidth}{!}{\\begin{tabular}{llccc}\\toprule Conjunto & Modo & Acurácia estrita (\\%) & Cobertura (\\%) & Precisão se respondeu (\\%)\\\\\\midrule"]
     md += ["", "| Conjunto | Modo | Acurácia estrita (%) | Cobertura (%) | Precisão se respondeu (%) | IC95% acurácia |", "|---|---|--:|--:|--:|---|"]
     for ds, label in (("plantvillage_test", f"PlantVillage teste (N={e5['plantvillage_test']['headline_p0']['n']})"), ("plantdoc_field", f"PlantDoc campo (N={e5['plantdoc_field']['headline_p0']['n']})")):
         for mode, ml in (("vision_only", "Visão isolada"), ("nlp_only", "PLN isolado"), ("integrated", "Integrado (visão+PLN+regras)")):
@@ -96,17 +96,17 @@ def main() -> None:
             tex.append(f"{label} & {ml} & {pct(r['accuracy'])} & {pct(r['coverage'])} & {pct(r['accuracy_when_answered'])}\\\\")
             md.append(f"| {label} | {ml} | {pct(r['accuracy'])} | {pct(r['coverage'])} | {pct(r['accuracy_when_answered'])} | [{pct(r['ci95'][0])}; {pct(r['ci95'][1])}] |")
         tex.append("\\midrule")
-    tex[-1] = "\\bottomrule\\end{tabular}\\end{table*}"
+    tex[-1] = "\\bottomrule\\end{tabular}}\\end{table*}"
     md += ["", "Sensibilidade ao erro do usuário (fração de relatos textuais errados → acurácia estrita / precisão do integrado):", "", "| Conjunto | p=0,1 | p=0,2 | p=0,3 | p=0,5 |", "|---|---|---|---|---|"]
     for ds in ("plantvillage_test", "plantdoc_field"):
         md.append(f"| {ds} | " + " | ".join(f"{pct(s['integrated']['accuracy'])} / {pct(s['integrated']['accuracy_when_answered'])}" for s in e5[ds]["sensitivity_to_wrong_user_text"]) + " |")
 
     tex += ["\\begin{table}[t]\\caption{Generalização de domínio (acurácia, \\%).}\\label{tab:dom}\\centering\\small",
-            "\\begin{tabular}{lc}\\toprule Cenário & Acurácia\\\\\\midrule",
+            "\\resizebox{\\columnwidth}{!}{\\begin{tabular}{lc}\\toprule Cenário & Acurácia\\\\\\midrule",
             f"PlantVillage, teste (N={sp['test_count']}) & {pct(e2['accuracy'])}\\\\",
             f"PlantDoc todo (N={e6['num_samples']}) & {pct(e6['accuracy'])}\\\\",
             f"PlantDoc 50\\% (N={e6b['num_samples']}), sem adapt. & {pct(e6b['extra_metadata']['same_subset_without_adaptation_acc'])}\\\\",
-            f"PlantDoc 50\\%, com adapt. & {pct(e6b['accuracy'])}\\\\\\bottomrule\\end{{tabular}}\\end{{table}}"]
+            f"PlantDoc 50\\%, com adapt. & {pct(e6b['accuracy'])}\\\\\\bottomrule\\end{{tabular}}}}\\end{{table}}"]
     md += ["", "| Cenário | Acurácia (%) |", "|---|--:|", f"| PlantVillage teste | {pct(e2['accuracy'])} |", f"| PlantDoc inteiro, sem adaptação | {pct(e6['accuracy'])} {ci(e6)} |",
            f"| PlantDoc 50% reservado, sem adaptação | {pct(e6b['extra_metadata']['same_subset_without_adaptation_acc'])} |", f"| PlantDoc 50% reservado, com adaptação | {pct(e6b['accuracy'])} {ci(e6b)} |"]
 

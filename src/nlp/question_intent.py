@@ -35,6 +35,11 @@ _INTERROGATIVES = (
     "posso", "preciso", "devo", "tem como", "é ", "pode", "vai", "corre", "voce", "você",
 )
 _SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
+_INLINE_QUESTION_START = re.compile(
+    r"\b(?:isso (?:é|pode ser)|é grave|como (?:devo |posso )?(?:tratar|evitar|prevenir)|"
+    r"qual doença|que doença|será que|posso|devo)\b",
+    re.I,
+)
 
 
 @dataclass(slots=True)
@@ -54,6 +59,18 @@ def split_user_message(text: str | None) -> UserMessage:
     questions: list[str] = []
     for s in sentences:
         low = s.lower()
+        if s.endswith("?") and "," in s and not low.startswith(_INTERROGATIVES):
+            symptom_clause, question_clause = s.rsplit(",", 1)
+            if question_clause.strip().lower().startswith(_INTERROGATIVES):
+                symptoms.append(symptom_clause.strip())
+                questions.append(question_clause.strip())
+                continue
+        if s.endswith("?") and not low.startswith(_INTERROGATIVES):
+            question_start = _INLINE_QUESTION_START.search(s)
+            if question_start:
+                symptoms.append(s[:question_start.start()].strip(" ,;"))
+                questions.append(s[question_start.start():].strip())
+                continue
         if s.endswith("?") or low.startswith(_INTERROGATIVES):
             questions.append(s)
         else:

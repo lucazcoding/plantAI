@@ -22,7 +22,7 @@
   {
     "train_fraction": 0.5,
     "n_train": 2742,
-    "test_accuracy": 0.969
+    "test_accuracy": 0.9672
   },
   {
     "train_fraction": 1.0,

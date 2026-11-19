@@ -170,6 +170,19 @@ def test_rule_4_nlp_disambiguates_moderate_vision() -> None:
     assert any("desempatando" in ev.lower() for ev in decision.evidences)
 
 
+def test_rule_4_does_not_disambiguate_distant_visual_hypothesis() -> None:
+    engine = DecisionRulesEngine()
+    vision = _make_vision_output(
+        predicted_class="Tomato___healthy",
+        confidence=0.74,
+        top_k=[("Tomato___healthy", 0.74), ("Tomato___Late_blight", 0.01)],
+    )
+    nlp = _make_nlp_output(predicted_class="Tomato___Late_blight", confidence=0.70)
+    decision = engine.evaluate(vision_output=vision, nlp_output=nlp)
+    assert decision.status == DecisionStatus.DIVERGENCIA_DETECTADA
+    assert decision.final_class is None
+
+
 def test_rule_5_divergence_detected_explicitly() -> None:
     """Regra 5: Quando Visão e PLN apontam classes diferentes com alta confiança, expõe conflito."""
     engine = DecisionRulesEngine()

@@ -344,6 +344,8 @@ class DecisionRulesEngine:
             is_vision_moderate
             and n_class in vision_top_dict
             and n_conf >= self.nlp_high_confidence_threshold
+            and v_conf - vision_top_dict[n_class] <= self.top2_proximity_gap
+            and 0.45 * vision_top_dict[n_class] + 0.55 * n_conf >= self.min_confidence_threshold
         ):
             v_prob_for_nlp_class = vision_top_dict[n_class]
             # Fusão ponderada priorizando a confirmação cruzada entre a hipótese visual secundária e o PLN forte

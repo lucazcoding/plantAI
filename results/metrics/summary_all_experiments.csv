@@ -1,9 +1,9 @@
 experiment_id,model_name,dataset_name,num_samples,accuracy,precision_macro,recall_macro,f1_macro,training_time_sec
 exp1_baseline_majority,Exp 1A — Baseline: classe majoritária,PlantVillage (teste),1097,0.2479,0.0413,0.1667,0.0662,0.0
-exp1_baseline_vision,Exp 1B — Baseline: 6 estatísticas RGB + LogReg,PlantVillage (teste),1097,0.6044,0.6389,0.6232,0.6224,0.0456
-exp2_classic_descriptors,Exp 2A — 30 descritores clássicos + MLP,PlantVillage (teste),1097,0.9672,0.969,0.9639,0.9661,0.7914
-exp2_transfer_learning,Exp 2B — MobileNetV2 (ImageNet) + cabeça [LogReg C=0.1 + aumento de dados (2 cópias)],PlantVillage (teste),1097,0.9763,0.9777,0.973,0.9752,0.573
-exp4_nlp_lr,Exp 4A — PLN TF-IDF + LogisticRegression,"Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",180,0.8278,0.8288,0.8278,0.8277,0.4306
-exp4_nlp_svm,Exp 4B — PLN TF-IDF + LinearSVC calibrado,"Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",180,0.8389,0.84,0.8389,0.8389,0.8222
+exp1_baseline_vision,Exp 1B — Baseline: 6 estatísticas RGB + LogReg,PlantVillage (teste),1097,0.6044,0.6389,0.6232,0.6224,0.12
+exp2_classic_descriptors,Exp 2A — 30 descritores clássicos + MLP,PlantVillage (teste),1097,0.9663,0.969,0.9627,0.9655,4.3009
+exp2_transfer_learning,Exp 2B — MobileNetV2 (ImageNet) + cabeça [LogReg C=0.1 + aumento de dados (2 cópias)],PlantVillage (teste),1097,0.9763,0.9777,0.973,0.9752,0.923
+exp4_nlp_lr,Exp 4A — PLN TF-IDF + LogisticRegression,"Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",180,0.8278,0.8288,0.8278,0.8277,1.0851
+exp4_nlp_svm,Exp 4B — PLN TF-IDF + LinearSVC calibrado,"Corpus de sintomas (CV 5-fold fora-da-dobra, N=180)",180,0.8389,0.84,0.8389,0.8389,1.403
 exp6_generalization_plantdoc,Exp 6A — PlantVillage → PlantDoc (sem adaptação),"PlantDoc (campo, N=586)",586,0.4386,0.4431,0.4048,0.3678,0.0
-exp6_domain_adaptation,Exp 6B — Adaptação: PlantVillage + 50% do PlantDoc,"PlantDoc (50% reservado, N=293)",293,0.5666,0.5671,0.5699,0.5638,0.0
+exp6_domain_adaptation,Exp 6B — Adaptação: PlantVillage + 50% do PlantDoc,"PlantDoc (50% reservado, N=293)",293,0.5734,0.567,0.5744,0.5685,0.0

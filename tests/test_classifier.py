@@ -63,9 +63,19 @@ def test_reproduces_test_accuracy_from_saved_head() -> None:
 
     records, _ = ds.clean_records(ds.list_records(ds.PLANTVILLAGE_DIR))
     split = ds.split_70_15_15(records, seed=42)
-    feats = ds.extract_features(records, "plantvillage_features")
-    clf = MobileNetV2Classifier()
-    x = feats["multiscale"] if clf.feature_mode == "multiscale" else feats["embeddings"]
-    acc = accuracy_score(feats["labels"][split["test"]], clf.head.predict(x[split["test"]]))
+    full_cache = ds.CACHE_DIR / "plantvillage_features.npz"
+    if full_cache.exists():
+        feats = ds.extract_features(records, "plantvillage_features")
+        idx = split["test"]
+        y_true = feats["labels"][idx]
+        clf = MobileNetV2Classifier()
+        x = (feats["multiscale"] if clf.feature_mode == "multiscale" else feats["embeddings"])[idx]
+    else:
+        test_records = [records[i] for i in split["test"]]
+        feats = ds.extract_features(test_records, "plantvillage_test_features")
+        y_true = feats["labels"]
+        clf = MobileNetV2Classifier()
+        x = feats["multiscale"] if clf.feature_mode == "multiscale" else feats["embeddings"]
+    acc = accuracy_score(y_true, clf.head.predict(x))
     recorded = json.loads((ROOT / "results" / "metrics" / "exp2_transfer_learning.json").read_text(encoding="utf-8"))["accuracy"]
     assert abs(acc - recorded) < 1e-3
